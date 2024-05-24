@@ -2355,6 +2355,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-community/datetimepicker@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@react-native-community/datetimepicker@npm:8.0.1"
+  dependencies:
+    invariant: ^2.2.4
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-windows: "*"
+  peerDependenciesMeta:
+    react-native-windows:
+      optional: true
+  checksum: 553a40ebb3adadbe6f6d4d9e6ab9d72761014ee47614bff0888e4e38bd430f22947e34cdc11e8a97ebf97811986939ca25e79c98bf7a9baef51476481385adab
+  languageName: node
+  linkType: hard
+
+"@react-native-picker/picker@npm:^2.7.6":
+  version: 2.7.6
+  resolution: "@react-native-picker/picker@npm:2.7.6"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 8a4ca200a771467107fb82cfc64d7c8dfc6e8bd68768833addce3d1cc1d194126fea7df2f8464ca646a73006f1d5e7b9c138196f1b33e42c2e7231174db523a2
+  languageName: node
+  linkType: hard
+
 "@react-native/assets-registry@npm:0.74.83":
   version: 0.74.83
   resolution: "@react-native/assets-registry@npm:0.74.83"
@@ -3075,6 +3101,8 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@react-native-community/checkbox": ^0.5.17
+    "@react-native-community/datetimepicker": ^8.0.1
+    "@react-native-picker/picker": ^2.7.6
     "@react-native/babel-preset": 0.74.83
     "@react-native/eslint-config": 0.74.83
     "@react-native/metro-config": 0.74.83
@@ -3090,6 +3118,7 @@ __metadata:
     progress-circle-react-native: ^1.0.2
     react: 18.2.0
     react-native: 0.74.1
+    react-native-collapsible: ^1.6.1
     react-native-page-indicator: ^2.3.0
     react-native-paper: ^5.12.3
     react-native-progress: ^5.0.1
@@ -8136,6 +8165,16 @@ __metadata:
   version: 17.0.2
   resolution: "react-is@npm:17.0.2"
   checksum: 9d6d111d8990dc98bc5402c1266a808b0459b5d54830bbea24c12d908b536df7883f268a7868cfaedde3dd9d4e0d574db456f84d2e6df9c4526f99bb4b5344d8
+  languageName: node
+  linkType: hard
+
+"react-native-collapsible@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "react-native-collapsible@npm:1.6.1"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: ec28769002dd29290f3a9e49ebb7d8ac93a7dfd759669a06f3c235983548e622269b267753b32c4f41224ca5ea6b71bc497fd8594bba0d1e28566f44318a06b7
   languageName: node
   linkType: hard
 

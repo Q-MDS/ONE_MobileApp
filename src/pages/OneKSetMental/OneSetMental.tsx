@@ -25,14 +25,15 @@ const OneSetMental = ( props: any ) =>
 	const [isReady, setIsReady] = useState(false);
     const [refresh, setRefresh] = useState(false);
 	const [weekNum, setWeekNum] = useState(0);
-	const [mentalRecords, setMentalRecords] = useState([]);
+	const [mentalRecords, setMentalRecords] = useState<Record[]>([]);
 	const [scheduleHours, setScheduleHours] = useState(0);
 	const [allocatedHours, setAllocatedHours] = useState(0);
 
 	const getScheduleHours = async () => 
 	{
-		await DbAllocate.getTotScheduleHours().then((count: number) => 
+		await DbAllocate.getTotScheduleHours().then((value: unknown) => 
 		{
+			const count = value as number;
 			setScheduleHours(count);
 			return;
 		})
@@ -45,8 +46,9 @@ const OneSetMental = ( props: any ) =>
 	const getRecords = async () => 
 	{
 		await DbAllocate.getMentalRecords()
-		.then((records: Record[]) => 
+		.then((value: unknown) => 
 		{
+			const records = value as Record[];
 			let total = 0;
 			for (let i = 0; i < records.length; i++)
 			{
@@ -219,8 +221,8 @@ const OneSetMental = ( props: any ) =>
 								title={record.activity} 
 								value={record.tot_hours} 
 								note={record.activity_note} 
-								onchange={(newValue) => handleInputHours(record.id, newValue, record.activity, record.activity_note)} 
-								saveNote={(newNote) => handleInputNote(record.id, newNote, record.activity)}
+								onchange={(newValue: number) => handleInputHours(record.id, newValue, record.activity.toString(), record.activity_note.toString())} 
+								saveNote={(newNote: string) => handleInputNote(record.id, newNote, record.activity.toString())}
 							/>
 						))}
 					</View>

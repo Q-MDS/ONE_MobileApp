@@ -40,6 +40,17 @@ interface StartEndTimes
     to: Date;
 }
 
+type PrepRecord = {
+	id: number;
+	dayNum: number;
+	active: number;
+	startTime: number;
+	endTime: number;
+	rollOver: number;
+	from: Date;
+	to: Date;
+};
+
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // Code below is to setup default times. New process skips this...
@@ -75,9 +86,9 @@ const OnePrepSchedule = ( props: any ) =>
     // const [allRecIds, setAllRecIds] = useState([recIdMon, recIdTue, recIdWed, recIdThu, recIdFri, recIdSat, recIdSun]);
     const [check, setCheck] = useState([true, true, true, true, true, true, true]);
     const [refresh, setRefresh] = useState(false);
-    const [activeSections, setActiveSections] = useState([]);
-    const [currentPicker, setCurrentPicker] = useState(null);
-    const [currentDay, setCurrentDay] = useState(null);
+    const [activeSections, setActiveSections] = useState<number[]>([]);
+    const [currentPicker, setCurrentPicker] = useState<string>("");
+    const [currentDay, setCurrentDay] = useState<number | null>(0);
     const [showPicker, setShowPicker] = useState(false);
     // const [spinner, setSpinner] = useState(false);
     // const [timeError, setTimeError] = useState([0,0,0,0,0,0,0]);
@@ -85,15 +96,16 @@ const OnePrepSchedule = ( props: any ) =>
     // const [times, setTimes] = useState(defaultTimes); // del
 
 	const [weekNum, setWeekNum] = useState(0);
-	const [prepareRecords, setPrepareRecords] = useState([]);
+	const [prepareRecords, setPrepareRecords] = useState<PrepRecord[]>([]);
 	const [isReady, setIsReady] = useState(false);
-	const [filter, setFilter] = useState([]);
+	const [filter, setFilter] = useState<PrepRecord>();
 
 	const getWeekNum = async () => 
 	{
 		await DBSettings.getWeekNumber()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
+			const result = value as number;
 			setWeekNum(result);
 		})
 		.catch(error => 
@@ -110,8 +122,9 @@ const OnePrepSchedule = ( props: any ) =>
 	const getRecords = async () => 
 	{
 		await DbSchedule.getPrepareRecords()
-		.then((records: ResultSet) => 
+		.then((value: unknown) => 
 		{
+			const records = value as ResultSet;
 			const data = [];
 
 			for (let i = 0; i < records.rows.length; i++) 
@@ -229,7 +242,7 @@ const OnePrepSchedule = ( props: any ) =>
 		}
 	}
 
-	const handleSaveTime = async (index: number, filterRecord) => 
+	const handleSaveTime = async (index: number, filterRecord: any) => 
 	{
 		// Need to clear any records for this schedule type and day
 		console.log('Filter ', filterRecord);
@@ -334,7 +347,7 @@ const OnePrepSchedule = ( props: any ) =>
 		})
 	}
 
-    const renderHeader = (section, _, isActive) => 
+    const renderHeader = (section: any, _: any, isActive: boolean) => 
 	{
         return (
             <View style={[styles.buttonHeader, { flexDirection: 'row', justifyContent: 'space-between' }]}>
@@ -344,7 +357,7 @@ const OnePrepSchedule = ( props: any ) =>
         );
     };
 
-    const renderContent = (section, index) => 
+    const renderContent = (section: any, index: number) => 
 	{
 		const record = prepareRecords[index];
 		const filteredRecords = prepareRecords.filter(record => record.dayNum === index);
@@ -392,18 +405,29 @@ const OnePrepSchedule = ( props: any ) =>
 
 			{showPicker && currentDay === index && (
 				<DateTimePicker
-				value={filter[currentPicker]}
+				// value={filter[currentPicker]}
+				value={filter && (currentPicker === 'from' || currentPicker === 'to') ? filter[currentPicker] : new Date()}
 				mode="time"
 				is24Hour={true}
 				display="default"
+				// onChange={(event, selectedDate) => {
+				// 	const recId = filter['id'];
+				// 	const updatedFilter = { ...filter };
+				// 	updatedFilter[currentPicker] = selectedDate || filter[currentPicker];
+				// 	setFilter(updatedFilter);
+				// 	setShowPicker(false);
+				// 	handleSaveTime(index, updatedFilter);
+				// }}
 				onChange={(event, selectedDate) => {
-					const recId = filter['id'];
-					const updatedFilter = { ...filter };
-					updatedFilter[currentPicker] = selectedDate || filter[currentPicker];
-					setFilter(updatedFilter);
-					setShowPicker(false);
-					handleSaveTime(index, updatedFilter);
-				}}
+					if (filter && (currentPicker === 'from' || currentPicker === 'to')) {
+					  const recId = filter['id'];
+					  const updatedFilter = { ...filter };
+					  updatedFilter[currentPicker] = selectedDate || filter[currentPicker];
+					  setFilter(updatedFilter);
+					  setShowPicker(false);
+					  handleSaveTime(index, updatedFilter);
+					}
+				  }}
 				/>
 			)}
 		</View>

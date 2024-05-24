@@ -29,11 +29,11 @@ class DbSchedule
 			VALUES 
 				(?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result) => 
+			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -46,11 +46,11 @@ class DbSchedule
 		{
 			let sql = 'SELECT * FROM schedule_work ORDER BY id ASC';
 
-			this.db.executeSql(sql, [], (result) => 
+			this.db.executeSql(sql, [], (result: any)=> 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -61,9 +61,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any): any => 
 			{
-				tx.executeSql('UPDATE schedule_work SET active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_work SET active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -74,7 +74,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -87,9 +87,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_work SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_work SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -100,7 +100,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -118,11 +118,11 @@ class DbSchedule
 			VALUES 
 				(?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result) => 
+			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result: any)=> 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -135,11 +135,11 @@ class DbSchedule
 		{
 			let sql = 'SELECT * FROM schedule_class ORDER BY id ASC';
 
-			this.db.executeSql(sql, [], (result) => 
+			this.db.executeSql(sql, [], (result: any)=> 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -150,9 +150,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_class SET active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_class SET active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -163,7 +163,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -176,9 +176,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_class SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_class SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -189,7 +189,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -207,11 +207,11 @@ class DbSchedule
 			VALUES 
 				(?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result) => 
+			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result: any)=> 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -224,11 +224,11 @@ class DbSchedule
 		{
 			let sql = 'SELECT * FROM schedule_sleep ORDER BY id ASC';
 
-			this.db.executeSql(sql, [], (result) => 
+			this.db.executeSql(sql, [], (result: any)=> 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -239,9 +239,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_sleep SET active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_sleep SET active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -252,7 +252,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -265,9 +265,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_sleep SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_sleep SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -278,7 +278,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -296,11 +296,11 @@ class DbSchedule
 			VALUES 
 				(?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [dayNum, breakfastActive, breakfastStart, breakfastEnd, breakfastRollOver, lunchActive, lunchStart, lunchEnd, lunchRollOver, dinnerActive, dinnerStart, dinnerEnd, dinnerRollOver], (result) => 
+			this.db.executeSql(sql, [dayNum, breakfastActive, breakfastStart, breakfastEnd, breakfastRollOver, lunchActive, lunchStart, lunchEnd, lunchRollOver, dinnerActive, dinnerStart, dinnerEnd, dinnerRollOver], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -313,11 +313,11 @@ class DbSchedule
 		{
 			let sql = 'SELECT * FROM schedule_eat ORDER BY id ASC';
 
-			this.db.executeSql(sql, [], (result) => 
+			this.db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -328,9 +328,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_eat SET breakfast_active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_eat SET breakfast_active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -341,7 +341,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -354,9 +354,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_eat SET lunch_active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_eat SET lunch_active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -367,7 +367,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -380,9 +380,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_eat SET dinner_active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_eat SET dinner_active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -393,7 +393,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -406,9 +406,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_eat SET breakfast_start = ?, breakfast_end = ?, breakfast_roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_eat SET breakfast_start = ?, breakfast_end = ?, breakfast_roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -419,7 +419,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -432,9 +432,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_eat SET lunch_start = ?, lunch_end = ?, lunch_roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_eat SET lunch_start = ?, lunch_end = ?, lunch_roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -445,7 +445,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -458,9 +458,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_eat SET dinner_start = ?, dinner_end = ?, dinner_roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_eat SET dinner_start = ?, dinner_end = ?, dinner_roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -471,7 +471,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -489,11 +489,11 @@ class DbSchedule
 			VALUES 
 				(?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result) => 
+			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -506,11 +506,11 @@ class DbSchedule
 		{
 			let sql = 'SELECT * FROM schedule_prepare ORDER BY id ASC';
 
-			this.db.executeSql(sql, [], (result) => 
+			this.db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -521,9 +521,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_prepare SET active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_prepare SET active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -534,7 +534,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -547,9 +547,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_prepare SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_prepare SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -560,7 +560,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -573,17 +573,17 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM schedule_prepare WHERE id = ?',
 					[id],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						resolve(results);
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -601,11 +601,11 @@ class DbSchedule
 			VALUES 
 				(?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result) => 
+			this.db.executeSql(sql, [dayNum, active, startTime, endtime, rollOver], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -618,11 +618,11 @@ class DbSchedule
 		{
 			let sql = 'SELECT * FROM schedule_commute ORDER BY id ASC';
 
-			this.db.executeSql(sql, [], (result) => 
+			this.db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -633,9 +633,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_commute SET active = ? WHERE id = ?', [active, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_commute SET active = ? WHERE id = ?', [active, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -646,7 +646,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -659,9 +659,9 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE schedule_commute SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx, results) => 
+				tx.executeSql('UPDATE schedule_commute SET start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -672,7 +672,7 @@ class DbSchedule
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -685,17 +685,17 @@ class DbSchedule
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM schedule_commute WHERE id = ?',
 					[id],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						resolve(results);
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}

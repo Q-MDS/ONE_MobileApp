@@ -38,12 +38,28 @@ interface Record
     dinner_end: number;
     dinner_roll_over: number;
 }
-
 interface StartEndTimes 
 {
     from: Date;
     to: Date;
 }
+
+type EatRecord = {
+	id: number;
+	dayNum: number;
+	breakfastActive: number;
+	breakfastStart: number;
+    breakfastEnd: number;
+    breakfastRollOver: number;
+	lunchActive: number;
+	lunchStart: number;
+    lunchEnd: number;
+    lunchRollOver: number;
+	dinnerActive: number;
+	dinnerStart: number;
+    dinnerEnd: number;
+    dinnerRollOver: number;
+};
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
@@ -62,36 +78,37 @@ const OneEatSchedule = ( props: any ) =>
     const [breakfastRecIds, setBreakfastRecIds] = useState([]);
     const [breakfastTimes, setBreakfastTimes] = useState(defaultTimes);
     const [showBreakfastPicker, setShowBreakfastPicker] = useState(false);
-    const [currentBreakfastPicker, setCurrentBreakfastPicker] = useState(null);
+    const [currentBreakfastPicker, setCurrentBreakfastPicker] = useState<string>("");
 
     const [lunchChecks, setLunchChecks] = useState([false, false, false, false, false, false, false]);
     const [lunchRecIds, setLunchRecIds] = useState([]);
     const [lunchTimes, setLunchTimes] = useState(defaultTimes);
     const [showLunchPicker, setShowLunchPicker] = useState(false);
-    const [currentLunchPicker, setCurrentLunchPicker] = useState(null);
+    const [currentLunchPicker, setCurrentLunchPicker] = useState<string>("");
 
     const [dinnerChecks, setDinnerChecks] = useState([false, false, false, false, false, false, false]);
     const [dinnerRecIds, setDinnerRecIds] = useState([]);
     const [dinnerTimes, setDinnerTimes] = useState(defaultTimes);
     const [showDinnerPicker, setShowDinnerPicker] = useState(false);
-    const [currentDinnerPicker, setCurrentDinnerPicker] = useState(null);
+    const [currentDinnerPicker, setCurrentDinnerPicker] = useState<string>("");
 
     const [check, setCheck] = useState([true, true, true, true, true, true, true]); //Delete afterwards
-    const [activeSections, setActiveSections] = useState([]);
-    const [currentDay, setCurrentDay] = useState(null); 
-    const [recordId, setRecordId] = useState([]); // del
+    const [activeSections, setActiveSections] = useState<number[]>([]);
+    const [currentDay, setCurrentDay] = useState<number | null>(0);
+    const [recordId, setRecordId] = useState<number[]>([]);
     const [times, setTimes] = useState(defaultTimes); // del
     const [timeError, setTimeError] = useState([0,0,0,0,0,0,0]);
 
 	const [weekNum, setWeekNum] = useState(0);
-	const [eatRecords, setEatRecords] = useState([]);
+	const [eatRecords, setEatRecords] = useState<EatRecord[]>([]);
 	const [isReady, setIsReady] = useState(false);
 
 	const getWeekNum = async () => 
 	{
 		await DBSettings.getWeekNumber()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
+			const result = value as number;
 			setWeekNum(result);
 		})
 		.catch(error => 
@@ -108,8 +125,9 @@ const OneEatSchedule = ( props: any ) =>
 	const getRecords = async () => 
 	{
 		await DbSchedule.getEatRecords()
-		.then((records: ResultSet) => 
+		.then((value: unknown) => 
 		{
+			const records = value as ResultSet;
 			const data = [];
 
 			for (let i = 0; i < records.rows.length; i++) 
@@ -717,7 +735,7 @@ const OneEatSchedule = ( props: any ) =>
 		// console.log('Week num: ', diff, " >>> ", totHours, " >>> ", dayOneHours, " >>> ", dayTwoHours, " >>> ", stHour);
     }
 
-    const renderHeader = (section, _, isActive) => 
+    const renderHeader = (section: any, _: any, isActive: boolean) => 
 	{
 		return (
 			<View style={[styles.buttonHeader, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
@@ -727,7 +745,7 @@ const OneEatSchedule = ( props: any ) =>
 		);
 	};
 
-    const renderContent = (section, index, isActive) => 
+    const renderContent = (section: any, index: number, isActive: boolean) => 
     {
 		const record = eatRecords[index];
 		
@@ -757,14 +775,19 @@ const OneEatSchedule = ( props: any ) =>
 						</TouchableOpacity>
 						{showBreakfastPicker && currentDay === index && (
 							<DateTimePicker
-							value={breakfastTimes[currentDay][currentBreakfastPicker]}
+							// value={breakfastTimes[currentDay][currentBreakfastPicker]}
+							value={currentBreakfastPicker === 'from' || currentBreakfastPicker === 'to' ? breakfastTimes[currentDay][currentBreakfastPicker] : new Date()}
 							mode="time"
 							is24Hour={true}
 							display="default"
 							onChange={(event, selectedDate) => {
 								const newTimes = [...breakfastTimes];
 								const getRecid = [...recordId]; 
-								newTimes[currentDay][currentBreakfastPicker] = selectedDate || breakfastTimes[currentDay][currentBreakfastPicker];
+								// newTimes[currentDay][currentBreakfastPicker] = selectedDate || breakfastTimes[currentDay][currentBreakfastPicker];
+								if (currentBreakfastPicker === 'from' || currentBreakfastPicker === 'to') 
+								{
+									newTimes[currentDay][currentBreakfastPicker] = selectedDate || breakfastTimes[currentDay][currentBreakfastPicker];
+								}
 								setBreakfastTimes(newTimes);
 								setShowBreakfastPicker(false);
 								handleSaveBreakfastTime(index, getRecid[index], newTimes)
@@ -798,14 +821,19 @@ const OneEatSchedule = ( props: any ) =>
 						</TouchableOpacity>
 						{showLunchPicker && currentDay === index && (
 							<DateTimePicker
-							value={lunchTimes[currentDay][currentLunchPicker]}
+							// value={lunchTimes[currentDay][currentLunchPicker]}
+							value={currentLunchPicker === 'from' || currentLunchPicker === 'to' ? breakfastTimes[currentDay][currentLunchPicker] : new Date()}
 							mode="time"
 							is24Hour={true}
 							display="default"
 							onChange={(event, selectedDate) => {
 								const newTimes = [...lunchTimes];
 								const getRecid = [...recordId]; 
-								newTimes[currentDay][currentLunchPicker] = selectedDate || lunchTimes[currentDay][currentLunchPicker];
+								// newTimes[currentDay][currentLunchPicker] = selectedDate || lunchTimes[currentDay][currentLunchPicker];
+								if (currentLunchPicker === 'from' || currentLunchPicker === 'to') 
+								{
+									newTimes[currentDay][currentLunchPicker] = selectedDate || lunchTimes[currentDay][currentLunchPicker];
+								}
 								setLunchTimes(newTimes);
 								setShowLunchPicker(false);
 								handleSaveLunchTime(index, getRecid[index], newTimes)
@@ -838,14 +866,19 @@ const OneEatSchedule = ( props: any ) =>
 						</TouchableOpacity>
 						{showDinnerPicker && currentDay === index && (
 							<DateTimePicker
-							value={dinnerTimes[currentDay][currentDinnerPicker]}
+							// value={dinnerTimes[currentDay][currentDinnerPicker]}
+							value={currentDinnerPicker === 'from' || currentDinnerPicker === 'to' ? breakfastTimes[currentDay][currentDinnerPicker] : new Date()}
 							mode="time"
 							is24Hour={true}
 							display="default"
 							onChange={(event, selectedDate) => {
 								const newTimes = [...dinnerTimes];
 								const getRecid = [...recordId]; 
-								newTimes[currentDay][currentDinnerPicker] = selectedDate || dinnerTimes[currentDay][currentDinnerPicker];
+								// newTimes[currentDay][currentDinnerPicker] = selectedDate || dinnerTimes[currentDay][currentDinnerPicker];
+								if (currentDinnerPicker === 'from' || currentDinnerPicker === 'to') 
+								{
+									newTimes[currentDay][currentDinnerPicker] = selectedDate || dinnerTimes[currentDay][currentDinnerPicker];
+								}
 								setDinnerTimes(newTimes);
 								setShowDinnerPicker(false);
 								handleSaveDinnerTime(index, getRecid[index], newTimes)

@@ -37,27 +37,39 @@ interface StartEndTimes
     to: Date;
 }
 
+type CommuteRecord = {
+	id: number;
+	dayNum: number;
+	active: number;
+	startTime: number;
+	endTime: number;
+	rollOver: number;
+	from: Date;
+	to: Date;
+};
+
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 const OneCommuteSchedule = ( props: any ) => 
 {
     const [check, setCheck] = useState([true, true, true, true, true, true, true]);
     const [refresh, setRefresh] = useState(false);
-    const [activeSections, setActiveSections] = useState([]);
-    const [currentPicker, setCurrentPicker] = useState(null);
-    const [currentDay, setCurrentDay] = useState(null);
+    const [activeSections, setActiveSections] = useState<number[]>([]);
+    const [currentPicker, setCurrentPicker] = useState<string>("");
+    const [currentDay, setCurrentDay] = useState<number | null>(0);
     const [showPicker, setShowPicker] = useState(false);
 
 	const [weekNum, setWeekNum] = useState(0);
-	const [commuteRecords, setCommuteRecords] = useState([]);
+	const [commuteRecords, setCommuteRecords] = useState<CommuteRecord[]>([]);
 	const [isReady, setIsReady] = useState(false);
-	const [filter, setFilter] = useState([]);
+	const [filter, setFilter] = useState<CommuteRecord>();
 
 	const getWeekNum = async () => 
 	{
 		await DBSettings.getWeekNumber()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
+			const result = value as number;
 			setWeekNum(result);
 		})
 		.catch(error => 
@@ -74,8 +86,9 @@ const OneCommuteSchedule = ( props: any ) =>
 	const getRecords = async () => 
 	{
 		await DbSchedule.getCommuteRecords()
-		.then((records: ResultSet) => 
+		.then((value: unknown) => 
 		{
+			const records = value as ResultSet;
 			const data = [];
 
 			for (let i = 0; i < records.rows.length; i++) 
@@ -264,7 +277,7 @@ const OneCommuteSchedule = ( props: any ) =>
 		}
 	}
 
-    const handleSaveTime = async (index: number, filterRecord) => 
+    const handleSaveTime = async (index: number, filterRecord: any) => 
 	{
 		// Need to clear any records for this schedule type and day
 		console.log('Filter ', filterRecord);
@@ -368,7 +381,7 @@ const OneCommuteSchedule = ( props: any ) =>
 		})
 	}
 
-    const renderHeader = (section, _, isActive) => 
+    const renderHeader = (section: any, _: any, isActive: boolean) => 
 	{
 		return (
 			<View style={[styles.buttonHeader, { flexDirection: 'row', justifyContent: 'space-between' }]}>
@@ -378,7 +391,7 @@ const OneCommuteSchedule = ( props: any ) =>
 		);
 	};
 
-    const renderContent = (section, index) => 
+    const renderContent = (section: any, index: number) => 
 	{
 		const record = commuteRecords[index];
 		const filteredRecords = commuteRecords.filter(record => record.dayNum === index);
@@ -425,18 +438,29 @@ const OneCommuteSchedule = ( props: any ) =>
 
 			{showPicker && currentDay === index && (
 				<DateTimePicker
-				value={filter[currentPicker]}
+				// value={filter[currentPicker]}
+				value={filter && (currentPicker === 'from' || currentPicker === 'to') ? filter[currentPicker] : new Date()}
 				mode="time"
 				is24Hour={true}
 				display="default"
+				// onChange={(event, selectedDate) => {
+				// 	const recId = filter['id'];
+				// 	const updatedFilter = { ...filter };
+				// 	updatedFilter[currentPicker] = selectedDate || filter[currentPicker];
+				// 	setFilter(updatedFilter);
+				// 	setShowPicker(false);
+				// 	handleSaveTime(index, updatedFilter);
+				// }}
 				onChange={(event, selectedDate) => {
-					const recId = filter['id'];
-					const updatedFilter = { ...filter };
-					updatedFilter[currentPicker] = selectedDate || filter[currentPicker];
-					setFilter(updatedFilter);
-					setShowPicker(false);
-					handleSaveTime(index, updatedFilter);
-				}}
+					if (filter && (currentPicker === 'from' || currentPicker === 'to')) {
+					  const recId = filter['id'];
+					  const updatedFilter = { ...filter };
+					  updatedFilter[currentPicker] = selectedDate || filter[currentPicker];
+					  setFilter(updatedFilter);
+					  setShowPicker(false);
+					  handleSaveTime(index, updatedFilter);
+					}
+				  }}
 				/>
 			)}
 		</View>

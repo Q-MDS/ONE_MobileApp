@@ -37,6 +37,15 @@ interface StartEndTimes
     to: Date;
 }
 
+type SleepRecord = {
+	id: number;
+	dayNum: number;
+	active: number;
+	startTime: number;
+	endTime: number;
+	rollOver: number;
+};
+
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 // Code below is to setup default times. New process skips this...
@@ -50,22 +59,23 @@ const OneSleepSchedule = ( props: any ) =>
 {
     const [refresh, setRefresh] = useState(false);
     const [check, setCheck] = useState([true, true, true, true, true, true, true]);
-    const [activeSections, setActiveSections] = useState([]);
+    const [activeSections, setActiveSections] = useState<number[]>([]);
     const [showPicker, setShowPicker] = useState(false);
     const [times, setTimes] = useState(defaultTimes);
-    const [currentDay, setCurrentDay] = useState(null);
-    const [currentPicker, setCurrentPicker] = useState(null);
-    const [recordId, setRecordId] = useState([]);
+    const [currentDay, setCurrentDay] = useState<number | null>(0);
+    const [currentPicker, setCurrentPicker] = useState<string>("");
+    const [recordId, setRecordId] = useState<number[]>([]);
 
 	const [weekNum, setWeekNum] = useState(0);
-	const [sleepRecords, setSleepRecords] = useState([]);
+	const [sleepRecords, setSleepRecords] = useState<SleepRecord[]>([]);
 	const [isReady, setIsReady] = useState(false);
 
 	const getWeekNum = async () => 
 	{
 		await DBSettings.getWeekNumber()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
+			const result = value as number;
 			setWeekNum(result);
 		})
 		.catch(error => 
@@ -82,8 +92,9 @@ const OneSleepSchedule = ( props: any ) =>
 	const getRecords = async () => 
 	{
 		await DbSchedule.getSleepRecords()
-		.then((records: ResultSet) => 
+		.then((value: unknown) => 
 		{
+			const records = value as ResultSet;
 			const data = [];
 
 			for (let i = 0; i < records.rows.length; i++) 
@@ -330,7 +341,7 @@ const OneSleepSchedule = ( props: any ) =>
 		// console.log('Week num: ', diff, " >>> ", totHours, " >>> ", dayOneHours, " >>> ", dayTwoHours, " >>> ", stHour);
 	}
 
-    const renderHeader = (section, _, isActive) => 
+    const renderHeader = (section: any, _: any, isActive:boolean) => 
 	{
 		return (
 			<View style={[styles.buttonHeader, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
@@ -340,7 +351,7 @@ const OneSleepSchedule = ( props: any ) =>
 		);
 	};
 
-	const renderContent = (section, index, isActive) => 
+	const renderContent = (section: any, index: number, isActive: boolean) => 
 	{
 		const record = sleepRecords[index];
 		
@@ -369,14 +380,19 @@ const OneSleepSchedule = ( props: any ) =>
 					</TouchableOpacity>
 					{showPicker && currentDay === index && (
 						<DateTimePicker
-						value={times[currentDay][currentPicker]}
+						// value={times[currentDay][currentPicker]}
+						value={currentPicker === 'from' || currentPicker === 'to' ? times[currentDay][currentPicker] : new Date()}
 						mode="time"
 						is24Hour={true}
 						display="default"
 						onChange={(event, selectedDate) => {
 							const newTimes = [...times];
 							const getRecid = [...recordId]; 
-							newTimes[currentDay][currentPicker] = selectedDate || times[currentDay][currentPicker];
+							// newTimes[currentDay][currentPicker] = selectedDate || times[currentDay][currentPicker];
+							if (currentPicker === 'from' || currentPicker === 'to') 
+							{
+								newTimes[currentDay][currentPicker] = selectedDate || times[currentDay][currentPicker];
+							}
 							setTimes(newTimes);
 							setShowPicker(false);
 							handleSaveTime(index, getRecid[index], newTimes)

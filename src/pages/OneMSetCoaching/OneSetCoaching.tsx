@@ -50,8 +50,10 @@ const OneSetCoaching = ( props: any ) =>
 			currentWeekNumber = currentWeekNumber + 1;	
 		}
 
-		DbNotification.addRecord(createDate, currentWeekNumber, Number(selectedDay), 2, 'Plan ONE Reminder', 'Time to plan next week schedule', notiDue, 1, 0).then((notiId: number) => 
+		DbNotification.addRecord(createDate, currentWeekNumber, Number(selectedDay), 2, 'Plan ONE Reminder', 'Time to plan next week schedule', notiDue, 1, 0)
+		.then((value: unknown) => 
 		{
+			const notiId = value as number;
 			console.log('Record added');
 		})
 		.catch((error) => 

@@ -20,13 +20,13 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.executeSql('SELECT COUNT(*) AS count FROM calendar', [], (result) => 
+			this.db.executeSql('SELECT COUNT(*) AS count FROM calendar', [], (result: any) => 
 			{
 				let count = result.rows.item(0).count;
 
 				resolve(count);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -42,11 +42,11 @@ class DbAllocate
 			VALUES 
 				(?,?,?)`;
 
-			this.db.executeSql(sql, [activity, activityNote, totHours], (result) => 
+			this.db.executeSql(sql, [activity, activityNote, totHours], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -57,7 +57,7 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_PHYSICAL} ORDER BY id ASC`, [], (result) => 
+			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_PHYSICAL} ORDER BY id ASC`, [], (result: any) => 
 			{
 				let records = [];
 
@@ -67,7 +67,7 @@ class DbAllocate
 				}
 				resolve(records);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -78,9 +78,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_PHYSICAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_PHYSICAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -91,7 +91,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -104,9 +104,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_PHYSICAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_PHYSICAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -117,7 +117,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -130,13 +130,13 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						if (results.rowsAffected > 0) 
 						{
@@ -147,7 +147,7 @@ class DbAllocate
 							reject(new Error('No records found to delete'));
 						}
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -165,11 +165,11 @@ class DbAllocate
 			VALUES 
 				(?,?,?)`;
 
-			this.db.executeSql(sql, [activity, activityNote, totHours], (result) => 
+			this.db.executeSql(sql, [activity, activityNote, totHours], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -180,7 +180,7 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_EMOTIONAL} ORDER BY id ASC`, [], (result) => 
+			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_EMOTIONAL} ORDER BY id ASC`, [], (result: any) => 
 			{
 				let records = [];
 
@@ -190,7 +190,7 @@ class DbAllocate
 				}
 				resolve(records);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -201,9 +201,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_EMOTIONAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_EMOTIONAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -214,7 +214,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -227,9 +227,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_EMOTIONAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_EMOTIONAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -240,7 +240,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -253,13 +253,13 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						if (results.rowsAffected > 0) 
 						{
@@ -270,7 +270,7 @@ class DbAllocate
 							reject(new Error('No records found to delete'));
 						}
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -288,11 +288,11 @@ class DbAllocate
 			VALUES 
 				(?,?,?)`;
 
-			this.db.executeSql(sql, [activity, activityNote, totHours], (result) => 
+			this.db.executeSql(sql, [activity, activityNote, totHours], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -303,7 +303,7 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_MENTAL} ORDER BY id ASC`, [], (result) => 
+			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_MENTAL} ORDER BY id ASC`, [], (result: any) => 
 			{
 				let records = [];
 
@@ -313,7 +313,7 @@ class DbAllocate
 				}
 				resolve(records);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -324,9 +324,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_MENTAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_MENTAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -337,7 +337,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -350,9 +350,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_MENTAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_MENTAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -363,7 +363,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -376,13 +376,13 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						if (results.rowsAffected > 0) 
 						{
@@ -393,7 +393,7 @@ class DbAllocate
 							reject(new Error('No records found to delete'));
 						}
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -411,11 +411,11 @@ class DbAllocate
 			VALUES 
 				(?,?,?)`;
 
-			this.db.executeSql(sql, [activity, activityNote, totHours], (result) => 
+			this.db.executeSql(sql, [activity, activityNote, totHours], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -426,7 +426,7 @@ class DbAllocate
 		{
 			return new Promise((resolve, reject) => 
 			{
-				this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_SPIRITUAL} ORDER BY id ASC`, [], (result) => 
+				this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_SPIRITUAL} ORDER BY id ASC`, [], (result: any) => 
 				{
 					let records = [];
 	
@@ -436,7 +436,7 @@ class DbAllocate
 					}
 					resolve(records);
 				}, 
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				});
@@ -447,9 +447,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_SPIRITUAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_SPIRITUAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -460,7 +460,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -473,9 +473,9 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_SPIRITUAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx, results) => 
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_SPIRITUAL} SET activity_note = ? WHERE id = ?`, [note, id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -486,7 +486,7 @@ class DbAllocate
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -499,13 +499,13 @@ class DbAllocate
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						if (results.rowsAffected > 0) 
 						{
@@ -516,7 +516,7 @@ class DbAllocate
 							reject(new Error('No records found to delete'));
 						}
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}

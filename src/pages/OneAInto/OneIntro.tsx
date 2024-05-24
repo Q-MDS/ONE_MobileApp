@@ -326,18 +326,20 @@ const OneIntro = ( props: any ) =>
 			const randomTwo = timesOne[r2];
 			
 			// Accountability
-			await DbNotification.addRecord(createDate, weekNum, i, 4, 'Accountability Time!', 'Time to boost your accountability score', randomOne, 1, 0).then((notiId: number) => 
+			await DbNotification.addRecord(createDate, weekNum, i, 4, 'Accountability Time!', 'Time to boost your accountability score', randomOne, 1, 0).then((value: unknown) => 
 			{
 				console.log('Notification: accountability 1 - added');
+				const notiId = value as number;
 				DbAccountability.addMasterRecord(notiId, 0, 0, 0, 0, weekNum, i, 0, 0).then(() => console.log('Done?'));
 			})
 			.catch((error) => 
 			{
 				console.log('Error adding record', error);
 			});
-			await DbNotification.addRecord(createDate, weekNum, i, 4, 'Accountability Time!', 'Time to boost your accountability score', randomTwo, 1, 0).then((notiId: number) => 
+			await DbNotification.addRecord(createDate, weekNum, i, 4, 'Accountability Time!', 'Time to boost your accountability score', randomTwo, 1, 0).then((value: unknown) => 
 			{
 				console.log('Notification: accountability 2 - Record added');
+				const notiId = value as number;
 				DbAccountability.addMasterRecord(notiId, 0, 0, 0, 0, weekNum, i, 0, 0).then(() => console.log('Done?'));
 			})
 			.catch((error) => 
@@ -346,10 +348,11 @@ const OneIntro = ( props: any ) =>
 			});
 
 			// Verify Noti
-			await DbNotification.addRecord(createDate, weekNum, i, 3, 'Verification Time!', 'Check-off your completed daily activities', 64800, 1, 0).then((notiId: number) => 
+			await DbNotification.addRecord(createDate, weekNum, i, 3, 'Verification Time!', 'Check-off your completed daily activities', 64800, 1, 0).then((value: unknown) => 
 			{
-				console.log('Verify notification - Record added', notiId);
 				// Verify Master
+				const notiId = value as number;
+				console.log('Verify notification - Record added', notiId);
 				DbVerify.addMasterRecord(notiId, 0, 0, 0, 0, weekNum, i, 0, 0).then(() => console.log('Done?'));
 
 			})
