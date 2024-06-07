@@ -7,7 +7,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
 import { StyleSheet, ImageBackground, ScrollView, View, TouchableOpacity, Image, Text, ActivityIndicator } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+// import CheckBox from '@react-native-community/checkbox';
+import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
@@ -351,7 +352,7 @@ const OnePrepSchedule = ( props: any ) =>
 	{
         return (
             <View style={[styles.buttonHeader, { flexDirection: 'row', justifyContent: 'space-between' }]}>
-				<Text style={[ MainStyles.textBold, { paddingLeft: 5 }]}>{section}</Text>
+				<Text style={[ MainStyles.h6, MainStyles.textBold, MainStyles.mb_0, { paddingLeft: 5 }]}>{section}</Text>
 				{isActive ? <Image source={openIcon} /> : <Image source={closeIcon} />}
           	</View>
         );
@@ -366,15 +367,14 @@ const OnePrepSchedule = ( props: any ) =>
 		return (
 		<View>
 			<View style={MainStyles.formGroupRow}>
-				<CheckBox value={check[index]} onValueChange={(newValue) => 
+				<CheckBox checked={check[index]} onChange={(newValue) => 
 				{ 
 					const newCheck = [...check]; 
 					newCheck[index] = newValue; 
 					setCheck(newCheck); 
 					handleSaveCheck(record.id, newCheck[index] )
 				}} />
-				<Text>I have a prepare schedule on {section}</Text>
-				
+				<Text style={[MainStyles.h6, MainStyles.mb_0, {paddingStart: 10}]}>I have a prepare schedule on {section}</Text>
 			</View>
 			{check[index] && filteredRecords.map((item, recIndex) =>
 			{

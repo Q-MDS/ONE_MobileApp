@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import DbProfile from '../../services/DbProfile';
 import { Alert } from 'react-native';
-import { ImageBackground, View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { ImageBackground, View, TextInput, Button, TouchableOpacity } from 'react-native';
+// import CheckBox from '@react-native-community/checkbox';
+import { CheckBox, Text } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import MainStyles from '../../assets/MainStyles';
 
@@ -16,7 +17,7 @@ const SignupStart = ( props: any ) =>
     const [isSelected, setSelection] = React.useState(false);
     const [remoteId, setRemoteId] = useState(0);
 
-    const [errors, setErrors] = useState<{ firstName?: string, lastName?: string, email? : String, password?: string, confirmPassword?: string, isSelected?: boolean }>({});
+    const [errors, setErrors] = useState<{ firstName?: string, lastName?: string, email? : string, password?: string, confirmPassword?: string, isSelected?: string }>({});
 
     const validateForm = () => 
 	{
@@ -160,8 +161,9 @@ const SignupStart = ( props: any ) =>
         if (isSelected) { acceptTerms = '1'; }
 
         DbProfile.updateProfile(remote_id, 1, 0, firstName, lastName, email, "", 1, 0, "")
-        .then((result: number) => 
+        .then((value: unknown) => 
         {
+			const result = value as number;
             if (result == 1)
             {
                 props.navigation.navigate('SignupDone', { credOne: email, credTwo: password, token: ''});
@@ -202,15 +204,16 @@ const SignupStart = ( props: any ) =>
             <TextInput style={MainStyles.input} placeholder="Confirm Password" secureTextEntry value={confirmPassword} onChangeText={text => setConfirmPassword(text)} />
             {errors.confirmPassword && <Text style={[MainStyles.errorText]}>{errors.confirmPassword}</Text>}
             <View style={ MainStyles.formGroupRow}>
-                <CheckBox value={isSelected} onValueChange={setSelection} />
-                <Text>I agree to the </Text>
+                {/* <CheckBox value={isSelected} onValueChange={setSelection} /> */}
+                <CheckBox checked={isSelected} onChange={setSelection} />
+                <Text style={[MainStyles.text, {paddingStart: 10}]}>I agree to the </Text>
                 <TouchableOpacity onPress={handleTerms}>
                     <Text style={MainStyles.textUnderline}>Terms of Agreement</Text>
                 </TouchableOpacity>
             </View>
             {errors.isSelected && <Text style={[MainStyles.errorText, { marginTop: 0}]}>{errors.isSelected}</Text>}
             <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={validateForm}>
-                <Text style={[MainStyles.buttonText]}>Sign Up</Text>
+                <Text category='p1' style={[MainStyles.buttonText]}>Sign Up</Text>
             </TouchableOpacity>
             <Text style={MainStyles.mt_3}>Already have an account?</Text>
             <TouchableOpacity onPress={handleLogin}>

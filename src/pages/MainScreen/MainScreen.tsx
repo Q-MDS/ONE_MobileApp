@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DbCalendar from '../../services/DbCalendar';
 import DbDiary from '../../services/DbDiary';
-import DBQuestions from '../../services/DBQuestions';
+import DbQuestions from '../../services/DbQuestions';
 import DBSettings from '../../services/DBSettings';
 import { SafeAreaView, ImageBackground, View, Image, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import AppMenu from '../../components/AppMenu/AppMenu';
@@ -78,8 +78,10 @@ const MainScreen = (props: any) =>
     const today = new Date();
     const getDayNum = today.getDay();
     today.setHours(0, 0, 0, 0);
+	let options: Intl.DateTimeFormatOptions = { weekday: 'long', day: '2-digit', month: 'long' };
+	let formattedDate = date.toLocaleDateString('en-US', options);
 
-	const [dayNumber, setDayNumber] = useState(getDayNum + 1);
+	const [dayNumber, setDayNumber] = useState(getDayNum); // Wrong data issue???
 	const [chkPopQuiz, setChkPopQuiz] = useState(false);
 
 	const [diaryData, setDiaryData] = useState<Record[]>([]); // Del
@@ -219,8 +221,6 @@ const MainScreen = (props: any) =>
 
 	}, [calendarRecords]);
 
-console.log('FFF todos: ', todos);
-
 	useEffect(() => 
 	{
 		const getDiaryMode = async () =>
@@ -239,28 +239,6 @@ console.log('FFF todos: ', todos);
 		getDiaryMode();
 	
 	}, []);
-
-
-    // const getDiaryData = () => 
-    // { 
-    //     DbDiary.getRecords(dayNumber,1,1)
-    //     .then((records: ResultSet) => 
-    //     {
-    //         const data = [];
-    //         for (let i = 0; i < records.rows.length; i++) 
-    //         {
-    //             data.push(records.rows.item(i));
-    //         }
-            
-    //         setDiaryData(data);
-    //     })
-    //     .catch(error => 
-    //     {
-    //         console.error(error);
-    //     });
-    // }
-
-    //useEffect(() => { getDiaryData(); }, [dayNumber]);
 
     const groupedTodos = todos.reduce((groups: Group = {}, todo) => 
     {
@@ -309,7 +287,7 @@ console.log('FFF todos: ', todos);
 
         //PopQuiz.
         const weekNumber = getCurrentWeekNumber();
-        DBQuestions.getWeekQuestion(weekNumber)
+        DbQuestions.getWeekQuestion(weekNumber)
         .then((records: any) => 
         {
             console.log("DDD: ", records.rows.length);
@@ -341,14 +319,17 @@ console.log('FFF todos: ', todos);
             } 
             else 
             {
-                DBQuestions?.resetQuizControl()
-                .then((result) => 
-                {
-                    if (result)
-                    {
-                        console.log("Reset Quiz Control");
-                    }
-                });
+				if (DbQuestions)
+				{
+					DbQuestions.resetQuizControl()
+					.then((result) => 
+					{
+						if (result)
+						{
+							console.log("Reset Quiz Control");
+						}
+					});
+				}
             }
         })
         .catch((error) => 
@@ -358,7 +339,6 @@ console.log('FFF todos: ', todos);
         });
 
     }, [chkPopQuiz]);
-    
 
     const skipPopQuiz = (id: number) => 
     {
@@ -391,7 +371,7 @@ console.log('FFF todos: ', todos);
             break; 
         }
         
-        DBQuestions.updDayArray(id, JSON.stringify(dayArray));
+        DbQuestions.updDayArray(id, JSON.stringify(dayArray));
     }
 
     const takePopQuiz = (id:  number) => 
@@ -406,7 +386,7 @@ console.log('FFF todos: ', todos);
                     <View style={[MainStyles.formGroupRow, MainStyles.mb_4, { padding: 24, paddingBottom: 0}]}>
                         <Text style={[MainStyles.h2, MainStyles.textSerif, MainStyles.mb_0]}>{`${month} ${year}`}</Text>
                         <View style={[MainStyles.formGroupRowEnd, MainStyles.fcg_10]}>
-                            <TouchableOpacity onPress={() => props.navigation.navigate('OneIntro')}>
+                            <TouchableOpacity onPress={() => props.navigation.navigate('SetupStart', {from: "MainScreen"})}>
                                 <Image source={require('../../assets/images/plan_one.png')} style={{ width: 32, height: 32 }} onError={handleError} />
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => props.navigation.navigate('NotificationList')}>
@@ -439,7 +419,7 @@ console.log('FFF todos: ', todos);
                                 <View style={{ paddingTop: 0, paddingBottom: 0 }}>
 									<View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', backgroundColor: 'rgba(77, 77, 77, 0.2)', paddingStart: 10 }}>
 										<Image source={require('../../assets/images/cal_clock.png')} style={{ width: 24, height: 24, marginStart: 10, marginEnd: 0 }} />
-										<Text style={{ fontWeight: 'bold', fontSize: 16, padding: 15, paddingTop: 10, paddingBottom: 10, paddingStart: 8, paddingEnd: 24 }}>{item.time}</Text>
+										<Text style={{ color: '#000000',fontWeight: 'bold', fontSize: 16, padding: 15, paddingTop: 10, paddingBottom: 10, paddingStart: 8, paddingEnd: 24 }}>{item.time}</Text>
 									</View>
 
                                     {item.todos.map((todo, index) => (
@@ -449,9 +429,9 @@ console.log('FFF todos: ', todos);
                                                 <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#E9D9CC80', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 5 }}>
                                                     <Image source={todo.icon} style={{ width: 48, height: 48, marginEnd: 5, marginTop:6 }} />
                                                 </View>
-                                                <View style={{display: 'flex', flexDirection: 'column'}}>
-                                                    <Text style={{fontSize: 16}}>{todo.activityTitle}</Text>
-                                                    <Text>{todo.activityDesc}</Text>
+                                                <View style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start'}}>
+                                                    <Text style={[MainStyles.h5, MainStyles.mb_0]}>{todo.activityTitle}</Text>
+                                                    <Text style={[MainStyles.h6, MainStyles.mb_0]}>{todo.activityDesc}</Text>
                                                 </View>
 
                                             </View>
@@ -461,7 +441,7 @@ console.log('FFF todos: ', todos);
                             )}
                         />
                     </View>
-					<TouchableOpacity style={styles.fab} onPress={() => { props.navigation.navigate('AddActivity') }}>
+					<TouchableOpacity style={styles.fab} onPress={() => { props.navigation.navigate('AddActivity', {date: formattedDate, todos: todoGroups, dayNumber: dayNumber}) }}>
                     	<Text style={styles.fabIcon}>+</Text>
                 	</TouchableOpacity>
                 </View>
@@ -485,9 +465,11 @@ const styles = StyleSheet.create({
     weekDayNumber: {
         fontSize: 16,
         fontWeight: 'bold',
+		color: '#4D4D4D'
     },
     weekDayName: {
         fontSize: 13,
+		color: '#4D4D4D'
     },
     otherTop: {
         display: 'flex',

@@ -281,7 +281,7 @@ const OneSetEmotional = ( props: any ) =>
 						))}
 					</View>
                 
-					<View style={{ marginTop:50 }}>
+					<View style={{ marginTop:0, width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
 						<TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4, MainStyles.buttonFull]} onPress={ handleNext }>
 							<Text style={MainStyles.buttonText}>Next</Text>
 						</TouchableOpacity>

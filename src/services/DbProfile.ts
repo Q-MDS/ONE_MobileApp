@@ -14,12 +14,12 @@ class DbProfile
             let db = DbHelper.getDb();
             let sql = 'SELECT first_time_use, first_time_login, cred_1, token FROM profile WHERE id = 1';
 
-            db.executeSql(sql, [], (result) => 
+            db.executeSql(sql, [], (result: any) => 
             {
                 console.log('Get first time use result: ', result);
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 console.log('Get first time use error: ', error);
                 reject(error);
@@ -34,12 +34,12 @@ class DbProfile
 
         DbSetup.truncProfile(db);
 
-        db.executeSql(sql, [], (result) => 
+        db.executeSql(sql, [], (result: any) => 
         {
             console.log('Create user result: ', result);
             return true;
         }, 
-        (error) => 
+        (error: any) => 
         {
             console.log("Create user error", error);
             return false;
@@ -52,12 +52,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET remote_id = ?, first_time_use = ?, first_time_login = ?, first_name = ?, last_name = ?, cred_1 = ?, token = ?, plan_type = ?, card_info_save = ?, card_info_data = ? WHERE id = ?',
                 [remoteId, firstTimeUse, firstTimeLogin, firstName, lastName, email, token, planType, cardInfoSave, cardInfoData, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -68,7 +68,7 @@ class DbProfile
                         reject(new Error('Update operation failed '));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error.message);
                 },
@@ -84,12 +84,12 @@ class DbProfile
             let db = DbHelper.getDb();
             let sql = 'SELECT * FROM profile WHERE id = 1';
 
-            db.executeSql(sql, [], (result) => 
+            db.executeSql(sql, [], (result: any) => 
             {
                 console.log('Get profile result: ', result.rows.item(0));
                 resolve(result.rows.item(0));
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -102,23 +102,23 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET token = ? WHERE id = ?',
                 [token, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
                         resolve(results);
                     } 
-                    else 
-                    {
-                        reject(new Error('Update operation failed'));
-                    }
+                    // else 
+                    // {
+                    //     reject(new Error('Update operation failed'));
+                    // }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -133,12 +133,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET first_time_login = ? WHERE id = ?',
                 [1, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -149,7 +149,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -165,12 +165,12 @@ class DbProfile
             let db = DbHelper.getDb();
             let sql = 'SELECT token FROM profile WHERE id = 1';
 
-            db.executeSql(sql, [], (result) => 
+            db.executeSql(sql, [], (result: any) => 
             {
                 console.log('Get token result: ', result.rows.item(0).token);
                 resolve(result.rows.item(0).token);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -183,12 +183,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET token = ? WHERE id = ?',
                 ["", 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -199,7 +199,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -215,12 +215,12 @@ class DbProfile
             let db = DbHelper.getDb();
             let sql = 'SELECT * FROM profile WHERE id = 1';
 
-            db.executeSql(sql, [], (result) => 
+            db.executeSql(sql, [], (result: any) => 
             {
                 console.log('Get profile result: ', result.rows.item(0));
                 resolve(result.rows.item(0));
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -233,12 +233,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET first_name = ? WHERE id = ?',
                 [firstName, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -249,7 +249,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -264,12 +264,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET last_name = ? WHERE id = ?',
                 [lastName, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -280,7 +280,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -302,12 +302,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET notifications = ? WHERE id = ?',
                 [isOn, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -318,7 +318,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -340,12 +340,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET quotes = ? WHERE id = ?',
                 [isOn, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -356,7 +356,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -378,12 +378,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET quiz_mode = ? WHERE id = ?',
                 [isOn, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -394,7 +394,7 @@ class DbProfile
                         reject(new Error('Update quiz mode failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -409,12 +409,12 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE profile SET one_package = ? WHERE id = ?',
                 [planType, 1],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -425,7 +425,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -440,9 +440,9 @@ class DbProfile
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
-                tx.executeSql('UPDATE profile SET cred_2 = ? WHERE id = ?', [password, 1], (tx, results) => 
+                tx.executeSql('UPDATE profile SET cred_2 = ? WHERE id = ?', [password, 1], (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -453,7 +453,7 @@ class DbProfile
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 });

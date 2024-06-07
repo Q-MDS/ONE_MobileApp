@@ -3,7 +3,8 @@ import SQLite from 'react-native-sqlite-storage';
 class DbHelper 
 {
   static instance: DbHelper;
-  db: SQLite.SQLiteDatabase | null = null;
+//   db: SQLite.SQLiteDatabase | null = null;
+  db: any = null;
 
   constructor() 
   {
@@ -25,7 +26,7 @@ class DbHelper
         location: 'default',
       },
       () => console.log('Database connected!'),
-      error => console.log('Database error', error),
+	  (error: any) => console.log('Database error', error),
     );
   }
 

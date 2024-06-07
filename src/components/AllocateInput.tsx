@@ -12,7 +12,7 @@ const AllocateInput = (props:any) =>
 			<View style={{ flex: 1 }}>
 			<TextInput 
 				onEndEditing={(e) => props.onchange(e.nativeEvent.text)}
-				style={[styles.timeBox, { flex: 1, borderRadius: 10, backgroundColor: '#ffffff', borderColor: '#cfd0d1', borderWidth: 1 }]} 
+				style={[styles.timeBox, { flex: 1, borderRadius: 10, backgroundColor: '#ffffff', borderColor: '#cfd0d1', borderWidth: 1, color: '#000000' }]} 
 				keyboardType='numeric'  
 				selectTextOnFocus>{props.value}
 			</TextInput>
@@ -21,7 +21,7 @@ const AllocateInput = (props:any) =>
 		<View style={{ marginTop: 5 }}>
 			<TextInput 
 				onEndEditing={(e) => props.saveNote(e.nativeEvent.text)}
-				style={{ width: '100%', backgroundColor: '#ffffff', borderColor: '#cfd0d1', borderWidth: 1, borderRadius: 5, paddingStart: 5 }} 
+				style={{ width: '100%', backgroundColor: '#ffffff', borderColor: '#cfd0d1', borderWidth: 1, borderRadius: 5, paddingStart: 5, color: '#000000' }} 
 				keyboardType='default' 
 				placeholder='Enter note here...'>
 				{props.note}

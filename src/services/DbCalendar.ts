@@ -31,17 +31,17 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						resolve(results);
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -54,17 +54,17 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ? AND activity_desc = "Breakfast"	',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						resolve(results);
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -77,17 +77,17 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ? AND activity_desc = "Lunch"	',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						resolve(results);
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -100,17 +100,17 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql
 				(
 					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ? AND activity_desc = "Dinner"	',
 					[activityType, saId],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						resolve(results);
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					}
@@ -128,11 +128,11 @@ class DbCalendar
 			VALUES 
 				(?,?,?,?,?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [weekNum, dayNum, hourNum, activityType, activityTitle, activityDesc, saType, saId, reminder], (result) => 
+			this.db.executeSql(sql, [weekNum, dayNum, hourNum, activityType, activityTitle, activityDesc, saType, saId, reminder], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -143,9 +143,9 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 		{
-			this.db.transaction((tx) => 
+			this.db.transaction((tx: any) => 
 			{
-				tx.executeSql(`UPDATE calendar SET activity_desc = ? WHERE activity_type = ? AND sa_id = ?`, [activityDec, activityType, saId], (tx, results) => 
+				tx.executeSql(`UPDATE calendar SET activity_desc = ? WHERE activity_type = ? AND sa_id = ?`, [activityDec, activityType, saId], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -156,7 +156,7 @@ class DbCalendar
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -169,9 +169,9 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 			{
-				this.db.transaction((tx) => 
+				this.db.transaction((tx: any) => 
 				{
-					tx.executeSql(`UPDATE calendar SET reminder = ? WHERE activity_type > 6`, [reminder], (tx, results) => 
+					tx.executeSql(`UPDATE calendar SET reminder = ? WHERE activity_type > 6`, [reminder], (tx: any, results: any) => 
 					{
 						if (results.rowsAffected > 0) 
 						{
@@ -182,7 +182,7 @@ class DbCalendar
 							reject(new Error('Update operation failed'));
 						}
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					},
@@ -195,7 +195,7 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 			{
-				this.db.executeSql(`SELECT * FROM ${this.TABLE_CALENDAR} WHERE day_num = ? ORDER BY hour_num ASC`, [dayNum], (result) => 
+				this.db.executeSql(`SELECT * FROM ${this.TABLE_CALENDAR} WHERE day_num = ? ORDER BY hour_num ASC`, [dayNum], (result: any) => 
 				{
 					let records = [];
 	
@@ -205,7 +205,7 @@ class DbCalendar
 					}
 					resolve(records);
 				}, 
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				});
@@ -227,12 +227,12 @@ class DbCalendar
         {
             let sql = 'SELECT * FROM calendar_master WHERE activity_type = ?';
 
-            this.db.executeSql(sql, [activityType], (result) => 
+            this.db.executeSql(sql, [activityType], (result: any) => 
             {
                 // console.log('Calendar: Check table > Get Records result: ', result);
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 // console.log('Calendar: Check table > Error: ', error);
                 reject(error);
@@ -248,11 +248,11 @@ class DbCalendar
                 (week_num, day_number, activity_active, activity_type, activity_type_name, activity_title, activity_desc, activity_date, activity_time, activity_start, activity_end, activity_duration, show) 
             VALUES 
                 (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-            this.db.executeSql(sql, [weekNum, dayNumber, activityActive, activityType, activityTypeName, activityTitle, activityDesc, activityDate, activityTime, activityStart, activityEnd, activityDuration, show], (result) => 
+            this.db.executeSql(sql, [weekNum, dayNumber, activityActive, activityType, activityTypeName, activityTitle, activityDesc, activityDate, activityTime, activityStart, activityEnd, activityDuration, show], (result: any) => 
             {
                 resolve(true);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -263,12 +263,12 @@ class DbCalendar
     {
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET activity_active = ? WHERE id = ?',
                 [isChecked, recId],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -279,7 +279,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -292,12 +292,12 @@ class DbCalendar
     {
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET activity_active = ? WHERE activity_type = "5" AND day_number = ?',
                 [isChecked, dayNumber],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -308,7 +308,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -321,12 +321,12 @@ class DbCalendar
     {
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET active = ? WHERE activity_type = "6" AND day_number = ?',
                 [isChecked, dayNumber],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -337,7 +337,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -363,12 +363,12 @@ class DbCalendar
 
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET activity_time = ?, activity_start = ?, activity_end = ?, activity_duration = ? WHERE id = ?',
                 [activity_time, startTime, endTime, duration, recId],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -379,7 +379,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -394,11 +394,11 @@ class DbCalendar
         {
             let sql = 'SELECT id FROM calendar_master WHERE activity_type = 5 AND day_number = ? AND show = 0 ORDER BY id ASC LIMIT 1';
 
-            this.db.executeSql(sql, [daynumber], (result) => 
+            this.db.executeSql(sql, [daynumber], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -411,11 +411,11 @@ class DbCalendar
         {
             let sql = 'SELECT id FROM calendar_master WHERE activity_type = 6 AND day_number = ? AND show = 0 ORDER BY id ASC LIMIT 1';
 
-            this.db.executeSql(sql, [daynumber], (result) => 
+            this.db.executeSql(sql, [daynumber], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -427,12 +427,12 @@ class DbCalendar
         // Set flag to 1
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET show = 1, activity_duration = 0 WHERE id = ?',
                 [recId],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -443,7 +443,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -458,12 +458,12 @@ class DbCalendar
         // Set st, et & duration to 0
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET show = 0, activity_start = 0, activity_end = 0, activity_duration = 0 WHERE id = ?',
                 [recId],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -474,7 +474,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -490,11 +490,11 @@ class DbCalendar
         {
             let sql = 'SELECT * FROM calendar_master WHERE activity_type = ?';
 
-            this.db.executeSql(sql, [allocateType], (result) => 
+            this.db.executeSql(sql, [allocateType], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -509,11 +509,11 @@ class DbCalendar
                 (week_num, day_number, activity_active, activity_type, activity_type_name, activity_title, activity_desc, activity_date, activity_time, activity_start, activity_end, activity_duration, show, other_note) 
             VALUES 
                 (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
-            this.db.executeSql(sql, [weekNum, dayNumber, activityActive, activityType, activityTypeName, activityTitle, activityDesc, activityDate, activityTime, activityStart, activityEnd, activityDuration, show, otherNote], (result) => 
+            this.db.executeSql(sql, [weekNum, dayNumber, activityActive, activityType, activityTypeName, activityTitle, activityDesc, activityDate, activityTime, activityStart, activityEnd, activityDuration, show, otherNote], (result: any) => 
             {
                 resolve(true);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -526,11 +526,11 @@ class DbCalendar
         {
             let sql = 'SELECT SUM(activity_duration) as total_duration FROM calendar_master WHERE activity_type < 7 AND activity_active = 1;';
 
-            this.db.executeSql(sql, [], (result) => 
+            this.db.executeSql(sql, [], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -543,11 +543,11 @@ class DbCalendar
         {
             let sql = 'SELECT SUM(activity_duration) as total_allocated FROM calendar_master WHERE activity_type > 6 AND activity_type < 11;';
 
-            this.db.executeSql(sql, [], (result) => 
+            this.db.executeSql(sql, [], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -558,12 +558,12 @@ class DbCalendar
     {
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET activity_active = 1, show = 1, activity_duration = ? WHERE activity_type = ?',
                 [totSeconds, allocateType],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -574,7 +574,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -587,12 +587,12 @@ class DbCalendar
     {
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET activity_desc = ? WHERE activity_type = ?',
                 [activities, allocateType],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -603,7 +603,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -616,12 +616,12 @@ class DbCalendar
     {
         return new Promise((resolve, reject) => 
         {
-            this.db.transaction((tx) => 
+            this.db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE calendar_master SET other_note = ? WHERE activity_type = ?',
                 [otherNote, allocateType],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -632,7 +632,7 @@ class DbCalendar
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -647,11 +647,11 @@ class DbCalendar
         {
             let sql = 'SELECT one_package FROM profile;';
 
-            this.db.executeSql(sql, [], (result) => 
+            this.db.executeSql(sql, [], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -662,12 +662,12 @@ class DbCalendar
 	{
 		return new Promise((resolve, reject) => 
 			{
-				this.db.transaction((tx) => 
+				this.db.transaction((tx: any) => 
 				{
 					tx.executeSql(
-					'UPDATE calendar_master SET week_num = ?',
+					'UPDATE calendar SET week_num = ?',
 					[weekNum],
-					(tx, results) => 
+					(tx: any, results: any) => 
 					{
 						if (results.rowsAffected > 0) 
 						{
@@ -678,7 +678,7 @@ class DbCalendar
 							reject(new Error('Update operation failed'));
 						}
 					},
-					(error) => 
+					(error: any) => 
 					{
 						reject(error);
 					},

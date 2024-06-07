@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DBQuestions from '../../services/DBQuestions';
+import DBQuestions from '../../services/DbQuestions';
 import BackTextTopBar from '../../components/BackTextTopBar/BackTextTopBar';
 import MainStyles from '../../assets/MainStyles';
 import { ImageBackground, View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';

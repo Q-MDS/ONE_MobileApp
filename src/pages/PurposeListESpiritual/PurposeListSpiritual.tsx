@@ -54,7 +54,7 @@ const PurposeListSpiritual = ( props: any ) =>
             
             if (result.rowsAffected > 0) 
             {
-                props.navigation.navigate('OneIntro');
+                props.navigation.navigate('StartWeek');
             }
             else 
             {

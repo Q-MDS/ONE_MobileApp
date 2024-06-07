@@ -234,12 +234,12 @@ const OneSetPhysical = ( props: any ) =>
 						))}
 					</View>
                 
-                <View style={{ marginTop:50 }}>
+                <View style={{ marginTop:0, width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
                     <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4, MainStyles.buttonFull]} onPress={ handleNext }>
                         <Text style={MainStyles.buttonText}>Next</Text>
                     </TouchableOpacity>
                     <PageIndicator
-                    style={[MainStyles.pageIndicator, MainStyles.mt_1]}
+                    style={[MainStyles.pageIndicator, MainStyles.mt_1, { width: '100%'}]}
                     count={4}
                     current={0}/>
                 </View>

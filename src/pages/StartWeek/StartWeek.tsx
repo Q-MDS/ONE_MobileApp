@@ -35,8 +35,9 @@ const StartWeek = (props:any) =>
 	useEffect(() => 
 	{
 		DBSettings.getWeekNumber()
-		.then((weekNumber: number) => 
+		.then((value: unknown) => 
 		{
+			const weekNumber = value as number;
 			setWeekNum(weekNumber);
 		})
 		.catch((error: Error) => 
@@ -45,8 +46,9 @@ const StartWeek = (props:any) =>
 		});
 
 		DBSettings.getDayNumber()
-		.then((dayNumber: number) => 
+		.then((value: unknown) => 
 		{
+			const dayNumber = value as number;
 			setDayNum(dayNumber);
 		})
 		.catch((error: Error) => 
@@ -59,15 +61,29 @@ const StartWeek = (props:any) =>
 	const handleCopyDiary = () => 
 	{
 		console.log('Copy the diary');
-		props.navigation.navigate('CopyDiary');
-		// Set the week number to current
+		DBSettings.setSAMode(0)
+		.then((value: unknown) => 
+		{
+			props.navigation.navigate('CopyDiary');
+		})
+		.catch((error: Error) => 
+		{
+			console.log('Error getting week number', error);
+		});
 	}
 
 	const handleNewDiary = () =>
 	{
 		console.log('Create a new diary');
-		props.navigation.navigate('OneIntro');
-		// No config - go straight to ONE PLan setup
+		DBSettings.setSAMode(1)
+		.then((value: unknown) => 
+		{
+			props.navigation.navigate('SetupStart', { from: 'StartWeek' });
+		})
+		.catch((error: Error) => 
+		{
+			console.log('Error getting week number', error);
+		});
 	}
 
 	const handleSkip = async () => 
@@ -80,9 +96,16 @@ const StartWeek = (props:any) =>
 
 		const weekNumber = DateUtils.getCurrentWeekNumber();
 		const dayNumber = DateUtils.getCurrentDayOfWeek();
+
+		// Dev testing: Please remove
+		// const weekNumber = 25;
+		// const dayNumber = 3;
+		// Dev testing: Please remove
+
 		await DBSettings.setWeekNumber(weekNumber);
 		await DBSettings.setDayNumber(dayNumber);
 		await DBSettings.setActivtyReminders(0);
+		await DBSettings.setSAMode(1);
 
 		props.navigation.navigate('MainScreen');
 	}
@@ -102,15 +125,15 @@ const StartWeek = (props:any) =>
 					<Text style={[MainStyles.buttonText, {color: '#000000'}]}>Use current diary setup</Text>
 				</TouchableOpacity>
 			)}
-			<Text style={MainStyles.mt_3}>This will keep your diary setup the same. Any activities that were added after the ONE Plan setup will be removed.</Text>
+			<Text style={[MainStyles.h6, MainStyles.mt_3]}>This will keep your diary setup the same. Any activities that were added after the ONE Plan setup will be removed.</Text>
 			<TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4, {width: '100%'}]} onPress={handleNewDiary}>
 				<Text style={[MainStyles.buttonText]}>Setup new diary for the week</Text>
 			</TouchableOpacity>
-			<Text style={MainStyles.mt_3}>Go through the ONE Plan setup wizard to create a new diary.</Text>
+			<Text style={[MainStyles.h6, MainStyles.mt_3]}>Go through the ONE Plan setup wizard to create a new diary.</Text>
 			<TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={handleSkip}>
 				<Text style={[MainStyles.buttonText]}>Skip</Text>
 			</TouchableOpacity>
-			<Text style={MainStyles.mt_3}>If you select skip then you will have an empty diary. You can add your own activities but the quotes, quiz mode and analytics will be disabled.</Text>
+			<Text style={[MainStyles.h6, MainStyles.mt_3]}>If you select skip then you will have an empty diary. You can add your own activities but the quotes, quiz mode and analytics will be disabled.</Text>
 		</View>
 	</ImageBackground>
 	)

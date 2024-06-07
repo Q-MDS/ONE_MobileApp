@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { PUBLIC_KEY } from '@env';
-import JSEncrypt from 'jsencrypt';
 import Datapool from '../../services/Datapool';
 import DbProfile from '../../services/DbProfile';
 import { ImageBackground, View, Text, TouchableOpacity, Image } from 'react-native';
@@ -11,7 +9,7 @@ const dp = Datapool.getInstance();
 
 const SignupCoachingPaymentDone = ( props: any ) => 
 {
-    const publicKey = PUBLIC_KEY.replace(/(.{64})/g, '$1\n');
+    // const publicKey = PUBLIC_KEY.replace(/(.{64})/g, '$1\n');
     const [isLoading, setIsLoading] = useState(true);
 
     const handleClose = async () => 
@@ -83,11 +81,14 @@ const SignupCoachingPaymentDone = ( props: any ) =>
 
             let cardinfo = JSON.stringify(cd);
 
-            const encrypt = new JSEncrypt();
-            encrypt.setPublicKey(publicKey);
-            cardData = encrypt.encrypt(cardinfo);
+            // const encrypt = new JSEncrypt();
+            // encrypt.setPublicKey(publicKey);
+            cardData = "Boyaa";
         }
         
+		/*
+		* New version : commented out
+		*
         DbProfile.updateProfile(dp.get('signupFirstName'), dp.get('signupLastName'), dp.get('signupEmail'), dp.get('signupPassword'), dp.get('signupAcceptTerms'), dp.get('signupPlanType'),  dp.get('signupSubscriptionType'), dp.get('signupIsSaveCard'), cardData.toString())
         .then((result: number) => 
         {
@@ -104,7 +105,7 @@ const SignupCoachingPaymentDone = ( props: any ) =>
         .catch((error) => 
         {
         console.error('Failed to fetch profile:', error);
-        });
+        });*/
 
     }
 

@@ -43,7 +43,7 @@ const OneSetReminders = ( props: any ) =>
                     <Text style={MainStyles.buttonText}>Allow Notifications</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[MainStyles.button_secondary, MainStyles.mt_2, MainStyles.w_100, MainStyles.mt_3, { marginLeft: 24, marginRight: 24}]} onPress={handleSkip}>
-                    <Text>Skip For Now</Text>
+                    <Text style={{ color: '#000000' }}>Skip For Now</Text>
                 </TouchableOpacity>
             </View>
         </ImageBackground>

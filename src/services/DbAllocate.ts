@@ -100,6 +100,32 @@ class DbAllocate
 		});
 	}
 
+	addToPhysicalHour = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_PHYSICAL} SET tot_hours = tot_hours + 1 WHERE id = ?`, [id], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed'));
+					}
+				},
+				(error: any) => 
+				{
+					reject(error);
+				},
+				);
+			});
+		});
+	}
+
 	updPhysicalNote	= (id: number, note: string) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -204,6 +230,32 @@ class DbAllocate
 			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_EMOTIONAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed'));
+					}
+				},
+				(error: any) => 
+				{
+					reject(error);
+				},
+				);
+			});
+		});
+	}
+
+	addToEmotionalHour = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_EMOTIONAL} SET tot_hours = tot_hours + 1 WHERE id = ?`, [id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -346,6 +398,32 @@ class DbAllocate
 		});
 	}
 
+	addToMentalHour = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_MENTAL} SET tot_hours = tot_hours + 1 WHERE id = ?`, [id], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed'));
+					}
+				},
+				(error: any) => 
+				{
+					reject(error);
+				},
+				);
+			});
+		});
+	}
+
 	updMentalNote = (id: number, note: string) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -423,25 +501,25 @@ class DbAllocate
 	}
 
 	getSpiritualRecords = () => 
+	{
+		return new Promise((resolve, reject) => 
 		{
-			return new Promise((resolve, reject) => 
+			this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_SPIRITUAL} ORDER BY id ASC`, [], (result: any) => 
 			{
-				this.db.executeSql(`SELECT * FROM ${this.TABLE_ALLOCATE_SPIRITUAL} ORDER BY id ASC`, [], (result: any) => 
+				let records = [];
+
+				for (let i = 0; i < result.rows.length; i++) 
 				{
-					let records = [];
-	
-					for (let i = 0; i < result.rows.length; i++) 
-					{
-						records.push(result.rows.item(i));
-					}
-					resolve(records);
-				}, 
-				(error: any) => 
-				{
-					reject(error);
-				});
+					records.push(result.rows.item(i));
+				}
+				resolve(records);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
 			});
-		}
+		});
+	}
 
 	updSpiritualHour = (id: number, totHours: number) => 
 	{
@@ -450,6 +528,32 @@ class DbAllocate
 			this.db.transaction((tx: any) => 
 			{
 				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_SPIRITUAL} SET tot_hours = ? WHERE id = ?`, [totHours, id], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed'));
+					}
+				},
+				(error: any) => 
+				{
+					reject(error);
+				},
+				);
+			});
+		});
+	}
+
+	addToSpiritualHour = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql(`UPDATE ${this.TABLE_ALLOCATE_SPIRITUAL} SET tot_hours = tot_hours + 1 WHERE id = ?`, [id], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{

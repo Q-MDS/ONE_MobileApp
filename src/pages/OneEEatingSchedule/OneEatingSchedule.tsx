@@ -6,11 +6,12 @@ import Accordion from 'react-native-collapsible/Accordion';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
-import { StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text, ScrollView } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { SafeAreaView, ScrollView, StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text } from 'react-native';
+import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
+import { Icon } from '@ui-kitten/components';
 
 interface ResultSet 
 {
@@ -739,7 +740,7 @@ const OneEatSchedule = ( props: any ) =>
 	{
 		return (
 			<View style={[styles.buttonHeader, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
-				<Text style={[ MainStyles.textBold, { paddingLeft: 5 }]}>{section}</Text>
+				<Text style={[ MainStyles.h6, MainStyles.textBold, MainStyles.mb_0, { paddingLeft: 5 }]}>{section}</Text>
 				{isActive ? <Image source={openIcon} /> : <Image source={closeIcon} />}
 			</View>
 		);
@@ -753,7 +754,7 @@ const OneEatSchedule = ( props: any ) =>
             <View>
                 {/* Breakfast */}
                 <View style={MainStyles.formGroupRow}>
-                    <CheckBox value={breakfastChecks[index]} onValueChange={(newValue) => 
+                    <CheckBox checked={breakfastChecks[index]} onChange={(newValue) => 
 					{ 
 						const newCheck = [...breakfastChecks]; 
 						const getRecid = [...breakfastRecIds]; 
@@ -761,7 +762,7 @@ const OneEatSchedule = ( props: any ) =>
 						setBreakfastChecks(newCheck); 
 						handleSaveBreakfastCheck(record.id, newCheck[index] )
 					}} />
-                    <Text>I eat breakfast</Text>
+					<Text style={[MainStyles.h6, MainStyles.mb_0, {paddingStart: 10}]}>I eat breakfast</Text>
                 </View>
 				{breakfastChecks[index] && (
 					<View style={[styles.buttonContainer]}>
@@ -799,7 +800,7 @@ const OneEatSchedule = ( props: any ) =>
 
                 {/* Lunch */}
                 <View style={MainStyles.formGroupRow}>
-                    <CheckBox value={lunchChecks[index]} onValueChange={(newValue) => 
+                    <CheckBox checked={lunchChecks[index]} onChange={(newValue) => 
 					{ 
 						const newCheck = [...lunchChecks]; 
 						// const getRecid = [...lunchRecIds]; 
@@ -807,7 +808,7 @@ const OneEatSchedule = ( props: any ) =>
 						setLunchChecks(newCheck); 
 						handleSaveLunchCheck(record.id, newCheck[index] )
 					}} />
-                    <Text>I eat lunch</Text>
+					<Text style={[MainStyles.h6, MainStyles.mb_0, {paddingStart: 10}]}>I eat lunch</Text>
                 </View>
 				{lunchChecks[index] && (
 					<View style={[styles.buttonContainer]}>
@@ -844,7 +845,7 @@ const OneEatSchedule = ( props: any ) =>
 				)}
 				{/* Dinner */}
                 <View style={MainStyles.formGroupRow}>
-                    <CheckBox value={dinnerChecks[index]} onValueChange={(newValue) => 
+                    <CheckBox checked={dinnerChecks[index]} onChange={(newValue) => 
 					{ 
 						const newCheck = [...dinnerChecks]; 
 						// const getRecid = [...dinnerRecIds]; 
@@ -852,7 +853,7 @@ const OneEatSchedule = ( props: any ) =>
 						setDinnerChecks(newCheck); 
 						handleSaveDinnerCheck(record.id, newCheck[index] )
 					}} />
-                    <Text>I eat dinner</Text>
+					<Text style={[MainStyles.h6, MainStyles.mb_0, {paddingStart: 10}]}>I eat dinner</Text>
                 </View>
 				{dinnerChecks[index] && (
 					<View style={[styles.buttonContainer, MainStyles.bb]}>
@@ -899,15 +900,28 @@ const OneEatSchedule = ( props: any ) =>
         return [hours, remainingMinutes];
     }
 
+	const handleHome = () =>
+	{
+		props.navigation.navigate('SetupStart', {from: 'MainScreen'});
+	}
+
 	const handleNext = () => 
 	{
 		props.navigation.navigate('OnePrepSchedule');
 	};
 
+	const handleClose = () => 
+	{
+		props.navigation.navigate('MainScreen');
+	}
+
 	return (
-        <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
-            <View style={MainStyles.container}>
-                <BackButton/>
+		<SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground source={backgroundImage} style={[{flex: 1, width: null, height: null}]}>
+			<BackButton/>
+			<ScrollView style={{ marginBottom: 20 }}>
+				
+			<View style={[MainStyles.container, { justifyContent: 'flex-start', marginTop: 60}]}>
                 <Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical eating schedule:</Text>
                 <View style={ [MainStyles.w_100, MainStyles.bb]}>
                     <Accordion
@@ -918,11 +932,23 @@ const OneEatSchedule = ( props: any ) =>
                         onChange={setActiveSections}
                         touchableProps={{ underlayColor: '#00000040' }}  />
                 </View>
-                <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={ handleNext }>
-                    <Text style={MainStyles.buttonText}>Next</Text>
-                </TouchableOpacity>
+				
             </View>
+			</ScrollView>
+			<View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 12, paddingTop: 0, paddingStart: 24, paddingEnd: 24 }}>
+				<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_1, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleHome }>
+					<Icon name="home-outline" width={32} height={32} fill="#ffffff"/>
+				</TouchableOpacity>
+				<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_1, {flex: 1, marginStart: 10, marginEnd: 10}]} onPress={ handleNext }>
+					<Text style={MainStyles.buttonText}>Next</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_1, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleClose }>
+				<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
+				</TouchableOpacity>
+			</View>
+
         </ImageBackground>
+		</SafeAreaView>
     );
 };
 

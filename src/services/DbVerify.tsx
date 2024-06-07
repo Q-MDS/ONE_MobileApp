@@ -22,11 +22,11 @@ class DBVerify
 			VALUES 
 				(?,?,?,?,?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [notiId, notiAccept, verifyDate, verifyTime, verifyYear, weekNum, dayNum, verifyScore, verifyStatus], (result) => 
+			this.db.executeSql(sql, [notiId, notiAccept, verifyDate, verifyTime, verifyYear, weekNum, dayNum, verifyScore, verifyStatus], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});

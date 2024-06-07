@@ -1,0 +1,228 @@
+Links:
+Figma: https://www.figma.com/file/eu6aqbbyvaP0ZQ11hRbWF0/ONE?type=design&node-id=0-1&mode=design
+UI Kitten: https://akveo.github.io/react-native-ui-kitten/docs/components/icon/overview#icon
+
+
+
+
+APP colors
+1. Hightlight blue: 7b90af
+2. Button grey: 4d4d4d
+3. Cards/"white bg": fafcfd
+4. Light grey on calendar days: d7d7d7
+5. Light grey on calendar bg: fafafa
+6. Hardline: cfd0d1
+
+
+adb pull /data/data/com.onemobilapp/databases/one.db <destination-on-your-machine>
+adb shell "run-as com.onemobilapp cat /data/data/com.onemobilapp/databases/one.db" > C:\amd\one.db
+
+adb shell "run-as com.onemobilapp cp /data/data/com.onemobilapp/databases/one.db /documents/"
+adb pull /sdcard/your-database-name
+
+
+const currentWeekNumber = DateUtils.getCurrentWeekNumber();
+console.log('Current week number (AAA): ', currentWeekNumber);
+
+const currentDayOfWeek = DateUtils.getCurrentDayOfWeek();
+console.log('Current day number (AAA): ', currentDayOfWeek);
+
+Next steps:
+1. Add Set plan time thingy and Set noti's for activties - 2 x screens after copy diary - add [DONE]
+2. Do the add noti, verify, acc stuff on normal diary one plan thingy [DONE]
+3. Next will go to Set teminder time - DO Noti Add record [DONE]
+4. Next will be Reminders for activities - Do noti add records [DONE]
+5. See if SKIP (no diary) needs noti adds etc. Def doesn't need verify & acc [DONE]
+5a. MUst def check that diary mode is set etc. [DONE]
+
+6. Go into profile manager and use setttings and diary_mode to control quots, quiz, noti's (does skip use noti's?) [DONE]
+> Explore pop quiz noti's at main screen
+7. Go into notification system
+8.Then go to verify
+9. Then go to accountability
+10. Then go to Analysis
+11. Then check PWD change, payment shit on profile mamange.
+12. Then check close account on profile manage
+13. Fix calendar sleep going from 22:00 to 06:00 etc...
+14. NEED to do the add activity and edit activity - implications with notification table - can link with weeknum & dayNum
+    - seems like they must be at the top or in a category - unscheduled which the user needs to allocate
+	  -- allocate process can then populate the noti table
+15. Need platform for Loa's videos and training material	  
+
+Notes from Login.tsx 08-05-2024
+// Testing:
+// const diaryWeek = settings.week_num;
+// const diaryStartDay = settings.start_day;
+
+// HANDLE PLAN TYPE GIVEN BACK FROM SERVER
+// On signup plantype is set to 1
+// SErver must also work out days left and send to app
+// If days are 0 then plan goes to 0 (free) and user can't change quotes, quiz switches
+// If user signs up and pays the the expiry date changes
+// Added subscribed to backend table. if subscribed  = 0 and daysleft = 0 then free trial over. If subscribed = 1 and days left = 0 -> renew subscription
+
+// let diaryWeek = 19;
+// let diaryStartDay = 1;
+
+
+Noti
+verify
+acc
+allocate PEMS
+calendar
+add item
+
+let stFullDate = newTimes[index]['from'].toLocaleTimeString();
+        let stBits = stFullDate.split(":");
+        let stHour: number = parseInt(stBits[0]);
+        let stMins: number = parseInt(stBits[1]);
+        let stTimestamp = (stHour * 3600) + (stMins * 60);
+        
+        let etFullDate = newTimes[index]['to'].toLocaleTimeString();
+        let etBits = etFullDate.split(":");
+        let etHour: number = parseInt(etBits[0]);
+        let etMins: number = parseInt(etBits[1]);
+        let etTimestamp = (etHour * 3600) + (etMins * 60);
+
+		let rollover = 0;
+		if (etTimestamp < stTimestamp)
+		{
+			rollover = 1;
+		}
+        
+		await DbSchedule.setWorkTimes(recId, stTimestamp, etTimestamp, 1)
+		.then((result) => 
+		{
+			console.log('Result: ', result);
+			setRefresh(!refresh);
+		});
+
+		// Next add records to calendar
+		// Is it a roll-over?
+		// N
+		// Get number of days between start and end
+		// For each hour, add a record
+		const calendarPromises = [];
+		let diff = 0;
+		let totHours = 0;
+		let dayOneHours = 0;
+		let dayTwoHours = 0;
+
+		if (rollover === 0)
+		{
+			diff = etTimestamp - stTimestamp;
+			totHours = diff / 3600;
+			dayOneHours = totHours;
+		} 
+		else 
+		{
+			diff = (86400 - stTimestamp) + etTimestamp;
+			totHours = diff / 3600;
+			dayOneHours = (86400 - stTimestamp) / 3600;
+			dayTwoHours = totHours - dayOneHours;
+		}
+
+		for (let i = 0; i < dayOneHours; i++)
+		{
+			let hourNum = stHour + i;
+			const promise = DbCalendar.addRecord(weekNum, index, hourNum, 1, 'Work', 'Work description', 0, recId, 0);	
+			calendarPromises.push(promise);
+		}
+
+		for (let i = 0; i < dayTwoHours; i++)
+		{
+			let hourNum = 0 + i;
+			const promise = DbCalendar.addRecord(weekNum, index + 1, hourNum, 1, 'Work', 'Work description', 0, recId, 0);	
+			calendarPromises.push(promise);
+		}
+
+		try 
+		{
+			await Promise.all(calendarPromises);
+			console.log('All calendar records added successfully');
+		} 
+		catch (error) 
+		{
+			console.log('An error occurred while adding records:', error);
+		}
+		
+		console.log('Week num: ', diff, " >>> ", totHours, " >>> ", dayOneHours, " >>> ", dayTwoHours, " >>> ", stHour);
+
+TODO 12-05-24
+1. The only place that clears the sched and alloca and calendar is from the start week page. So if you click on the icon on the main screen to setup ONE plan then it must go to the WorkSchedule page so you can edit/change shit
+2. Next "biggie" is to add and edit an activity from the calendar	
+
+
+Package.json
+"devDependencies": {
+    "@babel/core": "^7.20.0",
+    "@babel/plugin-proposal-decorators": "^7.23.7",
+    "@types/react-native": "^0.73.0",
+    "react-native-dotenv": "^3.4.9"
+
+
+	{
+  "expo": {
+    "name": "ONE_MobilApp",
+    "slug": "ONE_MobilApp",
+    "version": "1.0.1",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1c7cf603-c5ae-46a2-84ab-fce5a45f62f4"
+      }
+    },
+    "owner": "quixam"
+  }
+}
+
+LOGIN PROCESS TO CALENDAR
+1. Login screen
+- get email from profile
+-- password is there cos it is hardcoded
+
+
+-- 1st install: try read async profile: will be null
+-- user registers: at the end the SAVE will create AS profile -> back to Login:
+-- register must never put AS profile in inputs
+-- AS SETTINGS: register save must set current weeknum and daynum
+-- will find AS profile, use email/cred_one in input box
+-- enter password -> api -> OK/FAIL
+-- Fail, show message
+-- OK - do code to check weeknum & daynumber to decide to go to Main screen or start week
+   --- Logic: if weeknum & daynum are >= to existing then go to START WEEK else Main screen
+
+NEXT
+- Test the Start week 3 scenarios
+- SKIP -> 100% OK
+- COPY DIARY -> 100% OK
+- SETUP DIARY FOR A NEW WEEK -> Clear Calendar, sched & alloc + write def shed / allocs
+
+- Need to do the edit activity screen
+
+- Build new Plan Schedule/Alloc with a home page showing the steps S/A and a cancel button to go back to calendar. Could have some summarised shit here, can also suggest/inputs defaults or add defaults option on each page
+- Calendar doesn't refresh each time
+
+Testing schedule
+- eat: When I do lunch & dinner the times re-adjust
+- eat: scrollview aint working when a accordian is open
+- prepare: times are going wonky. Behaves once to time is done. To time rewrites start time the dirst time it is set
+- commute did the same funny as prepare
+- ALLOCATE: showing 168 hours at the top when schedule items def set
+            - asses 2 to sports, went save and 168 hours adjusted - prob a timing issue
+			- seems like when the page starts the 168 hour calc is not happening. All works after setting hours
+			- hours left def wonky
+
+SCHED/ALLOC REDO
+1. Create a new table to hole SA Home Page settings
+2. When user taps New Diary it SETS the new_flag (def 0) to 1
+3. When user goes to SA Home page (SAHP), if the flag is 1 then the START button will trunc and create new table data and then afterwards SET THE FLAG to 0. Defaults will be used on creating new data
+4. So if the user goes into SAHP and flag is 0 then goes START then nothing happens to the tables and they are in edit mode
+5. Create a defaults page: For each schedule Title > Start > End [] Saturday [] Sunday def off >> Save button
+6. Will need a nav system on each S/A page: Could be a close btn, Home , End or a dropdown of each page that they can go to
+7. If user is in edit mode then they can tap on the desc (e.g. Work schedult to go to that page) - then nav would be Home & Close & Next (maybe add Prev)
+
+Table: sa_settings
+mode int - 0 - edit, 1 - new

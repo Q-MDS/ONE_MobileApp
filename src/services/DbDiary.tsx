@@ -12,11 +12,11 @@ class DbDiary
         {
             let sql = 'SELECT id, day_number, activity_active, activity_type, activity_title, activity_desc, activity_time, activity_start, activity_end, activity_duration, show, other_note FROM calendar_master WHERE day_number = ? AND activity_active = ? AND show = ? ORDER BY activity_time ASC';
 
-            this.db.executeSql(sql, [dayNumber, activityType, showType], (result) => 
+            this.db.executeSql(sql, [dayNumber, activityType, showType], (result: any) => 
             {
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -29,11 +29,11 @@ class DbDiary
 			{
 				let sql = 'SELECT week_num, day_number FROM calendar_master LIMIT 1';
 	
-				this.db.executeSql(sql, [], (result) => 
+				this.db.executeSql(sql, [], (result: any) => 
 				{
 					resolve(result);
 				}, 
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				});

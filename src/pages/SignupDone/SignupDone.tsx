@@ -5,19 +5,19 @@ import { ImageBackground, View, TextInput, Button, Text, TouchableOpacity } from
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import CheckBox from '@react-native-community/checkbox';
 
-const SignupDone = ({route, navigation}) => 
+const SignupDone = (props: any) => 
 {
     const [isSelected1, setSelection1] = React.useState(true);
     const [isSelected2, setSelection2] = React.useState(true);
     const [isSelected3, setSelection3] = React.useState(true);
     const [isSelected4, setSelection4] = React.useState(true);
 
-    console.log('Props:', route);
+    console.log('Props:', props.route);
 
     const handlegetStarted = () => 
     {
-        const { credOne, credTwo, token } = route.params;
-        navigation.navigate('Login', { email: credOne, password: credTwo, token: token});
+        const { credOne, credTwo, token } = props.route.params;
+        props.navigation.navigate('Login', { email: credOne, password: credTwo, token: token});
     }
 
     return (

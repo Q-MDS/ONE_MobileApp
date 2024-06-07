@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Datapool from '../../services/Datapool';
-import { TextInputMask } from 'react-native-masked-text';
+// import { TextInputMask } from 'react-native-masked-text';
 import { ImageBackground, View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
@@ -72,7 +72,9 @@ const SignupCoachingPayment = ( props: any ) =>
             <Image source={require('../../assets/images/credit_cards.png')} style={{ width: 75 }} />
             <Text style={[MainStyles.h5, MainStyles.mt_4]}>Pay securely with your Bank Account using Visa or Mastercard</Text>
             <Text style={[MainStyles.label, MainStyles.w_100]}>Credit Card Number *</Text>
-            <TextInputMask type={'custom'} options={{  mask: '9999 9999 9999 9999' }} value={cardNumber} style={MainStyles.input} placeholder='XXXX-XXXX-XXXX-XXXX' onChangeText={text => setCardNumber(text)} />
+            {/* /* New version: commented it out
+			<TextInputMask type={'custom'} options={{  mask: '9999 9999 9999 9999' }} value={cardNumber} style={MainStyles.input} placeholder='XXXX-XXXX-XXXX-XXXX' onChangeText={text => setCardNumber(text)} />
+			./ */}
             {errors.cardNumber && <Text style={[MainStyles.errorText]}>{errors.cardNumber}</Text>}
             <Text style={[MainStyles.label, MainStyles.w_100]}>Name on Card *</Text>
             <TextInput placeholder="Name on Card" style={MainStyles.input} value={cardName} onChangeText={text => setCardName(text)} />
@@ -81,13 +83,15 @@ const SignupCoachingPayment = ( props: any ) =>
                 <View style={MainStyles.col}>
                     <Text style={[MainStyles.label, MainStyles.w_100]}>Expiry Date (MM/YY) *</Text>
                     {/* <TextInput placeholder="Expiry Date (MM/YY)" style={MainStyles.input} value={cardExpiry} onChangeText={text => setCardExpiry(text)} /> */}
+					{/* /*
+					* New version: commented it out
                     <TextInputMask 
                     type={'custom'} 
                     options={{ mask: '99/99' }} 
                     style={MainStyles.input} 
                     placeholder="MM/YY"  
                     value={cardExpiry} 
-                    onChangeText={text => 
+                    onChangeText={(text: React.SetStateAction<string>) => 
                         {
                         const month = parseInt(text.substring(0, 2));
                         
@@ -100,12 +104,18 @@ const SignupCoachingPayment = ( props: any ) =>
                             setCardExpiry('');
                         }
                     }} />
-                    {errors.cardExpiry && <Text style={[MainStyles.errorText]}>{errors.cardExpiry}</Text>}     
+                    {errors.cardExpiry && <Text style={[MainStyles.errorText]}>{errors.cardExpiry}</Text>}   
+					*/}
                 </View>
                 <View style={MainStyles.col}>
                     <Text style={[MainStyles.label, MainStyles.w_100]}>CVV Code *</Text>
-                    <TextInputMask type={'custom'}  options={{ mask: '999' }} style={MainStyles.input} placeholder="CVV" value={cardCvv} onChangeText={text => setCardCvv(text)} />
-                    {errors.cardCvv && <Text style={[MainStyles.errorText]}>{errors.cardCvv}</Text>} 
+					{/* /*
+                    * New version commented it out
+					*
+					<TextInputMask type={'custom'}  options={{ mask: '999' }} style={MainStyles.input} placeholder="CVV" value={cardCvv} onChangeText={text => setCardCvv(text)} />
+                     */}
+					
+					{errors.cardCvv && <Text style={[MainStyles.errorText]}>{errors.cardCvv}</Text>} 
                 </View>
             </View>
             <View style={MainStyles.formGroupRow}>

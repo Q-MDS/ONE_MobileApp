@@ -22,11 +22,11 @@ class DbAccountability
 			VALUES 
 				(?,?,?,?,?,?,?,?,?)`;
 
-			this.db.executeSql(sql, [notiId, notiAccept, accDate, accTime, accYear, weekNum, dayNum, accScore, accStatus], (result) => 
+			this.db.executeSql(sql, [notiId, notiAccept, accDate, accTime, accYear, weekNum, dayNum, accScore, accStatus], (result: any) => 
 			{
 				resolve(true);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});

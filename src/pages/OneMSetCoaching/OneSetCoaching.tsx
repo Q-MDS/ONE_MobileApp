@@ -128,7 +128,7 @@ const OneSetCoaching = ( props: any ) =>
                         <Text style={MainStyles.buttonText}>Save Plan ONE Schedule</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[MainStyles.button_secondary, MainStyles.mt_2, MainStyles.w_100, MainStyles.mt_3, { marginLeft: 24, marginRight: 24}]} onPress={handleLater}>
-                        <Text>Set A Time Later</Text>
+                        <Text style={{ color: '#000000' }}>Set A Time Later</Text>
                     </TouchableOpacity>
                 </View>
         </ImageBackground>
@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fefefe',
         borderRadius: 10,
         width: '100%',
+		color: '#000000'
     },
     imageButton: {
         marginRight: 15,

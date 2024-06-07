@@ -86,6 +86,9 @@ const MainStyles = StyleSheet.create({
     },
 
     // Text style
+	text: {
+		color: 'black',
+	  },
     h0: {
         fontSize: 64,
         color: '#000',
@@ -176,6 +179,7 @@ const MainStyles = StyleSheet.create({
         fontWeight: 'bold',
     },
     textUnderline: {
+		color: '#000',
         textDecorationLine: 'underline',
     },
     textUppercase: {
@@ -201,6 +205,7 @@ const MainStyles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 4,
         marginBottom: 20,
+		color: '#000',
     },
     
     label: {
@@ -253,6 +258,16 @@ const MainStyles = StyleSheet.create({
     buttonFull: {
         marginLeft:  24,
         marginRight:  24,
+    },
+	button_flex: {
+        display: 'flex',
+        flexDirection: 'row',
+        backgroundColor: '#4D4D4D',
+        height: 54,
+        padding: 0,
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center', 
     },
 
     // CSS Utils
@@ -365,7 +380,6 @@ const MainStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 50,
-        
     },
     title: {
         fontSize: 38,

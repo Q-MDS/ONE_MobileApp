@@ -81,10 +81,14 @@ const SignupOptionFree = ( props: any ) =>
 
     const updateProfile = () => 
     {
+		/*
+		* New version: commented it out
+		*
         console.log('remoteId: ' + remoteId);
         DbProfile.updateProfile(remoteId, 1, 0, dp.get('signupFirstName'), dp.get('signupLastName'), dp.get('signupEmail'), dp.get('signupPassword'), "", 0, 0, 0, 0, dp.get('signupAcceptTerms'), 0, 0, 0, "")
-        .then((result: number) => 
+        .then((value: unknown) => 
         {
+			const result =value as number;
             if (result == 1)
             {
                 // Success
@@ -98,7 +102,7 @@ const SignupOptionFree = ( props: any ) =>
         .catch((error) => 
         {
         console.error('Failed to fetch profile:', error);
-        });
+        });*/
 
     }
 

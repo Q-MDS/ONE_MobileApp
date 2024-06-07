@@ -1,9 +1,20 @@
-/**
- * @format
- */
+import React, { useEffect } from 'react';
+import { AppRegistry } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
+import App from './src/App';
 
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
+const AppWithSplashScreen = () => 
+{
+    useEffect(() => 
+    {
+        if (SplashScreen)
+        {
+            SplashScreen.hide();
+        }
+    }, []);
 
-AppRegistry.registerComponent(appName, () => App);
+    return <App />;
+};
+
+// registerRootComponent(AppWithSplashScreen);
+AppRegistry.registerComponent('ONE_MobileApp', () => AppWithSplashScreen);

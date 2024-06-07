@@ -3,7 +3,8 @@ import DbHelper from './DbHelper';
 
 class DbSetup 
 {
-    db: SQLite.SQLiteDatabase | null = null;
+    //db: SQLite.SQLiteDatabase | null = null;
+	db: any = SQLite.SQLiteDatabase;
 
     dbInit: number = 1; // 0 = created, 1 = upgrade
 
@@ -112,7 +113,8 @@ class DbSetup
 		"diary_mode" INTEGER DEFAULT 0,
 		"analytics" INTEGER DEFAULT 0,
 		"activity_reminders" INTEGER DEFAULT 0,
-		"subscribed" INTEGER DEFAULT 0
+		"subscribed" INTEGER DEFAULT 0,
+		"sa_mode" INTEGER DEFAULT 0
         )
 	;`;
 	CREATE_TABLE_VERIFY_MASTER: string = `CREATE TABLE "main"."` + this.TABLE_VERIFY_MASTER + `" (
@@ -283,7 +285,7 @@ class DbSetup
             let db = DbHelper.getDb();
             let sql = "SELECT name FROM sqlite_master WHERE type='table'";
 
-            db.executeSql(sql, [], (result) => 
+            db.executeSql(sql, [], (result: any) => 
             {
                 console.log('DBCheck result: ', result.rows.length);
 
@@ -299,7 +301,7 @@ class DbSetup
 
                 resolve(result);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 console.log('DbCheck error: ', error);
                 reject(error);
@@ -308,7 +310,7 @@ class DbSetup
         });
     }
 
-    onCreate = (db) => 
+    onCreate = (db: any) => 
     {
         // let db = DbHelper.getDb();
         if (!db) 
@@ -348,7 +350,7 @@ class DbSetup
         }
     }
 
-    onUpgrade = (db) => 
+    onUpgrade = (db: any) => 
     {
         if (!db) 
         {
@@ -387,7 +389,7 @@ class DbSetup
         }
     };
 
-    truncProfile = (db) => 
+    truncProfile = (db: any) => 
     {
         if (!db) 
         {
@@ -426,7 +428,7 @@ class DbSetup
         let db = DbHelper.getDb();
     }
 
-    addSettings = (db) => 
+    addSettings = (db: any) => 
     {
         if (!db) 
         {
@@ -445,7 +447,7 @@ class DbSetup
         }
     }
 
-    addQuizControlRecs = (db) => 
+    addQuizControlRecs = (db: any) => 
     {
         if (!db) 
         {

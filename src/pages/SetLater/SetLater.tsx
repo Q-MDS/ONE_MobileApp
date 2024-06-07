@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import NotificationUtils from '../../services/NotificationUtils';
 import MainStyles from '../../assets/MainStyles';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { StyleSheet, Button, Platform, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Button, Platform, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import backgroundImage from '../../assets/images/app_bg_mountains.png';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SetLater = (props: any) => 
 {
@@ -20,7 +19,7 @@ const SetLater = (props: any) =>
     const [mode, setMode] = useState<'date' | 'time'>('date');
     const [show, setShow] = useState(false);
 
-    const showMode = (currentMode) => {
+    const showMode = (currentMode: any) => {
         setShow(true);
         setMode(currentMode);
     };
@@ -33,7 +32,7 @@ const SetLater = (props: any) =>
         showMode('time');
     };
 
-    const onChange = (event, selectedDate) => {
+    const onChange = (event: any, selectedDate: any) => {
         const currentDate = selectedDate || date;
         setShow(Platform.OS === 'ios');
         setDate(currentDate);

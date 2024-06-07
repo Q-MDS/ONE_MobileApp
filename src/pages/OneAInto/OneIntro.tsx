@@ -294,7 +294,7 @@ const OneIntro = ( props: any ) =>
     {
 		// TODO: Confirm dialog
 		setIsLoading(true);
-		await DbCalendar.truncCalendar();
+		// await DbCalendar.truncCalendar();
 
 		await DBSettings.setDiaryMode(0);
 		await DBSettings.setWeekNumber(weekNum);

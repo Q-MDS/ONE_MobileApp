@@ -17,12 +17,12 @@ class DBSettings
             let db = DbHelper.getDb();
             let sql = 'SELECT * FROM settings WHERE id = 1';
 
-            db.executeSql(sql, [], (result) => 
+            db.executeSql(sql, [], (result: any) => 
             {
                 console.log('Get profile result: ', result.rows.item(0));
                 resolve(result.rows.item(0));
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });
@@ -35,12 +35,12 @@ class DBSettings
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
                 tx.executeSql(
                 'UPDATE settings SET expire_warn_counter = ?, notifications = ?, quotes = ?, quiz_mode = ?, plan_type = ?',
                 [expireWarnCounter, notifications, quotes, quizMode, planType],
-                (tx, results) => 
+                (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -51,7 +51,7 @@ class DBSettings
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -67,11 +67,11 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).notifications);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -84,9 +84,9 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET notifications = ?', [notifications], (tx, results) => 
+				tx.executeSql('UPDATE settings SET notifications = ?', [notifications], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -97,7 +97,7 @@ class DBSettings
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -113,26 +113,26 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).plan_type);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
 		});
 	}
 
-	setPlanType = (planType) => 
+	setPlanType = (planType: any) => 
 	{
 		let db = DbHelper.getDb();
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET planType = ?', [planType], (tx, results) => 
+				tx.executeSql('UPDATE settings SET planType = ?', [planType], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -143,7 +143,7 @@ class DBSettings
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -159,11 +159,11 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).quotes);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -176,9 +176,9 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET quotes = ?', [quotes], (tx, results) => 
+				tx.executeSql('UPDATE settings SET quotes = ?', [quotes], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -189,7 +189,7 @@ class DBSettings
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -205,11 +205,11 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).quiz_mode);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -222,9 +222,9 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET quiz_mode = ?', [quizMode], (tx, results) => 
+				tx.executeSql('UPDATE settings SET quiz_mode = ?', [quizMode], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -235,7 +235,7 @@ class DBSettings
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -248,16 +248,16 @@ class DBSettings
 	{
 		let startDay = 0
 		let db = DbHelper.getDb();
-		let sql = 'SELECT start_day FROM settings WHERE id = 1';
+		let sql = 'SELECT day_num FROM settings WHERE id = 1';
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
-				startDay = Number(result.rows.item(0).start_day);
+				startDay = Number(result.rows.item(0).day_num);
 				resolve(startDay);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -270,9 +270,9 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET start_day = ?', [startDay], (tx, results) => 
+				tx.executeSql('UPDATE settings SET start_day = ?, day_num = ?', [startDay, startDay], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -283,7 +283,7 @@ class DBSettings
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -298,9 +298,9 @@ class DBSettings
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
-                tx.executeSql('UPDATE settings SET week_num = ?', [weekNumber], (tx, results) => 
+                tx.executeSql('UPDATE settings SET week_num = ?', [weekNumber], (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -311,7 +311,7 @@ class DBSettings
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -328,12 +328,12 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				weekNum = Number(result.rows.item(0).week_num);
 				resolve(weekNum);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -346,9 +346,9 @@ class DBSettings
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
-                tx.executeSql('UPDATE settings SET day_num = ?', [dayNumber], (tx, results) => 
+                tx.executeSql('UPDATE settings SET day_num = ?', [dayNumber], (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -359,7 +359,7 @@ class DBSettings
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -375,11 +375,11 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).day_num);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -393,11 +393,11 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).activity_reminders);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -410,9 +410,9 @@ class DBSettings
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
-                tx.executeSql('UPDATE settings SET activity_reminders = ?', [activityReminders], (tx, results) => 
+                tx.executeSql('UPDATE settings SET activity_reminders = ?', [activityReminders], (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -423,7 +423,7 @@ class DBSettings
                         reject(new Error('Update operation failed'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -438,9 +438,9 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET diary_mode = ?', [diaryMode], (tx, results) => 
+				tx.executeSql('UPDATE settings SET diary_mode = ?', [diaryMode], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -451,7 +451,7 @@ class DBSettings
 						reject(new Error('Update operation failed'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -467,11 +467,11 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).diary_mode);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -484,9 +484,9 @@ class DBSettings
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
-                tx.executeSql('UPDATE settings SET notifications = ?, quotes = ?, quiz_mode = ?,  plan_type = ?, analytics =?', [0, 0, 0, 0, 0], (tx, results) => 
+                tx.executeSql('UPDATE settings SET notifications = ?, quotes = ?, quiz_mode = ?,  plan_type = ?, analytics =?', [0, 0, 0, 0, 0], (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -494,10 +494,10 @@ class DBSettings
                     } 
                     else 
                     {
-                        reject(new Error('Update operation failed'));
+                        reject(new Error('Update operation failed 2'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -512,9 +512,9 @@ class DBSettings
 
         return new Promise((resolve, reject) => 
         {
-            db.transaction((tx) => 
+            db.transaction((tx: any) => 
             {
-                tx.executeSql('UPDATE settings SET notifications = ?, quotes = ?, quiz_mode = ?,  plan_type = ?, analytics =?', [1, 1, 1, 1, 1], (tx, results) => 
+                tx.executeSql('UPDATE settings SET notifications = ?, quotes = ?, quiz_mode = ?,  plan_type = ?, analytics =?', [1, 1, 1, 1, 1], (tx: any, results: any) => 
                 {
                     if (results.rowsAffected > 0) 
                     {
@@ -522,10 +522,10 @@ class DBSettings
                     } 
                     else 
                     {
-                        reject(new Error('Update operation failed'));
+                        reject(new Error('Update operation failed 3'));
                     }
                 },
-                (error) => 
+                (error: any) => 
                 {
                     reject(error);
                 },
@@ -541,26 +541,26 @@ class DBSettings
 
 		return new Promise((resolve, reject) => 
 		{
-			db.executeSql(sql, [], (result) => 
+			db.executeSql(sql, [], (result: any) => 
 			{
 				resolve(result.rows.item(0).subscribed);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
 		});
 	}
 
-	setSubscribed = (subscribed) => 
+	setSubscribed = (subscribed: any) => 
 	{
 		let db = DbHelper.getDb();
 
 		return new Promise((resolve, reject) => 
 		{
-			db.transaction((tx) => 
+			db.transaction((tx: any) => 
 			{
-				tx.executeSql('UPDATE settings SET subscribed = ?', [subscribed], (tx, results) => 
+				tx.executeSql('UPDATE settings SET subscribed = ?', [subscribed], (tx: any, results: any) => 
 				{
 					if (results.rowsAffected > 0) 
 					{
@@ -568,10 +568,10 @@ class DBSettings
 					} 
 					else 
 					{
-						reject(new Error('Update operation failed'));
+						reject(new Error('Update operation failed 1'));
 					}
 				},
-				(error) => 
+				(error: any) => 
 				{
 					reject(error);
 				},
@@ -579,5 +579,52 @@ class DBSettings
 			});
 		});
 	}
+
+	getSAMode = () => 
+	{
+		let db = DbHelper.getDb();
+		let sql = 'SELECT sa_mode FROM settings WHERE id = 1';
+
+		return new Promise((resolve, reject) => 
+		{
+			db.executeSql(sql, [], (result: any) => 
+			{
+				resolve(result.rows.item(0).sa_mode);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
+	setSAMode = (saMode: any) => 
+	{
+		let db = DbHelper.getDb();
+
+		return new Promise((resolve, reject) => 
+		{
+			db.transaction((tx: any) => 
+			{
+				tx.executeSql('UPDATE settings SET sa_mode = ?', [saMode], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed 1'));
+					}
+				},
+				(error: any) => 
+					{
+						reject(error);
+					},
+				);
+			});
+		});
+	}
 }
+
 export default new DBSettings();

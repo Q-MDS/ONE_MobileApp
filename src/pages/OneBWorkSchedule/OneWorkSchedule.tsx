@@ -6,11 +6,13 @@ import Accordion from 'react-native-collapsible/Accordion';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
-import { StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { SafeAreaView, StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text } from 'react-native';
+// import CheckBox from '@react-native-community/checkbox';
+import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
+import { Icon } from '@ui-kitten/components';
 
 interface ResultSet 
 {
@@ -55,17 +57,6 @@ const toTime = new Date();
 toTime.setHours(17, 0, 0, 0);
 const defaultTimes = daysOfWeek.map(() => ({ from: new Date(fromTime), to: new Date(toTime) }));
 
-// interface Rows {
-//     item: Function;
-//     length: number;
-//     raw: Function;
-//   }
-  
-//   interface DbResponse {
-//     insertId: undefined | number;
-//     rowsAffected: number;
-//   }
-
 const OneWorkSchedule = ( props: any ) => 
 {
     const [refresh, setRefresh] = useState(false);
@@ -107,6 +98,7 @@ const OneWorkSchedule = ( props: any ) =>
 		.then((value: unknown) => 
 		{
 			const records = value as ResultSet;
+			console.log('Records: ', records.rows.length, ' >>> ', records.rows.item(1).day_num, ' >>> ', records.rows.item(1).active, ' >>> ', records.rows.item(1).start_time, ' >>> ', records.rows.item(1).end_time, ' >>> ', records.rows.item(0).roll_over, ' >>>');
 			const data = [];
 
 			for (let i = 0; i < records.rows.length; i++) 
@@ -358,7 +350,7 @@ const OneWorkSchedule = ( props: any ) =>
 	{
         return (
             <View style={[styles.buttonHeader, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
-            	<Text style={[ MainStyles.textBold, { paddingLeft: 5 }]}>{section}</Text>
+            	<Text style={[ MainStyles.h6, MainStyles.textBold, MainStyles.mb_0, { paddingLeft: 5 }]}>{section}</Text>
             	{isActive ? <Image source={openIcon} /> : <Image source={closeIcon} />}
           	</View>
         );
@@ -371,15 +363,24 @@ const OneWorkSchedule = ( props: any ) =>
 		return (
 		<View>
 			<View style={MainStyles.formGroupRow}>
-				<CheckBox value={check[index]} onValueChange={(newValue) => 
+			<CheckBox checked={check[index]} onChange={(newValue) =>
+				{
+					const newCheck = [...check]; 
+					const getRecid = [...recordId]; 
+					newCheck[index] = newValue; 
+					setCheck(newCheck); 
+					handleSaveCheck(record.id, newCheck[index] )
+				}
+			} />
+				{/* <CheckBox value={check[index]} onValueChange={(newValue) => 
 					{ 
 						const newCheck = [...check]; 
 						const getRecid = [...recordId]; 
 						newCheck[index] = newValue; 
 						setCheck(newCheck); 
 						handleSaveCheck(record.id, newCheck[index] )
-					}} />
-				<Text>I work on a {section}</Text>
+					}} /> */}
+				<Text style={[MainStyles.h6, MainStyles.mb_0, {paddingStart: 10}]}>I work on a {section}</Text>
 			</View>
 			{check[index] && (
 				<View style={[styles.buttonContainer]}>
@@ -425,15 +426,26 @@ const OneWorkSchedule = ( props: any ) =>
         return [hours, remainingMinutes];
     }
 
+	const handleHome = () =>
+	{
+		props.navigation.navigate('SetupStart', {from: 'MainScreen'});
+	}
+
 	const handleNext = () => 
     {
-        props.navigation.navigate('OneClassSchedule')
+        props.navigation.navigate('OneClassSchedule');
     };
 
+	const handleClose = () => 
+	{
+		props.navigation.navigate('MainScreen');
+	}
+
     return (
+		<SafeAreaView style={{ flex: 1 }}>
         <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
-            <View style={MainStyles.container}>
-                <BackButton/>
+			<BackButton/>
+            <View style={[MainStyles.container, { justifyContent: 'flex-start', marginTop: 60}]}>
                 <Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical work schedule:</Text>
                 <View style={ [MainStyles.w_100, MainStyles.bb]}>
                     <Accordion
@@ -444,11 +456,20 @@ const OneWorkSchedule = ( props: any ) =>
                         onChange={setActiveSections}
                         touchableProps={{ underlayColor: '#00000040' }}  />
                 </View>
-                <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={ handleNext }>
-                    <Text style={MainStyles.buttonText}>Next</Text>
-                </TouchableOpacity>
+				<View style={{ flexDirection: 'row', alignItems: 'flex-end', flex: 1 }}>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleHome }>
+						<Icon name="home-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {flex: 1, marginStart: 10, marginEnd: 10}]} onPress={ handleNext }>
+						<Text style={MainStyles.buttonText}>Next</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleClose }>
+					<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+				</View>
             </View>
         </ImageBackground>
+		</SafeAreaView>
     );
 };
 

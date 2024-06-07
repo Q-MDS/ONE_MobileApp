@@ -10,8 +10,9 @@ const ProfileCancel = ( props: any ) =>
     const handleCancel = () => 
     {
         DbProfile.updateOnePlan(0)
-        .then((result: number) => 
+        .then((value: unknown) => 
         {
+			const result = value as number;
             console.log('Result:', result); 
             if (result == 1)
             {

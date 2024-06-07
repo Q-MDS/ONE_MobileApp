@@ -7,7 +7,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
 import { StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+// import CheckBox from '@react-native-community/checkbox';
+import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
@@ -288,7 +289,7 @@ const OneClassSchedule = ( props: any ) =>
 	{
         return (
             <View style={[styles.buttonHeader, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}>
-            	<Text style={[ MainStyles.textBold, { paddingLeft: 5 }]}>{section}</Text>
+            	<Text style={[ MainStyles.h6, MainStyles.textBold, MainStyles.mb_0, { paddingLeft: 5 }]}>{section}</Text>
             	{isActive ? <Image source={openIcon} /> : <Image source={closeIcon} />}
           	</View>
         );
@@ -301,15 +302,16 @@ const OneClassSchedule = ( props: any ) =>
 		return (
 		<View>
 			<View style={MainStyles.formGroupRow}>
-				<CheckBox value={check[index]} onValueChange={(newValue) => 
-					{ 
+				<CheckBox checked={check[index]} onChange={(newValue) =>
+					{
 						const newCheck = [...check]; 
 						const getRecid = [...recordId]; 
 						newCheck[index] = newValue; 
 						setCheck(newCheck); 
 						handleSaveCheck(record.id, newCheck[index] )
-					}} />
-				<Text>I have class on a {section}</Text>
+					}
+				} />
+				<Text style={[MainStyles.h6, MainStyles.mb_0, {paddingStart: 10}]}>I have class on a {section}</Text>
 			</View>
 			{check[index] && (
 				<View style={[styles.buttonContainer]}>

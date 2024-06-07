@@ -2,7 +2,7 @@ import SQLite from 'react-native-sqlite-storage';
 
 class Database 
 {
-  db: SQLite.SQLiteDatabase | null = null;
+//   db: SQLite.SQLiteDatabase | null = null;
 
     /**
      * Constructs a new instance of the Database class.
@@ -12,14 +12,14 @@ class Database
        /**
          * Create database connection
          */ 
-        this.db = SQLite.openDatabase(
-        {
-            name: 'one',
-            location: 'default',
-        },
-            this.successCallback,
-            this.errorCallback,
-        );
+        // this.db = SQLite.openDatabase(
+        // {
+        //     name: 'one',
+        //     location: 'default',
+        // },
+        //     this.successCallback,
+        //     this.errorCallback,
+        // );
     }
 
     /**
@@ -44,15 +44,15 @@ class Database
      */
     createUserTable = () => 
     {
-        if (this.db) 
-        {
-            this.db.executeSql(
-            'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR)',
-            [],
-            this.successCallback,
-            this.errorCallback,
-            );
-        }
+        // if (this.db) 
+        // {
+        //     this.db.executeSql(
+        //     'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR)',
+        //     [],
+        //     this.successCallback,
+        //     this.errorCallback,
+        //     );
+        // }
     };
 
     /**
@@ -61,15 +61,15 @@ class Database
      */
     createArbTable = () => 
     {
-        if (this.db) 
-        {
-            this.db.executeSql(
-            'CREATE TABLE IF NOT EXISTS arb (id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR)',
-            [],
-            this.successCallback,
-            this.errorCallback,
-            );
-        }
+        // if (this.db) 
+        // {
+        //     this.db.executeSql(
+        //     'CREATE TABLE IF NOT EXISTS arb (id INTEGER PRIMARY KEY AUTOINCREMENT, email VARCHAR, name VARCHAR)',
+        //     [],
+        //     this.successCallback,
+        //     this.errorCallback,
+        //     );
+        // }
     };
 
     /**
@@ -77,16 +77,16 @@ class Database
      */
     createUser = () => 
     {
-        let sql = "INSERT INTO users (email, name) VALUES (?, ?)";
-        let params = ["harryP@gmail.com", "H Potterj"];
-        this.db.executeSql(sql, params, (result) => 
-        {
-            console.log('Create user result: ', result);
-        }, 
-        (error) => 
-        {
-            console.log("Create user error", error);
-        });
+        // let sql = "INSERT INTO users (email, name) VALUES (?, ?)";
+        // let params = ["harryP@gmail.com", "H Potterj"];
+        // this.db.executeSql(sql, params, (result: any) => 
+        // {
+        //     console.log('Create user result: ', result);
+        // }, 
+        // (error: any) => 
+        // {
+        //     console.log("Create user error", error);
+        // });
     }
     
     /**
@@ -95,21 +95,21 @@ class Database
      */
     listUsers = async () => 
     {
-        let sql = "SELECT * FROM users";
-        this.db.transaction((tx) => 
-        {
-         tx.executeSql(sql, [], (tx, resultSet) => {
-            var length = resultSet.rows.length;
-            for(var i = 0; i < length; i++) 
-            {
-                console.log(resultSet.rows.item(i));
-            }
-        }, 
-        (error) => 
-        {
-            console.log("List user error", error);
-        })
-        })
+        // let sql = "SELECT * FROM users";
+        // this.db.transaction((tx: any) => 
+        // {
+        //  tx.executeSql(sql, [], (tx: any, resultSet: any) => {
+        //     var length = resultSet.rows.length;
+        //     for(var i = 0; i < length; i++) 
+        //     {
+        //         console.log(resultSet.rows.item(i));
+        //     }
+        // }, 
+        // (error: any) => 
+        // {
+        //     console.log("List user error", error);
+        // })
+        // })
     }
 }
 

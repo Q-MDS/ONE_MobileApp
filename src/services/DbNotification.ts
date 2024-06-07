@@ -14,17 +14,17 @@ class DbNotification
 
     constructor() {}
 
-    getRecords = (dayNum) => 
+    getRecords = (dayNum: any) => 
     {
 		return new Promise((resolve, reject) => 
 		{
 			let sql = 'SELECT * FROM notifications WHERE day_num = ? ORDER BY noti_due DESC';
 
-			this.db.executeSql(sql, [dayNum], (result) => 
+			this.db.executeSql(sql, [dayNum], (result: any) => 
 			{
 				resolve(result);
 			}, 
-			(error) => 
+			(error: any) => 
 			{
 				reject(error);
 			});
@@ -40,11 +40,11 @@ class DbNotification
             VALUES 
                 (?,?,?,?,?,?,?,?,?)`;
 
-            this.db.executeSql(sql, [createDate, weekNum, dayNum, notiType, notiTitle, notiDesc, notiDue, active, wasDone], (result) => 
+            this.db.executeSql(sql, [createDate, weekNum, dayNum, notiType, notiTitle, notiDesc, notiDue, active, wasDone], (result: any) => 
             {
                 resolve(result.insertId);
             }, 
-            (error) => 
+            (error: any) => 
             {
                 reject(error);
             });

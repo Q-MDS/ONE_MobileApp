@@ -78,9 +78,13 @@ const SignupOptionCoaching = ( props: any ) =>
 
     const updateProfile = () => 
     {
-        DbProfile.updateProfile(remoteId, 1, 0, dp.get('signupFirstName'), dp.get('signupLastName'), dp.get('signupEmail'), dp.get('signupPassword'), "", 1, 1, 1, 0, dp.get('signupAcceptTerms'), 1, 0, 0, "")
-        .then((result: number) => 
+		/*
+		* New vsion: commented out
+		*
+        DbProfile.updateProfile(remoteId, 1, 0, dp.get('signupFirstName'), dp.get('signupLastName'), dp.get('signupEmail'), dp.get('signupPassword'), "", 1, 1, )
+        .then((value: unknown) => 
         {
+			const result = value as number;
             if (result == 1)
             {
                 // Success
@@ -94,7 +98,7 @@ const SignupOptionCoaching = ( props: any ) =>
         .catch((error) => 
         {
             console.error('Failed to fetch profile:', error);
-        });
+        });*/
     }
 
     const handleViewFree = () => 

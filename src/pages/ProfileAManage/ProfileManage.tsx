@@ -65,38 +65,43 @@ const ProfileManage = ( props: any ) =>
 	const getDefaults = async () =>
 	{
 		await DbProfile.getProfileManage()
-		.then((profile: Profile) => 
+		.then((value: unknown) => 
 		{
 			console.log('Step 1');
+			const profile = value as Profile;
 			setFirstName(profile.first_name);
 			setLastName(profile.last_name);
 			setEmail(profile.cred_1);
 		});
 		await DBSettings.getNotifications()
-		.then((notifications: number) => 
+		.then((value: unknown) => 
 		{
 			console.log('Step 2');
+			const notifications = value as number;
 			setNotiIsEnabled(notifications == 1 ? true : false);
 		});
 		
 		await DBSettings.getDiaryMode()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
 			console.log('Step 3');
+			const result = value as number;
 			setDiaryMode(result);
 		})
 		
 		await DBSettings.getPlanType()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
 			console.log('Step 3b');
+			const result = value as number;
 			setPlanType(result);
 		})
 		
 		await DBSettings.getSubscribed()
-		.then((result: number) => 
+		.then((value: unknown) => 
 		{
 			console.log('Step 3c');
+			const result = value as number;
 			setSubscribed(result);
 		})
 	}
@@ -109,10 +114,11 @@ const ProfileManage = ( props: any ) =>
 	const setDefaults = async () =>
 	{
 		await DBSettings.getQuotes()
-		.then((quotes: number) => 
+		.then((value: unknown) => 
 		{
 			console.log('Step 4');
 			console.log('Diary mode: ', diaryMode);
+			const quotes = value as number;
 			if (diaryMode === 1)
 			{
 				setQuotesIsEnabled(false);
@@ -176,8 +182,9 @@ const ProfileManage = ( props: any ) =>
 			setFirstNameError(false);
 
 			DbProfile.updateFirstName(firstName)
-			.then((result: number) => 
+			.then((value: unknown) => 
 			{
+				const result = value as number;
 				if (result == 1)
 				{
 					console.log('First name updated successfully');
@@ -208,8 +215,9 @@ const ProfileManage = ( props: any ) =>
 			setLastNameError(false);
 
 			DbProfile.updateLastName(lastName)
-			.then((result: number) => 
+			.then((value: unknown) => 
 			{
+				const result = value as number;
 				if (result == 1)
 				{
 					console.log('Last name updated successfully');
@@ -378,18 +386,18 @@ const ProfileManage = ( props: any ) =>
         props.navigation.navigate('ProfileDelete');
     }
 
-    const renderHeader = (section, _, isActive) => 
+    const renderHeader = (section: any, _: any, isActive: boolean) => 
     {
         return (
             <View style={[MainStyles.cardRowBox, {borderBottomStartRadius: 0, borderBottomEndRadius: 0}]}>
                 <Image source={require('../../assets/images/pm_current_plan.png')} />
-                <Text style={[MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>{section}</Text>
+                <Text style={[MainStyles.h6, MainStyles.mb_0, MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>{section}</Text>
                 {isActive ? <Image source={openIcon} /> : <Image source={closeIcon} />}
           </View>
         );
     };
 
-    const renderContent = (section, index, isActive) => 
+    const renderContent = (section: any, index: number, isActive: boolean, sections: any[]): JSX.Element => 
     {
         console.log('onePackage: ', planType);
         if (isActive) {
@@ -429,42 +437,42 @@ const ProfileManage = ( props: any ) =>
         {
             
         }
-        return null;
+        return <></>;
     };
 
-    const renderAccountSettingsHeader = (section, _, isActive) => 
+    const renderAccountSettingsHeader = (section: any, _: any, isActive: boolean) => 
     {
         return (
             <View style={[MainStyles.cardRowBox, {borderBottomStartRadius: 0, borderBottomEndRadius: 0}]}>
                 <Image source={require('../../assets/images/pm_password.png')} />
-                <Text style={[MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>{section}</Text>
+                <Text style={[MainStyles.h6, MainStyles.mb_0, MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>{section}</Text>
                 {isActive ? <Image source={openIcon} /> : <Image source={closeIcon} />}
           </View>
         );
     }
 
-    const renderAccountSettingsContent = (section, index, isActive) => 
+    const renderAccountSettingsContent = (section: any, index: number, isActive: any, sections: any[]): JSX.Element => 
     {
         if (isActive) {
             return (
             <View style={[MainStyles.cardColumnBox, {borderTopStartRadius: 0, borderTopEndRadius: 0}]}>
-                <Text>Current Password</Text>
+                <Text style={[MainStyles.h6, MainStyles.mb_0]}>Current Password</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TextInput style={MainStyles.input} value={currentPassword} placeholder="Enter current password" secureTextEntry={!isNewPasswordVisible} onChangeText={text => setCurrentPassword(text)} />
+                    <TextInput style={MainStyles.input} value={currentPassword} placeholder="Enter current password" placeholderTextColor='#808080' secureTextEntry={!isNewPasswordVisible} onChangeText={text => setCurrentPassword(text)} />
                     <TouchableOpacity onPress={toggleNewPasswordVisibility}>
                         <Feather name={isNewPasswordVisible ? 'eye-off' : 'eye'} size={20} />
                     </TouchableOpacity>
                 </View>
-                <Text>New Password</Text>
+                <Text style={[MainStyles.h6, MainStyles.mb_0]}>New Password</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TextInput style={MainStyles.input} value={newPassword} placeholder="Enter new password" secureTextEntry={!isNewPasswordVisible} onChangeText={text => setNewPassword(text)} />
+                    <TextInput style={MainStyles.input} value={newPassword} placeholder="Enter new password" placeholderTextColor="#808080" secureTextEntry={!isNewPasswordVisible} onChangeText={text => setNewPassword(text)} />
                     <TouchableOpacity onPress={toggleNewPasswordVisibility}>
                         <Feather name={isNewPasswordVisible ? 'eye-off' : 'eye'} size={20} />
                     </TouchableOpacity>
                 </View>
-                <Text>Confirm New Password</Text>
+                <Text style={[MainStyles.h6, MainStyles.mb_0]}>Confirm New Password</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TextInput style={MainStyles.input} value={confirmPassword} placeholder="Confirm new password" secureTextEntry={!isConfirmPasswordVisible} onChangeText={text => setConfirmPassword(text)} />
+                    <TextInput style={MainStyles.input} value={confirmPassword} placeholder="Confirm new password" placeholderTextColor="#808080" secureTextEntry={!isConfirmPasswordVisible} onChangeText={text => setConfirmPassword(text)} />
                     <TouchableOpacity onPress={toggleConfirmPasswordVisibility}>
                         <Feather name={isConfirmPasswordVisible ? 'eye-off' : 'eye'} size={20} />
                     </TouchableOpacity>
@@ -476,7 +484,7 @@ const ProfileManage = ( props: any ) =>
             </View>
             );
         }
-        return null;
+        return <></>;
     }
 
     const handleCancel = () => 
@@ -496,17 +504,17 @@ const ProfileManage = ( props: any ) =>
 
                             <Text style={[MainStyles.h6, MainStyles.textBold, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_1, MainStyles.textSubtle]}>GENERAL</Text>
                             <View style={[MainStyles.cardColumnBox, MainStyles.mb_4, {borderTopStartRadius: 0, borderTopEndRadius: 0}]}>
-                                <Text>First Name</Text>
+                                <Text style={MainStyles.h6}>First Name</Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <TextInput style={[MainStyles.input, MainStyles.mb_0]} placeholder="Enter first name" value={firstName} onChangeText={text => setFirstName(text)}  />
+                                    <TextInput style={[MainStyles.input, MainStyles.mb_0]} placeholder="Enter first name" placeholderTextColor='#808080' value={firstName} onChangeText={text => setFirstName(text)}  />
                                     <TouchableOpacity onPress={toggleNewPasswordVisibility}>
                                         <Feather name={isNewPasswordVisible ? 'eye-off' : 'eye'} size={20} />
                                     </TouchableOpacity>
                                 </View>
                                 {firstNameError && <Text style={[MainStyles.errorText, MainStyles.mt_2]}>First name is required.</Text>}
-                                <Text style={[MainStyles.mt_3]}>Last Name</Text>
+                                <Text style={[MainStyles.h6, MainStyles.mt_3]}>Last Name</Text>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <TextInput style={[MainStyles.input, MainStyles.mb_1]} placeholder="Enter last name" value={lastName} onChangeText={text => setLastName(text)} />
+                                    <TextInput style={[MainStyles.input, MainStyles.mb_1]} placeholder="Enter last name" placeholderTextColor='#808080' value={lastName} onChangeText={text => setLastName(text)} />
                                     <TouchableOpacity onPress={toggleNewPasswordVisibility}>
                                         <Feather name={isNewPasswordVisible ? 'eye-off' : 'eye'} size={20} />
                                     </TouchableOpacity>
@@ -517,7 +525,7 @@ const ProfileManage = ( props: any ) =>
                             <Text style={[MainStyles.h6, MainStyles.textBold, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_1, MainStyles.textSubtle]}>NOTIFICATIONS</Text>
                             <View style={MainStyles.cardRowBox}>
                                 <Image source={require('../../assets/images/pm_notifications.png')} />
-                                <Text style={[MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>Notifications</Text>
+                                <Text style={[MainStyles.h6, MainStyles.textLeft, MainStyles.mb_0, {flex: 1, paddingLeft: 10}]}>Notifications</Text>
                                 <Switch
                                 trackColor={{ false: "#767577", true: "#c9d0e4" }}
                                 thumbColor={notiIsEnabled ? "#395dc3" : "#f4f3f4"}
@@ -529,7 +537,7 @@ const ProfileManage = ( props: any ) =>
                             <Text style={[MainStyles.h6, MainStyles.textBold, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_1, MainStyles.textSubtle, MainStyles.mt_4]}>MESSAGES</Text>
                             <View style={[MainStyles.cardRowBox, { borderBottomStartRadius: 0, borderBottomEndRadius: 0 }]}>
                                 <Image source={require('../../assets/images/pm_quotes.png')} />
-                                <Text style={[MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>Motivational Quotes</Text>
+                                <Text style={[MainStyles.h6, MainStyles.mb_0, MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>Motivational Quotes</Text>
                                 <Switch
                                 trackColor={{ false: "#767577", true: "#c9d0e4" }}
                                 thumbColor={quotesIsEnabled ? "#395dc3" : "#f4f3f4"}
@@ -541,7 +549,7 @@ const ProfileManage = ( props: any ) =>
                             </View>
                             <View style={[MainStyles.cardRowBox, { borderTopStartRadius: 0, borderTopEndRadius: 0 }]}>
                                 <Image source={require('../../assets/images/pm_quiz.png')} />
-                                <Text style={[MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>Quiz Mode</Text>
+                                <Text style={[MainStyles.h6, MainStyles.mb_0, MainStyles.textLeft, {flex: 1, paddingLeft: 10}]}>Quiz Mode</Text>
                                 <Switch
                                 trackColor={{ false: "#767577", true: "#c9d0e4" }}
                                 thumbColor={quizIsEnabled ? "#395dc3" : "#f4f3f4"}

@@ -36,6 +36,7 @@ const CopyDiary = (props:any) =>
 		await DBSettings.setDiaryMode(0);
 		await DBSettings.setWeekNumber(weekNum);
 		await DBSettings.setStartDay(dayNum);
+		// ??? set daynum in settings ?
 		await DbNotification.truncTable();
 
 		const timesOne = [32400, 36000, 39600, 43200, 46800, 50400];
@@ -140,7 +141,7 @@ const CopyDiary = (props:any) =>
 		<ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
 			<View style={MainStyles.container}>
 				<Text style={[ MainStyles.h1, MainStyles.mb_1, MainStyles.textSerif]}>Use  Current Diary</Text> 
-				<Text style={MainStyles.mt_3}>Select the activities you added last week that you would like to copy to the diary. [Dev suggestion]</Text>
+				<Text style={[MainStyles.h5, MainStyles.mb_3, MainStyles.mt_3]}>Select Copy Diary to continue or Back to return to the diary setup options.</Text>
 				<TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={handleCreateDiary}>
 					<Text style={[MainStyles.buttonText]}>Copy Diary</Text>
 				</TouchableOpacity>
