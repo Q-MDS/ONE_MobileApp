@@ -23,6 +23,7 @@ const AllocateInput = (props:any) =>
 				onEndEditing={(e) => props.saveNote(e.nativeEvent.text)}
 				style={{ width: '100%', backgroundColor: '#ffffff', borderColor: '#cfd0d1', borderWidth: 1, borderRadius: 5, paddingStart: 5, color: '#000000' }} 
 				keyboardType='default' 
+					placeholderTextColor='#808080'
 				placeholder='Enter note here...'>
 				{props.note}
 			</TextInput>

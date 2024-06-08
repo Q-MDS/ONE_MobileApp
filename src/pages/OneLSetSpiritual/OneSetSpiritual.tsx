@@ -6,9 +6,10 @@ import BackHelpTopBar from '../../components/BackHelpTopBar/BackHelpTopBar';
 import { PageIndicator } from 'react-native-page-indicator';
 import MainStyles from '../../assets/MainStyles';
 import AllocateInput from '../../components/AllocateInput';
-import { ImageBackground, ScrollView, View, Text, TouchableOpacity, Image, TextInput, StyleSheet, PanResponder } from 'react-native';
+import { SafeAreaView, ImageBackground, ScrollView, View, Text, TouchableOpacity, Image, TextInput, StyleSheet, PanResponder } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
+import { Icon } from '@ui-kitten/components';
 
 interface Record 
 {
@@ -203,17 +204,27 @@ const OneSetPhysical = ( props: any ) =>
 		}
 	};
 
+	const handleHome = () =>
+	{
+		props.navigation.navigate('SetupStart', {from: 'MainScreen'});
+	}
+
 	const handleNext = () => 
 	{
 		props.navigation.navigate('OneSetCoaching')
 	};
 
+	const handleClose = () => 
+	{
+		props.navigation.navigate('MainScreen');
+	}
+
 	return (
-        <View style={[MainStyles.backContainer]} >
-            <BackHelpTopBar navigation={props.navigation} />
+		<SafeAreaView style={{ flex: 1 }}>
             <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
-            	<ScrollView style={{ flex: 1 }}>
-					<View style={[MainStyles.container]}>
+            <BackHelpTopBar navigation={props.navigation} />
+				<ScrollView style={{ marginBottom: 5 }}>
+					<View style={[MainStyles.container, { justifyContent: 'flex-start', marginTop: 40}]}>
 						<Image source={require('../../assets/images/spirtual.png')} style={{width: 75, height: 77}} />
 						<Text style={[ MainStyles.h1, MainStyles.textSerif]}>Spiritual</Text>
 						<Text style={MainStyles.h5}>The purpose of Spiritual Health is to be able to remain present with your entire being.</Text>
@@ -234,19 +245,26 @@ const OneSetPhysical = ( props: any ) =>
 							/>
 						))}
 					</View>
-                
-					<View style={{ marginTop:0, width: '100%', justifyContent: 'center', flexDirection: 'column', alignItems: 'center' }}>
-						<TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4, MainStyles.buttonFull]} onPress={ handleNext }>
-							<Text style={MainStyles.buttonText}>Next</Text>
-						</TouchableOpacity>
-						<PageIndicator
-						style={[MainStyles.pageIndicator, MainStyles.mt_1]}
-						count={4}
-						current={2}/>
-					</View>
 				</ScrollView>
+				<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center',width: '100%' }}>
+					<PageIndicator
+					style={[MainStyles.pageIndicator,  { width: '100%'}]}
+					count={4}
+					current={3}/>
+				</View>
+				<View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 12, paddingTop: 0, paddingStart: 24, paddingEnd: 24 }}>
+					<TouchableOpacity style={[MainStyles.button_flex, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleHome }>
+						<Icon name="home-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, {flex: 1, marginStart: 10, marginEnd: 10}]} onPress={ handleNext }>
+						<Text style={MainStyles.buttonText}>Next</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleClose }>
+					<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+				</View>
             </ImageBackground>
-        </View>
+		</SafeAreaView>
     );
 };
 

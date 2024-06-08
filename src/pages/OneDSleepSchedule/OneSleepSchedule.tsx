@@ -6,12 +6,13 @@ import Accordion from 'react-native-collapsible/Accordion';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
-import { StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, ImageBackground, View, TouchableOpacity, Image, Text } from 'react-native';
 // import CheckBox from '@react-native-community/checkbox';
 import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
+import { Icon } from '@ui-kitten/components';
 
 interface ResultSet 
 {
@@ -31,7 +32,6 @@ interface Record
     end_time: number;
     roll_over: number;
 }
-
 interface StartEndTimes 
 {
     from: Date;
@@ -415,17 +415,29 @@ const OneSleepSchedule = ( props: any ) =>
         return [hours, remainingMinutes];
     }
 
+	const handleHome = () =>
+	{
+		props.navigation.navigate('SetupStart', {from: 'MainScreen'});
+	}
+
 	const handleNext = () => 
 	{
 		props.navigation.navigate('OneEatingSchedule')
 	};
 
+	const handleClose = () => 
+	{
+		props.navigation.navigate('MainScreen');
+	}
+
 	return (
-        <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
-            <View style={MainStyles.container}>
-                <BackButton/>
-                <Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical sleep schedule:</Text>
-                <View style={ [MainStyles.w_100, MainStyles.bb]}>
+		<SafeAreaView style={{ flex: 1 }}>
+        	<ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
+			<BackButton/>
+			<ScrollView style={{ marginBottom: 20 }}>
+				<View style={[MainStyles.container, { justifyContent: 'flex-start', marginTop: 60}]}>
+					<Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical sleep schedule:</Text>
+					<View style={ [MainStyles.w_100, MainStyles.bb]}>
                     <Accordion
                         sections={daysOfWeek}
                         activeSections={activeSections}
@@ -433,12 +445,23 @@ const OneSleepSchedule = ( props: any ) =>
                         renderContent={renderContent}
                         onChange={setActiveSections}
                         touchableProps={{ underlayColor: '#00000040' }}  />
+                	</View>
                 </View>
-                <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={ handleNext }>
-                    <Text style={MainStyles.buttonText}>Next</Text>
-                </TouchableOpacity>
-            </View>
-        </ImageBackground>
+				</ScrollView>
+            
+				<View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 12, paddingTop: 0, paddingStart: 24, paddingEnd: 24 }}>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleHome }>
+						<Icon name="home-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {flex: 1, marginStart: 10, marginEnd: 10}]} onPress={ handleNext }>
+						<Text style={MainStyles.buttonText}>Next</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleClose }>
+					<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+				</View>
+        	</ImageBackground>
+		</SafeAreaView>
     );
 };
 

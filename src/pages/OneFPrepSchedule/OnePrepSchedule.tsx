@@ -6,13 +6,13 @@ import Accordion from 'react-native-collapsible/Accordion';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
-import { StyleSheet, ImageBackground, ScrollView, View, TouchableOpacity, Image, Text, ActivityIndicator } from 'react-native';
+import { SafeAreaView, StyleSheet, ImageBackground, ScrollView, View, TouchableOpacity, Image, Text, ActivityIndicator } from 'react-native';
 // import CheckBox from '@react-native-community/checkbox';
 import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
-
+import { Icon } from '@ui-kitten/components';
 interface ResultSet 
 {
     rows: 
@@ -33,7 +33,6 @@ interface Record
 	from: Date;
     to: Date;
 }
-
 interface StartEndTimes 
 {
 	recId: number;
@@ -54,48 +53,14 @@ type PrepRecord = {
 
 const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-// Code below is to setup default times. New process skips this...
-// const fromTime = new Date();
-// fromTime.setHours(7, 30, 0, 0);
-// const toTime = new Date();
-// toTime.setHours(8, 0, 0, 0);
-// const defaultTimes = daysOfWeek.map(() => ({ recId: 0, from: new Date(fromTime), to: new Date(toTime) }));
-
 const OnePrepSchedule = ( props: any ) => 
 {
-    // const [recIdMon, setRecIdMon] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showMon, setShowMon] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesMon, setTimesMon] = useState([]);
-    // const [recIdTue, setRecIdTue] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showTue, setShowTue] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesTue, setTimesTue] = useState([]);
-    // const [recIdWed, setRecIdWed] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showWed, setShowWed] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesWed, setTimesWed] = useState([]);
-    // const [recIdThu, setRecIdThu] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showThu, setShowThu] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesThu, setTimesThu] = useState([]);
-    // const [recIdFri, setRecIdFri] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showFri, setShowFri] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesFri, setTimesFri] = useState([]);
-    // const [recIdSat, setRecIdSat] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showSat, setShowSat] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesSat, setTimesSat] = useState([]);
-    // const [recIdSun, setRecIdSun] = useState([0,0,0,0,0,0,0,0,0,0]);
-    // const [showSun, setShowSun] = useState([1,0,0,0,0,0,0,0,0,0]);
-    // const [timesSun, setTimesSun] = useState([]);
-    // const [allRecIds, setAllRecIds] = useState([recIdMon, recIdTue, recIdWed, recIdThu, recIdFri, recIdSat, recIdSun]);
     const [check, setCheck] = useState([true, true, true, true, true, true, true]);
     const [refresh, setRefresh] = useState(false);
     const [activeSections, setActiveSections] = useState<number[]>([]);
     const [currentPicker, setCurrentPicker] = useState<string>("");
     const [currentDay, setCurrentDay] = useState<number | null>(0);
     const [showPicker, setShowPicker] = useState(false);
-    // const [spinner, setSpinner] = useState(false);
-    // const [timeError, setTimeError] = useState([0,0,0,0,0,0,0]);
-    // const [recordId, setRecordId] = useState([]); // del later
-    // const [times, setTimes] = useState(defaultTimes); // del
-
 	const [weekNum, setWeekNum] = useState(0);
 	const [prepareRecords, setPrepareRecords] = useState<PrepRecord[]>([]);
 	const [isReady, setIsReady] = useState(false);
@@ -442,30 +407,53 @@ const OnePrepSchedule = ( props: any ) =>
         return [hours, remainingMinutes];
     }
 
+	const handleHome = () =>
+	{
+		props.navigation.navigate('SetupStart', {from: 'MainScreen'});
+	}
+
 	const handleNext = () => 
 	{
 		props.navigation.navigate('OneCommuteSchedule')
 	};
 
+	const handleClose = () => 
+	{
+		props.navigation.navigate('MainScreen');
+	}
+
 	return (
-        <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
-            <View style={MainStyles.container}>
-                <BackButton/>
-                <Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical preparation schedule:</Text>
-                <View style={ [MainStyles.w_100, MainStyles.bb]}>
-                    <Accordion
-                        sections={daysOfWeek}
-                        activeSections={activeSections}
-                        renderHeader={renderHeader}
-                        renderContent={renderContent}
-                        onChange={setActiveSections}
-                        touchableProps={{ underlayColor: '#00000040' }}  />
-                </View>
-                <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={ handleNext }>
-                    <Text style={MainStyles.buttonText}>Next</Text>
-                </TouchableOpacity>
-            </View>
-        </ImageBackground>
+		<SafeAreaView style={{ flex: 1 }}>
+        	<ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
+			<BackButton/>
+			<ScrollView style={{ marginBottom: 20 }}>
+				<View style={[MainStyles.container, { justifyContent: 'flex-start', marginTop: 60}]}>
+					<Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical preparation schedule:</Text>
+					<View style={ [MainStyles.w_100, MainStyles.bb]}>
+						<Accordion
+							sections={daysOfWeek}
+							activeSections={activeSections}
+							renderHeader={renderHeader}
+							renderContent={renderContent}
+							onChange={setActiveSections}
+							touchableProps={{ underlayColor: '#00000040' }}  />
+					</View>
+				</View>
+				</ScrollView>
+				
+				<View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 12, paddingTop: 0, paddingStart: 24, paddingEnd: 24 }}>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleHome }>
+						<Icon name="home-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {flex: 1, marginStart: 10, marginEnd: 10}]} onPress={ handleNext }>
+						<Text style={MainStyles.buttonText}>Next</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleClose }>
+					<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
+					</TouchableOpacity>
+				</View>
+        	</ImageBackground>
+		</SafeAreaView>
     );
 };
 

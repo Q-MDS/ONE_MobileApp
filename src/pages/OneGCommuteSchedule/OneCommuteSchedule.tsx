@@ -6,12 +6,13 @@ import Accordion from 'react-native-collapsible/Accordion';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import BackButton from '../../components/BackButton/BackButton';
 import MainStyles from '../../assets/MainStyles';
-import { StyleSheet, ImageBackground, ScrollView, View, TouchableOpacity, Image, Text, ActivityIndicator } from 'react-native';
+import { SafeAreaView, StyleSheet, ImageBackground, ScrollView, View, TouchableOpacity, Image, Text, ActivityIndicator } from 'react-native';
 // import CheckBox from '@react-native-community/checkbox';
 import { CheckBox } from '@ui-kitten/components';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 import openIcon from '../../assets/images/icon_open.png';
 import closeIcon from '../../assets/images/icon_close.png';
+import { Icon } from '@ui-kitten/components';
 
 interface ResultSet 
 {
@@ -162,92 +163,6 @@ const OneCommuteSchedule = ( props: any ) =>
 		}
 
 	}, [isReady]);
-
-    // useEffect(() => 
-    // {
-    //     // DbSchedule.truncOneSchedule();
-    //     DbCalendar.chkTable(6)
-    //     .then((result: any) => 
-    //     {
-    //         let riMon: number[] = [];
-    //         let spMon: number[] = [];
-    //         let tmpTimesMon: StartEndTimes[] = [];
-    //         let riTue: number[] = [];
-    //         let spTue: number[] = [];
-    //         let tmpTimesTue: StartEndTimes[] = [];
-    //         let riWed: number[] = [];
-    //         let spWed: number[] = [];
-    //         let tmpTimesWed: StartEndTimes[] = [];
-    //         let riThu: number[] = [];
-    //         let spThu: number[] = [];
-    //         let tmpTimesThu: StartEndTimes[] = [];
-    //         let riFri: number[] = [];
-    //         let spFri: number[] = [];
-    //         let tmpTimesFri: StartEndTimes[] = [];
-    //         let riSat: number[] = [];
-    //         let spSat: number[] = [];
-    //         let tmpTimesSat: StartEndTimes[] = [];
-    //         let riSun: number[] = [];
-    //         let spSun: number[] = [];
-    //         let tmpTimesSun: StartEndTimes[] = [];
-    //         let tmpChecks: boolean[] = [];
-
-
-    //         for (let i = 0; i < result.rows.length; i++)
-    //         {
-    //             let getRecId = result.rows.item(i).id;
-    //             let getShow = result.rows.item(i).show;
-    //             let getActive = result.rows.item(i).activity_active;
-
-    //             let getSt = result.rows.item(i).activity_start;
-    //             let cnvSt = convertSecondsToHours(getSt);
-    //             const fromTime = new Date();
-    //             fromTime.setHours(cnvSt[0], cnvSt[1], 0, 0);
-
-    //             let getEt = result.rows.item(i).activity_end;
-    //             let cnvEt = convertSecondsToHours(getEt);
-    //             const toTime = new Date();
-    //             toTime.setHours(cnvEt[0], cnvEt[1], 0, 0);
-
-    //             let dn = result.rows.item(i).day_number;
-    //             if (dn === 1) { spMon.push(getShow); riMon.push(getRecId); tmpChecks[0] = getActive === 1 ? true : false; tmpTimesMon.push({ from: fromTime, to: toTime })};
-    //             if (dn === 2) { spTue.push(getShow); riTue.push(getRecId); tmpChecks[1] = getActive === 1 ? true : false; tmpTimesTue.push({ from: fromTime, to: toTime })};
-    //             if (dn === 3) { spWed.push(getShow); riWed.push(getRecId); tmpChecks[2] = getActive === 1 ? true : false; tmpTimesWed.push({ from: fromTime, to: toTime })};
-    //             if (dn === 4) { spThu.push(getShow); riThu.push(getRecId); tmpChecks[3] = getActive === 1 ? true : false; tmpTimesThu.push({ from: fromTime, to: toTime })};
-    //             if (dn === 5) { spFri.push(getShow); riFri.push(getRecId); tmpChecks[4] = getActive === 1 ? true : false; tmpTimesFri.push({ from: fromTime, to: toTime })};
-    //             if (dn === 6) { spSat.push(getShow); riSat.push(getRecId); tmpChecks[5] = getActive === 1 ? true : false; tmpTimesSat.push({ from: fromTime, to: toTime })};
-    //             if (dn === 7) { spSun.push(getShow); riSun.push(getRecId); tmpChecks[6] = getActive === 1 ? true : false; tmpTimesSun.push({ from: fromTime, to: toTime })};
-    //         }
-
-    //         setShowMon(spMon);
-    //         setShowTue(spTue);
-    //         setShowWed(spWed);
-    //         setShowThu(spThu);
-    //         setShowFri(spFri);
-    //         setShowSat(spSat);
-    //         setShowSun(spSun);
-    //         setRecIdMon(riMon);
-    //         setRecIdTue(riTue);
-    //         setRecIdWed(riWed);
-    //         setRecIdThu(riThu);
-    //         setRecIdFri(riFri);
-    //         setRecIdSat(riSat);
-    //         setRecIdSun(riSun);
-    //         setAllRecIds([riMon, riTue, riWed, riThu, riFri, riSat, riSun]);
-    //         setCheck(tmpChecks);
-    //         setTimesMon(tmpTimesMon);
-    //         setTimesTue(tmpTimesTue);
-    //         setTimesWed(tmpTimesWed);
-    //         setTimesThu(tmpTimesThu);
-    //         setTimesFri(tmpTimesFri);
-    //         setTimesSat(tmpTimesSat);
-    //         setTimesSun(tmpTimesSun);
-    //     })
-    //     .catch((error) => 
-    //     {
-    //         // Result: fail
-    //     });
-    // }, [refresh]);
 
     const handleSaveCheck = async (recId: number, isChecked: boolean) => 
 	{
@@ -476,30 +391,52 @@ const OneCommuteSchedule = ( props: any ) =>
         return [hours, remainingMinutes];
     }
 
+	const handleHome = () =>
+	{
+		props.navigation.navigate('SetupStart', {from: 'MainScreen'});
+	}
+
 	const handleNext = () => 
 	{
 		props.navigation.navigate('OneLetsGo')
 	};
 
+	const handleClose = () => 
+	{
+		props.navigation.navigate('MainScreen');
+	}
+
 	return (
-        <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
-            <View style={MainStyles.container}>
-                <BackButton/>
-                <Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical commute schedule:</Text>
-                <View style={ [MainStyles.w_100, MainStyles.bb]}>
-                    <Accordion
-                        sections={daysOfWeek}
-                        activeSections={activeSections}
-                        renderHeader={renderHeader}
-                        renderContent={renderContent}
-                        onChange={setActiveSections}
-                        touchableProps={{ underlayColor: '#00000040' }}  />
-                </View>
-                <TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_4]} onPress={ handleNext }>
-                    <Text style={MainStyles.buttonText}>Next</Text>
-                </TouchableOpacity>
-            </View>
+		<SafeAreaView style={{ flex: 1 }}>
+        	<ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
+			<BackButton/>
+			<ScrollView style={{ marginBottom: 20 }}>
+				<View style={[MainStyles.container, { justifyContent: 'flex-start', marginTop: 60}]}>
+                	<Text style={[ MainStyles.h2, MainStyles.textSerif, MainStyles.textLeft]}>Let us know your typical commute schedule:</Text>
+					<View style={ [MainStyles.w_100, MainStyles.bb]}>
+						<Accordion
+							sections={daysOfWeek}
+							activeSections={activeSections}
+							renderHeader={renderHeader}
+							renderContent={renderContent}
+							onChange={setActiveSections}
+							touchableProps={{ underlayColor: '#00000040' }}  />
+					</View>
+				</View>
+			</ScrollView>
+			<View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 12, paddingTop: 0, paddingStart: 24, paddingEnd: 24 }}>
+				<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleHome }>
+					<Icon name="home-outline" width={32} height={32} fill="#ffffff"/>
+				</TouchableOpacity>
+				<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {flex: 1, marginStart: 10, marginEnd: 10}]} onPress={ handleNext }>
+					<Text style={MainStyles.buttonText}>Next</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={[MainStyles.button_flex, MainStyles.mt_4, {paddingStart: 15, paddingEnd: 15}]} onPress={ handleClose }>
+				<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
+				</TouchableOpacity>
+			</View>
         </ImageBackground>
+		</SafeAreaView>
     );
 };
 

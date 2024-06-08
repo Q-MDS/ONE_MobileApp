@@ -932,7 +932,6 @@ const OneEatSchedule = ( props: any ) =>
                         onChange={setActiveSections}
                         touchableProps={{ underlayColor: '#00000040' }}  />
                 </View>
-				
             </View>
 			</ScrollView>
 			<View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 12, paddingTop: 0, paddingStart: 24, paddingEnd: 24 }}>
@@ -946,7 +945,6 @@ const OneEatSchedule = ( props: any ) =>
 				<Icon name="close-square-outline" width={32} height={32} fill="#ffffff"/>
 				</TouchableOpacity>
 			</View>
-
         </ImageBackground>
 		</SafeAreaView>
     );

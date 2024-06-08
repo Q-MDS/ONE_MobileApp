@@ -8,7 +8,7 @@ import DbVerify from '../../services/DbVerify';
 import DateUtils from '../../services/DateUtils';
 import moment from 'moment';
 import MainStyles from '../../assets/MainStyles';
-import { SafeAreaView, ScrollView, ImageBackground, View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { SafeAreaView, ScrollView, ImageBackground, View, Text, TouchableOpacity, ActivityIndicator, Switch } from 'react-native';
 import backgroundImage from '../../assets/images/app_bg_mountains.png';
 import { Card, Icon } from '@ui-kitten/components';
 
@@ -19,6 +19,29 @@ const SetupStart = (props:any) =>
 	const [saMode, setSAMode] = useState(0);
 	const [setupDone, setSetupDone] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [reminders, setReminders] = useState<boolean[]>([]);
+	const [swWork, setSwWork] = useState(false);
+	const [swClass, setSwClass] = useState(false);
+	const [swSleep, setSwSleep] = useState(false);
+	const [swEat, setSwEat] = useState(false);
+	const [swPrep, setSwPrep] = useState(false);
+	const [swCommute, setSwCommute] = useState(false);
+	const [swPhy, setSwPhy] = useState(true);
+	const [swEmo, setSwEmo] = useState(true);
+	const [swMen, setSwMen] = useState(true);
+	const [swSpi, setSwSpi] = useState(true);
+	const [isEnabled, setIsEnabled] = useState(false);
+	const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+	const toggleWork = () => setSwWork(previousState => !previousState);
+	const toggleClass = () => setSwClass(previousState => !previousState);
+	const toggleSleep = () => setSwSleep(previousState => !previousState);
+	const toggleEat = () => setSwEat(previousState => !previousState);
+	const togglePrep = () => setSwPrep(previousState => !previousState);
+	const toggleCommute = () => setSwCommute(previousState => !previousState);
+	const togglePhy = () => setSwPhy(previousState => !previousState);
+	const toggleEmo = () => setSwEmo(previousState => !previousState);
+	const toggleMen = () => setSwMen(previousState => !previousState);
+	const toggleSpi = () => setSwSpi(previousState => !previousState);
 
 	const [weekNum, setWeekNum] = useState(0);
 	const [dayNum, setDayNum] = useState(0);
@@ -40,7 +63,6 @@ const SetupStart = (props:any) =>
 		DBSettings.getSAMode()
 		.then((value: unknown) => 
 		{
-
 			setSAMode(value as number);
 		})
 		.catch((error: Error) => 
@@ -49,6 +71,7 @@ const SetupStart = (props:any) =>
 		});
 		const currentWeekNumber = DateUtils.getCurrentWeekNumber();
 		const currentDayOfWeek = DateUtils.getCurrentDayOfWeek();
+
 
 		setWeekNum(currentWeekNumber);
 		setDayNum(currentDayOfWeek);
@@ -403,6 +426,7 @@ const SetupStart = (props:any) =>
 			DBSettings.setSAMode(0)
 			.then((value: unknown) => 
 			{
+				setSAMode(0);
 				props.navigation.navigate('OneWorkSchedule');
 			})
 			.catch((error: Error) => 
@@ -448,7 +472,7 @@ const SetupStart = (props:any) =>
 
 	const handlePrepare = () => 
 	{
-		props.navigation.navigate('OnePrepareSchedule');
+		props.navigation.navigate('OnePrepSchedule');
 	}
 
 	const handleCommute = () => 
@@ -484,7 +508,7 @@ const SetupStart = (props:any) =>
 			</View>
 		);
 	}
-
+	
 	
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
@@ -502,67 +526,167 @@ const SetupStart = (props:any) =>
 					</TouchableOpacity>
 					{saMode === 0 ? (
 						<>
-						<Text style={ [MainStyles.h5, { textAlign: 'left', marginTop: 20}]}>Tap on the setup step below to go to that part of the setup.</Text>
+						<Text style={ [MainStyles.h5, { textAlign: 'left', marginTop: 20}]}>Tap on the setup step below to go to that part of the setup. Switch reminders on or off for each category.</Text>
 						<ScrollView>
-						<View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', justifyContent: 'flex-start', width: '100%' }} >
-								<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleWork}>
+						<View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', justifyContent: 'flex-start', width: '100%', rowGap: 5 }} >
+								<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleWork}>
 									<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
 										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Work schedule</Text>
+										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+											<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+											<Switch
+											trackColor={{false: '#808080', true: '#deded7'}}
+											thumbColor={swWork ? '#7b90af' : '#f4f3f4'}
+											ios_backgroundColor="#3e3e3e"
+											onValueChange={toggleWork}
+											value={swWork}
+											/>
+										</View>
 									</View>
 								</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleClass}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleClass}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
-									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Class schedule</Text>
+										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Class schedule</Text>
+										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swClass ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={toggleClass}
+										value={swClass}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleSleep}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleSleep}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
-									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Sleep schedule</Text>
+										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Sleep schedule</Text>
+										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swSleep ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={toggleSleep}
+										value={swSleep}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleEat}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleEat}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
-									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Eat schedule</Text>
+										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Eat schedule</Text>
+										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swEat ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={toggleEat}
+										value={swEat}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handlePrepare}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handlePrepare}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
-									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Prepare schedule</Text>
+										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Prepare schedule</Text>
+										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swPrep ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={togglePrep}
+										value={swPrep}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleCommute}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleCommute}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
-									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Commute schedule</Text>
+										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Commute schedule</Text>
+										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swCommute ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={toggleCommute}
+										value={swCommute}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handlePhysical}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handlePhysical}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-								<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
-								<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Physical</Text>
+									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Physical</Text>
+									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swPhy ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={togglePhy}
+										value={swPhy}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleEmotional}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleEmotional}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-								<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
-								<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Mental</Text>
+									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Emotional</Text>
+									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swEmo ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={toggleEmo}
+										value={swEmo}
+										/>
+									</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleMental}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleMental}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-								<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
-								<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Emotional</Text>
+									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Mental</Text>
+									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+									<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+									<Switch
+									trackColor={{false: '#808080', true: '#deded7'}}
+									thumbColor={swMen ? '#7b90af' : '#f4f3f4'}
+									ios_backgroundColor="#3e3e3e"
+									onValueChange={toggleMen}
+									value={swMen}
+									/>
+								</View>
 								</View>
 							</Card>
-							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%' }} onPress={handleSpiritual}>
+							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleSpiritual}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-								<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
-								<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Spiritual</Text>
+									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Spiritual</Text>
+									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
+										<Switch
+										trackColor={{false: '#808080', true: '#deded7'}}
+										thumbColor={swSpi ? '#7b90af' : '#f4f3f4'}
+										ios_backgroundColor="#3e3e3e"
+										onValueChange={toggleSpi}
+										value={swSpi}
+										/>
+									</View>
 								</View>
 							</Card>
 						</View>
