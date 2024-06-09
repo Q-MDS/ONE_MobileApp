@@ -71,6 +71,7 @@ import NotificationAccountabilityResult from './pages/NotificationBAccountabilit
 import NotificationVerification from './pages/NotificationCVerification/NotificationVerification';
 import NotificationVerificationResult from './pages/NotificationCVerification/NotificationVerificationResult';
 import AddActivity from './pages/MainScreen/AddActivity';
+import EditActivity from './pages/MainScreen/EditActivity';
 import ManageActivity from './pages/MainScreen/ManageActivity';
 import ManagePemsActivity from './pages/MainScreen/ManagePemsActivity';
 import PopQuiz from './pages/PopQuiz/PopQuiz';
@@ -223,6 +224,7 @@ export default function App()
                 <Stack.Screen name="NotificationVerification" component={NotificationVerification} />
                 <Stack.Screen name="NotificationVerificationResult" component={NotificationVerificationResult} />
                 <Stack.Screen name="AddActivity" component={AddActivity} />
+                <Stack.Screen name="EditActivity" component={EditActivity} />
                 <Stack.Screen name="ManageActivity" component={ManageActivity} />
                 <Stack.Screen name="ManagePemsActivity" component={ManagePemsActivity} />
                 <Stack.Screen name="PopQuiz" component={PopQuiz} />

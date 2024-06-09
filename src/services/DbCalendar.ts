@@ -687,6 +687,22 @@ class DbCalendar
 			});
 	}
 
+	getActivity = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM calendar WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	} 	
     
 }
 

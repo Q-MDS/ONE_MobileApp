@@ -8,7 +8,7 @@ import DbVerify from '../../services/DbVerify';
 import DateUtils from '../../services/DateUtils';
 import moment from 'moment';
 import MainStyles from '../../assets/MainStyles';
-import { SafeAreaView, ScrollView, ImageBackground, View, Text, TouchableOpacity, ActivityIndicator, Switch } from 'react-native';
+import { SafeAreaView, ScrollView, ImageBackground, View, Text, TouchableOpacity, ActivityIndicator, Switch, Image } from 'react-native';
 import backgroundImage from '../../assets/images/app_bg_mountains.png';
 import { Card, Icon } from '@ui-kitten/components';
 
@@ -31,18 +31,16 @@ const SetupStart = (props:any) =>
 	const [swMen, setSwMen] = useState(true);
 	const [swSpi, setSwSpi] = useState(true);
 	const [isEnabled, setIsEnabled] = useState(false);
-	const toggleSwitch = () => setIsEnabled(previousState => !previousState);
-	const toggleWork = () => setSwWork(previousState => !previousState);
-	const toggleClass = () => setSwClass(previousState => !previousState);
-	const toggleSleep = () => setSwSleep(previousState => !previousState);
-	const toggleEat = () => setSwEat(previousState => !previousState);
-	const togglePrep = () => setSwPrep(previousState => !previousState);
-	const toggleCommute = () => setSwCommute(previousState => !previousState);
-	const togglePhy = () => setSwPhy(previousState => !previousState);
-	const toggleEmo = () => setSwEmo(previousState => !previousState);
-	const toggleMen = () => setSwMen(previousState => !previousState);
-	const toggleSpi = () => setSwSpi(previousState => !previousState);
-
+	const toggleWork = () => { setSwWork(previousState => !previousState); toggleReminder(0); }
+	const toggleClass = () => { setSwClass(previousState => !previousState); toggleReminder(1); }
+	const toggleSleep = () => {setSwSleep(previousState => !previousState); toggleReminder(2); }
+	const toggleEat = () => { setSwEat(previousState => !previousState); toggleReminder(3); }
+	const togglePrep = () => { setSwPrep(previousState => !previousState); toggleReminder(4); }
+	const toggleCommute = () => { setSwCommute(previousState => !previousState); toggleReminder(5); }
+	const togglePhy = () => { setSwPhy(previousState => !previousState); toggleReminder(6); }
+	const toggleEmo = () => { setSwEmo(previousState => !previousState); toggleReminder(7); }
+	const toggleMen = () => { setSwMen(previousState => !previousState); toggleReminder(8); }
+	const toggleSpi = () => { setSwSpi(previousState => !previousState); toggleReminder(9); }
 	const [weekNum, setWeekNum] = useState(0);
 	const [dayNum, setDayNum] = useState(0);
 	const workPromises: Promise<any>[] = [];
@@ -55,6 +53,16 @@ const SetupStart = (props:any) =>
 	const emotionalPromises: Promise<any>[] = [];
 	const mentalPromises: Promise<any>[] = [];
 	const spiritualPromises: Promise<any>[] = [];
+
+	const toggleReminder = (index: number) => 
+	{
+		setReminders(prevReminders => 
+		{
+		  const newReminders = [...prevReminders];
+		  newReminders[index] = !newReminders[index];
+		  return newReminders;
+		});
+	};
 
 	useEffect(() => 
 	{
@@ -69,13 +77,47 @@ const SetupStart = (props:any) =>
 		{
 			console.log('Error getting week number', error);
 		});
+
+		DBSettings.getReminders()
+		.then((value: unknown) => 
+		{
+			const array = JSON.parse(value as string);
+			setReminders(array);
+		})
+		.catch((error: Error) => 
+		{
+			console.log('Error getting week number', error);
+		});
+
 		const currentWeekNumber = DateUtils.getCurrentWeekNumber();
 		const currentDayOfWeek = DateUtils.getCurrentDayOfWeek();
-
 
 		setWeekNum(currentWeekNumber);
 		setDayNum(currentDayOfWeek);
 	}, []);
+
+	useEffect(() =>
+	{
+		if (reminders.length > 0)
+		{
+			setSwWork(reminders[0]);
+			setSwClass(reminders[1]);
+			setSwSleep(reminders[2]);
+			setSwEat(reminders[3]);
+			setSwPrep(reminders[4]);
+			setSwCommute(reminders[5]);
+			setSwPhy(reminders[6]);
+			setSwEmo(reminders[7]);
+			setSwMen(reminders[8]);
+			setSwSpi(reminders[9]);
+		}
+	}, [reminders]);
+
+	useEffect(() => 
+	{
+		const jsonString = JSON.stringify(reminders);
+		DBSettings.setReminders(jsonString);
+	  }, [reminders]);
 
 	const handleStart = async () =>
 	{
@@ -168,6 +210,7 @@ const SetupStart = (props:any) =>
 	
 		setIsLoading(false);
 		setSetupDone(true);
+		setFrom('MainScreen');
 	}
 
 	const addWorkRecords = async () => 
@@ -452,6 +495,7 @@ const SetupStart = (props:any) =>
 
 	const handleWork = () => 
 	{
+		// console.log('Reminders: ', reminders);
 		props.navigation.navigate('OneWorkSchedule');
 	}
 
@@ -522,7 +566,7 @@ const SetupStart = (props:any) =>
 						<Text style={MainStyles.buttonText}>Start</Text>
 					</TouchableOpacity>
 					<TouchableOpacity style={[MainStyles.button_secondary, MainStyles.mt_2, MainStyles.w_100]} onPress={handleClose}>
-						<Text style={[MainStyles.buttonText, { color: '#000000'}]}>Cancel</Text>
+						<Text style={[MainStyles.buttonText, { color: '#000000'}]}>Close</Text>
 					</TouchableOpacity>
 					{saMode === 0 ? (
 						<>
@@ -531,7 +575,8 @@ const SetupStart = (props:any) =>
 						<View style={{ flexDirection: 'column', flex: 1, alignItems: 'center', justifyContent: 'flex-start', width: '100%', rowGap: 5 }} >
 								<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleWork}>
 									<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										{/* <Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' /> */}
+										<Image source={require('../../assets/images/cal_1.png')} style={{ width: 38, height: 38 }} />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Work schedule</Text>
 										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 											<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -547,7 +592,7 @@ const SetupStart = (props:any) =>
 								</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleClass}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Image source={require('../../assets/images/cal_2.png')} style={{ width: 38, height: 38 }} />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Class schedule</Text>
 										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -563,7 +608,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleSleep}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Image source={require('../../assets/images/cal_3.png')} style={{ width: 38, height: 38 }} />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Sleep schedule</Text>
 										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -579,7 +624,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleEat}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Image source={require('../../assets/images/cal_4.png')} style={{ width: 38, height: 38 }} />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Eat schedule</Text>
 										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -595,7 +640,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handlePrepare}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Image source={require('../../assets/images/cal_5.png')} style={{ width: 38, height: 38 }} />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Prepare schedule</Text>
 										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -611,7 +656,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleCommute}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-										<Icon name='stop-circle-outline' width={32} height={32} fill='#7b90af' />
+										<Image source={require('../../assets/images/cal_6.png')} style={{ width: 38, height: 38 }} />
 										<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Commute schedule</Text>
 										<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -627,7 +672,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handlePhysical}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Image source={require('../../assets/images/cal_7.png')} style={{ width: 38, height: 38 }} />
 									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Physical</Text>
 									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -643,7 +688,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleEmotional}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Image source={require('../../assets/images/cal_8.png')} style={{ width: 38, height: 38 }} />
 									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Emotional</Text>
 									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -659,7 +704,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleMental}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Image source={require('../../assets/images/cal_9.png')} style={{ width: 38, height: 38 }} />
 									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Mental</Text>
 									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 									<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>
@@ -675,7 +720,7 @@ const SetupStart = (props:any) =>
 							</Card>
 							<Card style={{ flexDirection: 'row', alignItems: 'center', width: '100%', borderRadius: 10 }} onPress={handleSpiritual}>
 								<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }} >
-									<Icon name='play-circle-outline' width={32} height={32} fill='#7b90af' />
+									<Image source={require('../../assets/images/cal_10.png')} style={{ width: 38, height: 38 }} />
 									<Text style={[MainStyles.h5, MainStyles.mb_0, { flex: 1,textAlign: 'left', paddingStart: 10 }]} >Allocate Spiritual</Text>
 									<View style={{  flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
 										<Text style={[MainStyles.h7, MainStyles.mb_0]}>Reminders</Text>

@@ -74,6 +74,23 @@ class DbAllocate
 		});
 	}
 
+	getPhysicalRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM allocate_physical WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
 	updPhysicalHour	= (id: number, totHours: number) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -215,6 +232,23 @@ class DbAllocate
 					records.push(result.rows.item(i));
 				}
 				resolve(records);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
+	getEmotionalRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM allocate_emotional WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
 			}, 
 			(error: any) => 
 			{
@@ -372,6 +406,23 @@ class DbAllocate
 		});
 	}
 
+	getMentalRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM allocate_mental WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
 	updMentalHour = (id: number, totHours: number) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -513,6 +564,23 @@ class DbAllocate
 					records.push(result.rows.item(i));
 				}
 				resolve(records);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
+	getSpiritualRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM allocate_spiritual WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
 			}, 
 			(error: any) => 
 			{

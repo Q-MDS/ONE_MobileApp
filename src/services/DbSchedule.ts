@@ -57,6 +57,23 @@ class DbSchedule
 		});
 	}
 
+	getWorkRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM schedule_work WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}		
+
 	setWorkActive = (id: number, active: number) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -136,6 +153,23 @@ class DbSchedule
 			let sql = 'SELECT * FROM schedule_class ORDER BY id ASC';
 
 			this.db.executeSql(sql, [], (result: any)=> 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
+	getClassRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM schedule_class WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
 			{
 				resolve(result);
 			}, 
@@ -235,6 +269,23 @@ class DbSchedule
 		});
 	}
 
+	getSleepRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM schedule_sleep WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
 	setSleepActive = (id: number, active: number) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -314,6 +365,23 @@ class DbSchedule
 			let sql = 'SELECT * FROM schedule_eat ORDER BY id ASC';
 
 			this.db.executeSql(sql, [], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
+	getEatRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM schedule_eat WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
 			{
 				resolve(result);
 			}, 
@@ -517,6 +585,23 @@ class DbSchedule
 		});
 	}
 
+	getPrepareRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM schedule_prepare WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
 	setPrepareActive = (id: number, active: number) => 
 	{
 		return new Promise((resolve, reject) => 
@@ -619,6 +704,23 @@ class DbSchedule
 			let sql = 'SELECT * FROM schedule_commute ORDER BY id ASC';
 
 			this.db.executeSql(sql, [], (result: any) => 
+			{
+				resolve(result);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}
+
+	getCommuteRecord = (id: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			let sql = 'SELECT * FROM schedule_commute WHERE id = ?';
+
+			this.db.executeSql(sql, [id], (result: any) => 
 			{
 				resolve(result);
 			}, 

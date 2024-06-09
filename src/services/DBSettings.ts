@@ -625,6 +625,52 @@ class DBSettings
 			});
 		});
 	}
+
+	getReminders = () => 
+	{
+		let db = DbHelper.getDb();
+		let sql = 'SELECT reminders FROM settings WHERE id = 1';
+
+		return new Promise((resolve, reject) => 
+		{
+			db.executeSql(sql, [], (result: any) => 
+			{
+				resolve(result.rows.item(0).reminders);
+			}, 
+			(error: any) => 
+			{
+				reject(error);
+			});
+		});
+	}		
+
+	setReminders = (reminders: string) => 
+	{
+		let db = DbHelper.getDb();
+
+		return new Promise((resolve, reject) => 
+		{
+			db.transaction((tx: any) => 
+			{
+				tx.executeSql('UPDATE settings SET reminders = ?', [reminders], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed 1'));
+					}
+				},
+				(error: any) => 
+					{
+						reject(error);
+					},
+				);
+			});
+		});
+	}
 }
 
 export default new DBSettings();

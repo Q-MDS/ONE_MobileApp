@@ -114,7 +114,8 @@ class DbSetup
 		"analytics" INTEGER DEFAULT 0,
 		"activity_reminders" INTEGER DEFAULT 0,
 		"subscribed" INTEGER DEFAULT 0,
-		"sa_mode" INTEGER DEFAULT 0
+		"sa_mode" INTEGER DEFAULT 0,
+		"reminders" TEXT DEFAULT '[false, false, false, false, false, false, true, true, true, true]'
         )
 	;`;
 	CREATE_TABLE_VERIFY_MASTER: string = `CREATE TABLE "main"."` + this.TABLE_VERIFY_MASTER + `" (

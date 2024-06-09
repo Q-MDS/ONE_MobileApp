@@ -28,6 +28,7 @@ interface Record
 }
 
 type Todo = {
+	id: number;
 	activityType: number;
 	hourNum: number;
 	time: string;
@@ -41,25 +42,12 @@ type Group = {
   };
 
 //Del
-const todos = [
-    { id: '1', time: '10:00', text: 'Todo 1', icon: require('../../assets/images/cal_1.png') },
-    { id: '2', time: '10:00', text: 'Todo 2', icon: require('../../assets/images/cal_2.png') },
-    { id: '3', time: '11:00', text: 'Todo 3', icon: require('../../assets/images/cal_3.png') },
-    // Add more todos as needed
-];
-
-//del: Group todos by time
-// const groupedTodos = todos.reduce((groups, todo) => 
-// {
-//     (groups[todo.time] = groups[todo.time] || []).push(todo);
-//     return groups;
-// }, {});
-
-// const todoGroups = Object.keys(groupedTodos).map(time => (
-// {
-//     time,
-//     todos: groupedTodos[time],
-// }));
+// const todos = [
+//     { id: '1', time: '10:00', text: 'Todo 1', icon: require('../../assets/images/cal_1.png') },
+//     { id: '2', time: '10:00', text: 'Todo 2', icon: require('../../assets/images/cal_2.png') },
+//     { id: '3', time: '11:00', text: 'Todo 3', icon: require('../../assets/images/cal_3.png') },
+//     // Add more todos as needed
+// ];
 
 const MainScreen = (props: any) => 
 {
@@ -157,7 +145,6 @@ const MainScreen = (props: any) =>
 			let reminders = calendarRecords[i].reminder;
 			let icon = require('../../assets/images/cal_2.png');
 
-			console.log('Type: ', activityType);
 			switch (activityType) 
 			{
 				case 1:
@@ -203,7 +190,7 @@ const MainScreen = (props: any) =>
 				time = hourNum + ':00';
 			}
 
-			data.push({ activityType, hourNum, time, activityTitle, activityDesc, icon });
+			data.push({ id, activityType, hourNum, time, activityTitle, activityDesc, icon });
 			// for (let j = 0; j < Math.ceil(duration / 3600); j ++)
 			// {
 			// 	let hhmm = convertSecondsToHours(start + (j * 3600));
@@ -261,6 +248,11 @@ const MainScreen = (props: any) =>
         console.error(error);
         Alert.alert('An error occurred while loading the image.');
     }
+
+	const handleEditActivity = (id: number) => 
+	{
+		props.navigation.navigate('EditActivity', {id: id, activityDate: formattedDate});
+	}
 
     function convertSecondsToHours(seconds: number): [number, number] 
     {
@@ -423,7 +415,7 @@ const MainScreen = (props: any) =>
 									</View>
 
                                     {item.todos.map((todo, index) => (
-                                        <TouchableOpacity key={index} style={{  paddingTop: 10, paddingBottom: 10, paddingStart: 10, backgroundColor: index % 2 === 0 ? 'rgba(233, 217, 204, 0.5)' : 'rgba(206, 208, 233, 0.5)' }} onPress={() => console.log(`Pressed: Error on >todo.id<}`)}>
+                                        <TouchableOpacity key={index} style={{  paddingTop: 10, paddingBottom: 10, paddingStart: 10, backgroundColor: index % 2 === 0 ? 'rgba(233, 217, 204, 0.5)' : 'rgba(206, 208, 233, 0.5)' }} onPress={() => handleEditActivity(todo.id)}>
                                             
                                             <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', marginStart: 10 }}>
                                                 <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#E9D9CC80', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 5 }}>

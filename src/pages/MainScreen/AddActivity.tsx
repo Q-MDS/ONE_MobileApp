@@ -4,7 +4,7 @@ import DBSettings from '../../services/DBSettings';
 import DbAllocate from '../../services/DbAllocate';
 import BackTextHelpTopBar from '../../components/BackTextHelpTopBar/BackTextHelpTopBar';
 import MainStyles from '../../assets/MainStyles';
-import { ImageBackground, View, ScrollView, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { SafeAreaView, ImageBackground, View, ScrollView, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import { RadioButton, IconButton } from 'react-native-paper';
 import backgroundImage from '../../assets/images/app_bg_sky.png';
 
@@ -182,6 +182,7 @@ const AddActivity = ( props: any ) =>
 
 
   	return (
+		<SafeAreaView style={{ flex: 1 }}>
         <ImageBackground source={backgroundImage} style={MainStyles.imageBackground}>
         <View style={MainStyles.backContainer} >
             <BackTextHelpTopBar navigation={props.navigation} title="Add New Activity" />
@@ -242,11 +243,10 @@ const AddActivity = ( props: any ) =>
 								<Text style={MainStyles.buttonText}>Save</Text>
 						</TouchableOpacity>
 					</View>
-					
-					
             </ScrollView>
         </View>
     </ImageBackground>
+	</SafeAreaView>
   );
 };
 
