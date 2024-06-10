@@ -806,6 +806,59 @@ class DbSchedule
 		});
 	}
 
+	setActive = (tableName: string, id: number, active: number) => 
+	{
+		console.log('table', tableName, 'id', id, 'active', active);
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any): any => 
+			{
+				tx.executeSql('UPDATE ' + tableName + ' SET active = ?, start_time = 0, end_time = 0 WHERE id = ?', [active, id], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed'));
+					}
+				},
+				(error: any) => 
+				{
+					reject(error);
+				},
+				);
+			});
+		});
+	}
+
+	setEatActive = (tableName: string, id: number, active: number, activeName: string, activeStart: string, activeEnd: string) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any): any => 
+			{
+				tx.executeSql('UPDATE ' + tableName + ' SET ' + activeName + ' = ?, ' + activeStart + ' = 0 , '+ activeEnd + ' = 0 WHERE id = ?', [active, id], (tx: any, results: any) => 
+				{
+					if (results.rowsAffected > 0) 
+					{
+						resolve(results.rowsAffected);
+					} 
+					else 
+					{
+						reject(new Error('Update operation failed'));
+					}
+				},
+				(error: any) => 
+				{
+					reject(error);
+				},
+				);
+			});
+		});
+	}
+
     // Truncate tables
     truncWorkSchedule = () => 
     {

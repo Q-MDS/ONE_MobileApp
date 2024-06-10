@@ -174,12 +174,12 @@ const Login = (props: any) =>
     const handleLogin = async () => 
     {
         setIsLoading(true);
-
+		console.log('BBB');
         try 
 		{
+			console.log('AAA');
 			const res = await login(email, password);
 			const status = res.status;
-
 			if (status)
 			{
 				const apiToken = res.token;
@@ -252,6 +252,7 @@ const Login = (props: any) =>
 		{
             setIsLoading(false);
         }
+		console.log('CCC');
     };
 
 	useEffect(() => 

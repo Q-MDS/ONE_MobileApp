@@ -704,6 +704,51 @@ class DbCalendar
 		});
 	} 	
     
+	deleteActivity = (saId: number) => 
+	{
+		console.log('Delete activity: ', saId);
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql
+				(
+					'DELETE FROM calendar WHERE sa_id = ?',
+					[saId],
+					(tx: any, results: any) => 
+					{
+						resolve(results);
+					},
+					(error: any) => 
+					{
+						console.log('Error deleting activity: ', error);
+						reject(error);
+					}
+				);
+			});
+		});
+	}
+
+	getAllocateRecords = (activityType: number, dayNum: number) =>
+	{
+		return new Promise((resolve, reject) => 
+			{
+				this.db.executeSql(`SELECT * FROM ${this.TABLE_CALENDAR} WHERE activity_type = ? AND day_num = ? ORDER BY hour_num ASC`, [activityType, dayNum], (result: any) => 
+				{
+					let records = [];
+	
+					for (let i = 0; i < result.rows.length; i++) 
+					{
+						records.push(result.rows.item(i));
+					}
+					resolve(records);
+				}, 
+				(error: any) => 
+				{
+					reject(error);
+				});
+			});
+	}
 }
 
 export default new DbCalendar();

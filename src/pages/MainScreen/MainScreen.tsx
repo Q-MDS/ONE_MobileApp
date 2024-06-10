@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import DbCalendar from '../../services/DbCalendar';
 import DbDiary from '../../services/DbDiary';
 import DbQuestions from '../../services/DbQuestions';
@@ -91,7 +92,7 @@ const MainScreen = (props: any) =>
 			date.setDate(start.getDate() + i);
 			return date;
 		});
-
+console.log('Dates 1: ', dates);
 		return dates;
 	};
 	const weekDates = getWeekDates();
@@ -100,6 +101,7 @@ const MainScreen = (props: any) =>
 
 	const getRecords = async () => 
 	{
+		console.log('DNDNDND: ', dayNumber);
 		await DbCalendar.getCalendarRecords(dayNumber)
 		.then((value: unknown) => 
 		{
@@ -113,7 +115,19 @@ const MainScreen = (props: any) =>
 		});
 	}
 
-	useEffect(() => 
+	// useEffect(() => 
+	// {
+	// 	try 
+	// 	{
+	// 		getRecords();	
+	// 	} 
+	// 	catch (error) 
+	// 	{
+	// 		console.error(error);
+	// 	}
+	// }, [dayNumber]);
+
+	useFocusEffect(React.useCallback(() => 
 	{
 		try 
 		{
@@ -123,7 +137,8 @@ const MainScreen = (props: any) =>
 		{
 			console.error(error);
 		}
-	}, [dayNumber]);
+	}, [dayNumber]));
+
 
 	useEffect(() => 
 	{
@@ -251,7 +266,12 @@ const MainScreen = (props: any) =>
 
 	const handleEditActivity = (id: number) => 
 	{
-		props.navigation.navigate('EditActivity', {id: id, activityDate: formattedDate});
+		console.log('Edit Activity: ', weekDates[dayNumber]);
+		const thisDay: Date = weekDates[dayNumber];
+		const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+		const dateString: string = thisDay.toLocaleDateString('en-US', options);
+
+		props.navigation.navigate('EditActivity', {id: id, activityDate: dateString, dayNum: dayNumber});
 	}
 
     function convertSecondsToHours(seconds: number): [number, number] 
@@ -392,11 +412,11 @@ const MainScreen = (props: any) =>
 
                     <View style={[styles.weekRow, { paddingStart: 24, paddingEnd: 24}]}>
                         {weekDates.map((date, index) => (
-                            <TouchableOpacity key={index} onPress={() => { setDayNumber(index + 1) }}>
+                            <TouchableOpacity key={index} onPress={() => { setDayNumber(index) }}>
                                 <View style={styles.weekDay}>
                                     {/* <Text style={[styles.weekDayNumber, date.getTime() === today.getTime() ? styles.currentTop : styles.otherTop]}>{date.getDate()}</Text> */}
-                                    <Text style={[styles.weekDayNumber, index + 1 === dayNumber ? styles.currentTop : styles.otherTop]}>{date.getDate()}</Text>
-                                    <Text style={[styles.weekDayName, index + 1 === dayNumber ? styles.currentBottom : styles.otherBottom]}>{dayNames[index]}</Text>
+                                    <Text style={[styles.weekDayNumber, index === dayNumber ? styles.currentTop : styles.otherTop]}>{date.getDate()}</Text>
+                                    <Text style={[styles.weekDayName, index === dayNumber ? styles.currentBottom : styles.otherBottom]}>{dayNames[index]}</Text>
                                 </View>
                             </TouchableOpacity>
                         ))}

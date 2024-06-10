@@ -221,7 +221,7 @@ const AddActivity = ( props: any ) =>
 							<Text style={[MainStyles.h5, MainStyles.textBold, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_1, MainStyles.mt_2]}>Select a time slot or multiple time slots</Text>
 							{/* Do a map of the times showing start to end + 86400... */}
 							<View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', columnGap: 5, rowGap:5, marginTop: 15 }}>
-							{availableHours.map((hour, index) => (
+								{availableHours.map((hour, index) => (
 								<View style={{ width: '22%' }}>
 								<Button
 									key={hour}
@@ -236,7 +236,7 @@ const AddActivity = ( props: any ) =>
 									color={todoHours.includes(hour) ? '#7b90af' : 'gray'}
 								/>
 								</View>
-							))}
+								))}
 							</View>
 						</View>
 						<TouchableOpacity style={[MainStyles.button_primary, MainStyles.mt_5, MainStyles.buttonFull]} onPress={ handleSave }>
