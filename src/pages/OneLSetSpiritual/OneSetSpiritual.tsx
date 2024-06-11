@@ -105,7 +105,7 @@ const OneSetPhysical = ( props: any ) =>
 		// Clear existing records
 		try 
 		{
-			await DbAllocate.delMentalRecords(10, recId).then((result) => console.log('Result: ', result));
+			await DbAllocate.delSpiritualRecords(10, recId).then((result) => console.log('Result: ', result));
 		} 
 		catch(error)
 		{

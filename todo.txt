@@ -226,3 +226,17 @@ SCHED/ALLOC REDO
 
 Table: sa_settings
 mode int - 0 - edit, 1 - new
+
+
+TOMORROW:
+1. Do save for schedule and allocate: We might need to do notification records as well
+// 1. EXTRA: Add an activity might need to add a notification record
+2. Need to fix EAT lunch/dinner times going wonky and wrong or zero/null time being saved as end time. Maybe wonky isn't causing kak cos start is 100% ok
+3. Prepare & commute with multiple times might also be making kak
+4. Need to run thru login to start week: 3 options. Scenario where you go to Start week and choose COPY, it copies but then it goes to START WEEK again after you login
+NEXT STEPS: Look into noti system.
+NEXT STEPS: Reminders and Firebase/Push Noti's
+NEXT STEPS: Tomorrow night get ONE onto CodeMagic
+NEXT STEPS: Wed, bug fix and make TestFlight
+NEXT STEPS: Ask Andre for server time for ONE backend
+NEXT STEPS: Ask Marcel if MDS has server for testing etc

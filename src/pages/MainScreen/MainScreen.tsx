@@ -143,7 +143,7 @@ console.log('Dates 1: ', dates);
 	useEffect(() => 
 	{
 		let data = [];
-		console.log('Diary Data: ', calendarRecords);
+		// console.log('Diary Data: ', calendarRecords);
 
 		for (let i = 0; i < calendarRecords.length; i++) 
 		{

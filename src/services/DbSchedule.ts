@@ -808,7 +808,6 @@ class DbSchedule
 
 	setActive = (tableName: string, id: number, active: number) => 
 	{
-		console.log('table', tableName, 'id', id, 'active', active);
 		return new Promise((resolve, reject) => 
 		{
 			this.db.transaction((tx: any): any => 
@@ -857,6 +856,33 @@ class DbSchedule
 				);
 			});
 		});
+	}
+
+	// Edit activity
+	setEditTime = (tableName: string, id: number, startTime: number, endTime: number, rollOver: number) => 
+	{
+		return new Promise((resolve, reject) => 
+			{
+				this.db.transaction((tx: any): any => 
+				{
+					tx.executeSql('UPDATE ' + tableName + ' SET active = 1, start_time = ?, end_time = ?, roll_over = ? WHERE id = ?', [startTime, endTime, rollOver, id], (tx: any, results: any) => 
+					{
+						if (results.rowsAffected > 0) 
+						{
+							resolve(results.rowsAffected);
+						} 
+						else 
+						{
+							reject(new Error('Update operation failed'));
+						}
+					},
+					(error: any) => 
+					{
+						reject(error);
+					},
+					);
+				});
+			});
 	}
 
     // Truncate tables

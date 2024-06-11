@@ -374,7 +374,7 @@ const OnePrepSchedule = ( props: any ) =>
 				value={filter && (currentPicker === 'from' || currentPicker === 'to') ? filter[currentPicker] : new Date()}
 				mode="time"
 				is24Hour={true}
-				display="default"
+				display="spinner"
 				// onChange={(event, selectedDate) => {
 				// 	const recId = filter['id'];
 				// 	const updatedFilter = { ...filter };

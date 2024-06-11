@@ -780,7 +780,7 @@ const OneEatSchedule = ( props: any ) =>
 							value={currentBreakfastPicker === 'from' || currentBreakfastPicker === 'to' ? breakfastTimes[currentDay][currentBreakfastPicker] : new Date()}
 							mode="time"
 							is24Hour={true}
-							display="default"
+							display="spinner"
 							onChange={(event, selectedDate) => {
 								const newTimes = [...breakfastTimes];
 								const getRecid = [...recordId]; 
@@ -823,10 +823,10 @@ const OneEatSchedule = ( props: any ) =>
 						{showLunchPicker && currentDay === index && (
 							<DateTimePicker
 							// value={lunchTimes[currentDay][currentLunchPicker]}
-							value={currentLunchPicker === 'from' || currentLunchPicker === 'to' ? breakfastTimes[currentDay][currentLunchPicker] : new Date()}
+							value={currentLunchPicker === 'from' || currentLunchPicker === 'to' ? lunchTimes[currentDay][currentLunchPicker] : new Date()}
 							mode="time"
 							is24Hour={true}
-							display="default"
+							display="spinner"
 							onChange={(event, selectedDate) => {
 								const newTimes = [...lunchTimes];
 								const getRecid = [...recordId]; 
@@ -868,10 +868,10 @@ const OneEatSchedule = ( props: any ) =>
 						{showDinnerPicker && currentDay === index && (
 							<DateTimePicker
 							// value={dinnerTimes[currentDay][currentDinnerPicker]}
-							value={currentDinnerPicker === 'from' || currentDinnerPicker === 'to' ? breakfastTimes[currentDay][currentDinnerPicker] : new Date()}
+							value={currentDinnerPicker === 'from' || currentDinnerPicker === 'to' ? dinnerTimes[currentDay][currentDinnerPicker] : new Date()}
 							mode="time"
 							is24Hour={true}
-							display="default"
+							display="spinner"
 							onChange={(event, selectedDate) => {
 								const newTimes = [...dinnerTimes];
 								const getRecid = [...recordId]; 

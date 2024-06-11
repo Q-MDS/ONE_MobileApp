@@ -330,7 +330,7 @@ const OneCommuteSchedule = ( props: any ) =>
 			{
 				// console.log('Time id FRAK: ', recIndex, " >>> ", item.id, " >>> ", item.from, " >>> ", item.to, " >>> ", filteredRecords.length);
 				return (
-				<View style={[styles.buttonContainer]}>
+				<View key={recIndex} style={[styles.buttonContainer]}>
 					<TouchableOpacity style={[MainStyles.buttonBasic, styles.buttonColor]} onPress={ () => { setCurrentDay(index); setCurrentPicker('from'); setShowPicker(true); setFilter(item) } }>
 						<Text style={[ MainStyles.h7, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_0, MainStyles.textSubtle, {textAlign: 'center'}]}>FROM</Text>
 						<Text style={[ MainStyles.h2, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_0, {textAlign: 'center'}]}>{`${filteredRecords[recIndex].from.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}</Text>
@@ -358,7 +358,7 @@ const OneCommuteSchedule = ( props: any ) =>
 				value={filter && (currentPicker === 'from' || currentPicker === 'to') ? filter[currentPicker] : new Date()}
 				mode="time"
 				is24Hour={true}
-				display="default"
+				display="spinner"
 				// onChange={(event, selectedDate) => {
 				// 	const recId = filter['id'];
 				// 	const updatedFilter = { ...filter };

@@ -19,6 +19,7 @@ type RecordType = {
 	reminder: number,
 	sa_id: number,
 	sa_type: number,
+	week_num: number,
 };
 type StandardType = {
 	id: number,
@@ -57,10 +58,10 @@ const EditActivity = (props: any) =>
 {
 	console.log('EditActivity id: ', props.route.params.id);
 	const dayNum = props.route.params.dayNum;
-	const [record, setRecord] = useState<RecordType>({id: 0, activity_desc: '', activity_title: '', activity_type: 0, day_num: 0, hour_num: 0, reminder: 0, sa_id: 0, sa_type: 0});
+	const [record, setRecord] = useState<RecordType>({id: 0, activity_desc: '', activity_title: '', activity_type: 0, day_num: 0, hour_num: 0, reminder: 0, sa_id: 0, sa_type: 0, week_num: 0});
 	const [standard, setStandard] = useState<StandardType>({id: 0, day_num: 0, active: 0, start_time: 0, end_time: 0, roll_over: 0});
 	const [standardExtra, setStandardExtra] = useState<StandardTypeExtra>({id: 0, day_num: 0, breakfast_active: 0, breakfast_start: 0, breakfast_end: 0, breakfast_roll_over: 0, lunch_active: 0, lunch_start: 0, lunch_end: 0, lunch_roll_over: 0, dinner_active: 0, dinner_start: 0, dinner_end: 0, dinner_roll_over: 0});
-	const [allocate, setAllocate] = useState<RecordType[]>([{id: 0, activity_desc: '', activity_title: '', activity_type: 0, day_num: 0, hour_num: 0, reminder: 0, sa_id: 0, sa_type: 0}]);
+	const [allocate, setAllocate] = useState<RecordType[]>([{id: 0, activity_desc: '', activity_title: '', activity_type: 0, day_num: 0, hour_num: 0, reminder: 0, sa_id: 0, sa_type: 0, week_num: 0}]);
 	const [standardHours, setStandardHours] = useState(0);
 
 	const [isReady, setIsReady] = useState(false);
@@ -487,8 +488,6 @@ const EditActivity = (props: any) =>
 
 	const handleDelete = async () => 
 	{
-		// console.log('Record deleted!!');
-		console.log('Arbsicle: ', activity);
 		Alert.alert(
 			"Confirm Delete",
 			"Are you sure you want to delete this record?",
@@ -505,45 +504,44 @@ const EditActivity = (props: any) =>
 						switch (activityType)
 						{
 							case 1:
-								deleteActivity(saId,"schedule_work", 0);
+								deleteActivity(activityType, saId,"schedule_work", 0);
 							break;
 							case 2:
-								deleteActivity(saId,"schedule_class", 0);
+								deleteActivity(activityType, saId,"schedule_class", 0);
 							break;
 							case 3:
-								deleteActivity(saId,"schedule_sleep", 0);
+								deleteActivity(activityType, saId,"schedule_sleep", 0);
 							break;
 							case 4:
-								console.log('DESC: ', activityDesc);
 								if (activityDesc == 'Breakfast')
 								{
-									deleteEatActivity(saId, "schedule_eat", 0, "breakfast_active", "breakfast_start", "breakfast_end");
+									deleteEatActivity(activityType, saId, "schedule_eat", 0, "breakfast_active", "breakfast_start", "breakfast_end");
 								}
 								else if (activityDesc == 'Lunch')
 								{
-									deleteEatActivity(saId, "schedule_eat", 0, "lunch_active", "lunch_start", "lunch_end");
+									deleteEatActivity(activityType, saId, "schedule_eat", 0, "lunch_active", "lunch_start", "lunch_end");
 								} 
 								else {
-									deleteEatActivity(saId, "schedule_eat", 0, "dinner_active", "dinner_start", "dinner_end");
+									deleteEatActivity(activityType, saId, "schedule_eat", 0, "dinner_active", "dinner_start", "dinner_end");
 								}
 							break;
 							case 5:
-								deleteActivity(saId,"schedule_prepare", 0);
+								deleteActivity(activityType, saId,"schedule_prepare", 0);
 							break;
 							case 6:
-								deleteActivity(saId,"schedule_commute", 0);
+								deleteActivity(activityType, saId,"schedule_commute", 0);
 							break;
 							case 7:
-								// setScheduleActive("allocate_physical", saId, 0);
+								// TODO: setScheduleActive("allocate_physical", saId, 0);
 							break;
 							case 8:
-								// setScheduleActive("allocate_emotional", saId, 0);
+								// TODO: setScheduleActive("allocate_emotional", saId, 0);
 							break;
 							case 9:
-								// setScheduleActive("allocate_mental", saId, 0);
+								// TODO: setScheduleActive("allocate_mental", saId, 0);
 							break;
 							case 10:
-								// setScheduleActive("allocate_spiritual", saId, 0);
+								// TODO: setScheduleActive("allocate_spiritual", saId, 0);
 							break;
 						}
 						// Delete calendar record
@@ -563,11 +561,11 @@ const EditActivity = (props: any) =>
 		);
 	}
 
-	async function deleteActivity(saId: number, table: string, active: number)
+	async function deleteActivity(activityType: number, saId: number, table: string, active: number)
 	{
 		try 
 		{
-			await Promise.all([DbCalendar.deleteActivity(saId), DbSchedule.setActive(table, saId, active)]);
+			await Promise.all([DbCalendar.deleteActivity(activityType, saId), DbSchedule.setActive(table, saId, active)]);
 			props.navigation.navigate('MainScreen');
 		} 
 		catch(error)
@@ -576,11 +574,11 @@ const EditActivity = (props: any) =>
 		}
 	}
 
-	async function deleteEatActivity(saId: number, table: string, active: number, activeName: string, activeStart: string, activeEnd: string)
+	async function deleteEatActivity(activityType: number, saId: number, table: string, active: number, activeName: string, activeStart: string, activeEnd: string)
 	{
 		try 
 		{
-			await Promise.all([DbCalendar.deleteActivity(saId), DbSchedule.setEatActive(table, saId, active, activeName, activeStart, activeEnd)]);
+			await Promise.all([DbCalendar.deleteEatActivity(activityType, activityDesc, saId), DbSchedule.setEatActive(table, saId, active, activeName, activeStart, activeEnd)]);
 			props.navigation.navigate('MainScreen');
 		} 
 		catch(error)
@@ -589,67 +587,134 @@ const EditActivity = (props: any) =>
 		}
 	}
 
-	const handleSave = () => 
+	const handleSave = async () => 
 	{
-		console.log('Record saved!! ', saType);
+		const tableArray = ["schedule_work", "schedule_class", "schedule_sleep", "schedule_eat", "schedule_prepare", "schedule_commute", "allocate_physical", "allocate_emotional", "allocate_mental", "allocate_spiritual"];
+		const activityDesc = record.activity_desc;
+		const activityTitle = record.activity_title;
+		const activityType = record.activity_type;
+		const dayNum = record.day_num;
+		const hourNum = record.hour_num;
+		const id = record.id;
+		const reminder = record.reminder;
+		const saId = record.sa_id;
+		const saType = record.sa_type;
+		const weekNum = record.week_num;
+		const st = dpStartTime.toLocaleTimeString();
+		let stbits = st.split(':');
+		let stHour = parseInt(stbits[0], 10);
+		let stMinute = parseInt(stbits[1], 10);
+		const totStSeconds = timeToSeconds(stHour, stMinute);
 
+		const et = dpEndTime.toLocaleTimeString();
+		let etbits = et.split(':');
+		let etHour = parseInt(etbits[0], 10);
+		let etMinute = parseInt(etbits[1], 10);
+		const totEtSeconds = timeToSeconds(etHour, etMinute);
+		let totHours = (totEtSeconds - totStSeconds) / 3600;
+		let rollover = 0;
+		if (totEtSeconds < totStSeconds)
+		{
+			rollover = 1;
+		}
+		console.log('STET:', totStSeconds, totEtSeconds, rollover);
+		// console.log('Save record: ', activityType, saId);
 		// Schedule activity
 		if (saType == 0)
 		{
-			// need to get the type of schedule
-			// need the start and end times
-			// need activity id & sa_id
-			// CALENDAR
-			// need to DELETE all activity records WHERE sa_id = saId AND activity_type = 4 for example (EAT)
-			// then add new calender records FROM - TO
-			// SCHEDULE TABLE
-			// Will need to pass the relevant table name: CREATE ARRAY
-			// UPDATE start_time & end_time... WHERE id = saId
+			// CALENDAR: WORKING: Work, class, Prepare, Commute, Eat,  WHACK: Sleep, UNKNOWN: Eat
+			// Delete current activity records.
+			await DbCalendar.edtActDeleteActivity(activityType, saId);
 
-			// TOMORROW:
-			// 1. Do save for schedule and allocate: We might need to do notification records as well
-				// 1. EXTRA: Add an activity might need to add a notification record
-			// 2. Need to fix EAT lunch/dinner times going wonky and wrong or zero/null time being saved as end time. Maybe wonky isn't causing kak cos start is 100% ok
-			// 3. Prepare & commute with multiple times might also be making kak
-			// 4. Need to run thru login to start week: 3 options. Scenario where you go to Start week and choose COPY, it copies but then it goes to START WEEK again after you login
-			// NEXT STEPS: Look into noti system.
-			// NEXT STEPS: Reminders and Firebase/Push Noti's
-			// NEXT STEPS: Tomorrow night get ONE onto CodeMagic
-			// NEXT STEPS: Wed, bug fix and make TestFlight
-			// NEXT STEPS: Ask Andre for server time for ONE backend
-			// NEXT STEPS: Ask Marcel if MDS has server for testing etc
-
-
-			
-
-			/*switch (activityType)
+			// Create new records
+			let diff = 0;
+			let totHours = 0;
+			let dayOneHours = 0;
+			let dayTwoHours = 0;
+			if (rollover === 0)
 			{
-				case 1:
-					saveWork();
-				break;
-				case 2:
-					saveClass();
-				break;
-				case 3:
-					saveSleep();
-				break;
-				case 4:
-					saveEat();
-				break;
-				case 5:
-					savePrepare();
-				break;
-				case 6:
-					saveCommute();
-				break;
-				case 7:
-				case 8:
-				case 9:
-				case 10:
-					saveAllocate();
-				break;
-			}*/	
+				diff = totEtSeconds - totStSeconds;
+				totHours = diff / 3600;
+				dayOneHours = totHours;
+			} 
+			else 
+			{
+				diff = (86400 - totStSeconds) + totEtSeconds;
+				totHours = diff / 3600;
+				dayOneHours = (86400 - totStSeconds) / 3600;
+				dayTwoHours = totHours - dayOneHours;
+			}
+
+			for (let i = 0; i < dayOneHours; i++)
+			{	
+				let hourNum = stHour + i;
+				const promise = DbCalendar.addRecord(weekNum, dayNum, hourNum, activityType, activityTitle, activityDesc, 0, saId, 0);
+			}
+			/** EDGE CASE: If it is a Saturday the weeknum will have wekknum++ and the daynum = 0. Going to daynum = 7 which kinda works.*/
+			let newWeek = weekNum;
+			let newDay = dayNum + 1;
+
+			if (dayNum == 6) {  newWeek++; newDay = 0; }
+			for (let i = 0; i < dayTwoHours; i++)
+			{	
+				let hourNum = 0 + i;
+				const promise = DbCalendar.addRecord(newWeek, newDay, hourNum, activityType, activityTitle, activityDesc, 0, saId, 0);
+			}
+
+			// SCHEDULE TABLE
+			if (activityType != 4)
+			{
+				let tableName = tableArray[activityType - 1];
+				DbSchedule.setEditTime(tableName, saId, totStSeconds, totEtSeconds, rollover);
+			} 
+			else 
+			{
+				if (activityDesc == 'Breakfast')
+				{
+					DbSchedule.setEatBreakfastTimes(saId, totStSeconds, totEtSeconds, rollover)
+				}
+				else if (activityDesc == 'Lunch')
+				{
+					DbSchedule.setEatLunchTimes(saId, totStSeconds, totEtSeconds, rollover)
+				} 
+				else 
+				{
+					DbSchedule.setEatDinnerTimes(saId, totStSeconds, totEtSeconds, rollover)
+				}
+			}
+		} 
+		else 
+		{
+			// Calendar: Delete and add new
+			const tableName = tableArray[activityType - 1];
+			await DbCalendar.edtActDeleteActivity(activityType, saId);
+			console.log('TodoHours: ', todoHours.length, tableName);
+
+			for (let i = 0; i < todoHours.length; i++)
+			{	
+				let hourNum = todoHours[i];
+				if (category == 'Physical')
+				{
+					DbCalendar.addRecord(weekNum, dayNum, hourNum, 7, 'Physical Activity', activityDesc, 1, saId, 0);
+				} 
+				else if(category == 'Emotional')
+				{
+					DbCalendar.addRecord(weekNum, dayNum, hourNum, 8, 'Emotional Activity', activityDesc, 1, saId, 0);
+				} 
+				else if(category == 'Mental')
+				{
+					DbCalendar.addRecord(weekNum, dayNum, hourNum, 9, 'Mental Activity', activityDesc, 1, saId, 0);
+				}
+				else
+				{
+					DbCalendar.addRecord(weekNum, dayNum, hourNum, 10, 'Spiritual Activity', activityDesc, 1, saId, 0);
+				}
+			}	
+
+			// TODO: Update allocate table
+		
 		}
+
 	}
 
 	const handleClose = () => 
@@ -666,6 +731,11 @@ const EditActivity = (props: any) =>
 
         return [fmtHours, fmtMinutes];
     }
+
+	function timeToSeconds(hours: number, minutes: number): number
+	{
+		return (hours * 3600) + (minutes * 60);
+	}
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
@@ -690,7 +760,7 @@ const EditActivity = (props: any) =>
 										<Text style={[MainStyles.h5, MainStyles.textBold, MainStyles.textLeft, MainStyles.w_100, MainStyles.mb_1, MainStyles.mt_2]}>Select a time slot or multiple time slots</Text>
 										<View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', columnGap: 5, rowGap:5, marginTop: 15 }}>
 										{allHours.map((hour, index) => (
-										<View style={{ width: '22%' }}>
+										<View key={index} style={{ width: '22%' }}>
 										<Button
 											key={hour}
 											title={`${hour.toString().padStart(2, '0')}:00`}
@@ -734,7 +804,7 @@ const EditActivity = (props: any) =>
 												value={dpStartTime}
 												mode={'time'}
 												is24Hour={true}
-												display="default"
+												display="spinner"
 												onChange={onStartChange}
 											/>
 											)}
@@ -750,7 +820,7 @@ const EditActivity = (props: any) =>
 												value={dpEndTime}
 												mode={'time'}
 												is24Hour={true}
-												display="default"
+												display="spinner"
 												onChange={onEndChange}
 											/>
 											)}

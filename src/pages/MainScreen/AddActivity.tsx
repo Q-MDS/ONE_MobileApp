@@ -222,7 +222,7 @@ const AddActivity = ( props: any ) =>
 							{/* Do a map of the times showing start to end + 86400... */}
 							<View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', columnGap: 5, rowGap:5, marginTop: 15 }}>
 								{availableHours.map((hour, index) => (
-								<View style={{ width: '22%' }}>
+								<View key={index} style={{ width: '22%' }}>
 								<Button
 									key={hour}
 									title={`${hour.toString().padStart(2, '0')}:00`}

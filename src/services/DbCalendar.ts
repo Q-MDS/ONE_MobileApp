@@ -704,7 +704,7 @@ class DbCalendar
 		});
 	} 	
     
-	deleteActivity = (saId: number) => 
+	deleteActivity = (activityType: number, saId: number) => 
 	{
 		console.log('Delete activity: ', saId);
 		return new Promise((resolve, reject) => 
@@ -713,8 +713,33 @@ class DbCalendar
 			{
 				tx.executeSql
 				(
-					'DELETE FROM calendar WHERE sa_id = ?',
-					[saId],
+					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
+					[activityType, saId],
+					(tx: any, results: any) => 
+					{
+						resolve(results);
+					},
+					(error: any) => 
+					{
+						console.log('Error deleting activity: ', error);
+						reject(error);
+					}
+				);
+			});
+		});
+	}
+    
+	deleteEatActivity = (activityType: number, activityDesc: string, saId: number) => 
+	{
+		console.log('FJB: ', activityType,activityDesc, saId);
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql
+				(
+					'DELETE FROM calendar WHERE activity_type = ? AND activity_desc = ? AND sa_id = ?',
+					[activityType, activityDesc, saId],
 					(tx: any, results: any) => 
 					{
 						resolve(results);
@@ -748,6 +773,30 @@ class DbCalendar
 					reject(error);
 				});
 			});
+	}
+
+	// Edit activity
+	edtActDeleteActivity = (activityType: number, saId: number) => 
+	{
+		return new Promise((resolve, reject) => 
+		{
+			this.db.transaction((tx: any) => 
+			{
+				tx.executeSql
+				(
+					'DELETE FROM calendar WHERE activity_type = ? AND sa_id = ?',
+					[activityType, saId],
+					(tx: any, results: any) => 
+					{
+						resolve(results);
+					},
+					(error: any) => 
+					{
+						reject(error);
+					}
+				);
+			});
+		});
 	}
 }
 

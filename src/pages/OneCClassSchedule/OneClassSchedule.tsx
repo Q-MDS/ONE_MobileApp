@@ -330,7 +330,7 @@ const OneClassSchedule = ( props: any ) =>
 						value={currentPicker === 'from' || currentPicker === 'to' ? times[currentDay][currentPicker] : new Date()}
 						mode="time"
 						is24Hour={true}
-						display="default"
+						display="spinner"
 						onChange={(event, selectedDate) => {
 							const newTimes = [...times];
 							const getRecid = [...recordId]; 
